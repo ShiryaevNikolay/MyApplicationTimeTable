@@ -10,5 +10,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        ResizableButton button1 = (ResizableButton) findViewById(R.id.main_btn1);
     }
 }
