@@ -10,22 +10,59 @@
     tools:context=".MainActivity">
 
 
-    <com.example.timetable.ResizableButton
-        android:id="@+id/main_btn1"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="6dp"
         android:layout_weight="1"
-        android:text="Добавить предметы"
-        android:background="@drawable/rounded_corner"/>
+        android:orientation="vertical"
+        android:layout_marginEnd="6dp">
 
-    <com.example.timetable.ResizableButton
-        android:id="@+id/button2"
+        <com.example.timetable.ResizableButton
+            android:id="@+id/main_btn1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/rounded_corner"
+            android:text="+"
+            android:textColor="#ffffff"
+            android:textSize="100dp"/>
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Добавить предметы"
+            android:gravity="center"
+            android:textSize="25dp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="6dp"
         android:layout_weight="1"
-        android:text="Составить расписание"
-        android:background="@drawable/rounded_corner"/>
+        android:orientation="vertical"
+        android:layout_marginStart="6dp">
+
+        <com.example.timetable.ResizableButton
+            android:id="@+id/button2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/rounded_corner"
+            android:text="+"
+            android:textColor="#ffffff"
+            android:textSize="100dp" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Составить расписание"
+            android:gravity="center"
+            android:textSize="25dp" />
+    </LinearLayout>
 
 </LinearLayout>
