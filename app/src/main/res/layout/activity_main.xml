@@ -24,7 +24,7 @@
             tools:ignore="NestedWeights">
 
             <com.example.timetable.ResizableButton
-                android:id="@+id/main_btn1"
+                android:id="@+id/main_btn_add_items"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="15dp"
@@ -37,7 +37,7 @@
                 android:textStyle="bold" />
 
             <com.example.timetable.ResizableButton
-                android:id="@+id/button2"
+                android:id="@+id/main_btn_make_schedule"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="15dp"
@@ -57,7 +57,7 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/main_textView_add_items"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="15dp"
@@ -67,7 +67,7 @@
                 android:textSize="20sp" />
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/main_textView_make_schedule"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
