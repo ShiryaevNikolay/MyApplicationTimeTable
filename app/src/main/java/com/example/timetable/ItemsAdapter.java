@@ -26,7 +26,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         int layoutIdForListItem = R.layout.recyclerview_item;
         // нужен для создания нового xml файла на основе recyclerview_item.xml
         LayoutInflater inflater = LayoutInflater.from(context);
-        // создаём новое представление (элемент) из layoutIdForItem, parent - <RecyclerView> в activity_add_items.xml, false - нужно ли помещать созданный объект layoutIdForItem внутрь parent(<RecyclerView>)
+        // создаём новое представление (элемент) из layoutIdForItem, parent - <RecyclerView> в activity_list_items.xml, false - нужно ли помещать созданный объект layoutIdForItem внутрь parent(<RecyclerView>)
         View view = inflater.inflate(layoutIdForListItem, parent, false);
         // обернём созданный элемент списка в ViewHolder
         ItemsViewHolder viewHolder = new ItemsViewHolder(view);

@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void launchAddItemsActivity(){
-        Intent intent = new Intent(this, AddItemsActivity.class);
+        Intent intent = new Intent(this, ListItemsActivity.class);
         startActivity(intent);
     }
 }

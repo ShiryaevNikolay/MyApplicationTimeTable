@@ -1,15 +1,20 @@
 package com.example.timetable;
 
+import android.os.Bundle;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
+import android.view.View;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.Toolbar;
 
-public class AddItemsActivity extends AppCompatActivity {
+public class ListItemsActivity extends AppCompatActivity {
 
     Toolbar toolbar;
 
@@ -19,13 +24,21 @@ public class AddItemsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_items);
-
-        toolbar = findViewById(R.id.toolbar_add_items);
-        toolbar.setTitle(getString(R.string.toolbar_add_items));
+        setContentView(R.layout.activity_list_items);
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setTitle("Предметы");
         toolbar.setNavigationIcon(R.drawable.toolbar_back_btn);
 
         goBackToMainActivity();
+
+        FloatingActionButton fab = findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // тут событие при нажатии на кнопку
+            }
+        });
 
         // Находим RecyclerView
         recyclerView = findViewById(R.id.recyclerView);
@@ -35,8 +48,8 @@ public class AddItemsActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         // значит, что список фиксированный
         recyclerView.setHasFixedSize(true);
-        // 5 - кол-во элементов в списке
-        itemsAdapter = new ItemsAdapter(5);
+        // 50 - кол-во элементов в списке
+        itemsAdapter = new ItemsAdapter(50);
         //назначаем RecyclerView созданный Adapter
         recyclerView.setAdapter(itemsAdapter);
     }
@@ -54,4 +67,5 @@ public class AddItemsActivity extends AppCompatActivity {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
+
 }
