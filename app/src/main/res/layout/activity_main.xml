@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    android:padding="30dp"
+    android:padding="20dp"
     tools:context=".MainActivity">
 
 
@@ -25,7 +25,6 @@
                 android:id="@+id/main_btn_add_items"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginEnd="15dp"
                 android:layout_weight="1"
                 android:background="@drawable/main_activity_btn"
                 android:freezesText="false"
@@ -35,12 +34,24 @@
                 android:textStyle="bold" />
 
             <com.example.timetable.ResizableButton
+                android:id="@+id/main_btn_add_teacher"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/main_activity_btn"
+                android:freezesText="false"
+                android:text=""
+                android:textColor="#ffffff"
+                android:textSize="120sp"
+                android:textStyle="bold"/>
+
+            <com.example.timetable.ResizableButton
                 android:id="@+id/main_btn_make_schedule"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginStart="15dp"
                 android:layout_weight="1"
                 android:background="@drawable/main_activity_btn"
+                android:freezesText="false"
                 android:text=""
                 android:textColor="#ffffff"
                 android:textSize="120sp"
@@ -50,29 +61,36 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/main_textView_add_items"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="15dp"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="Добавить предметы"
-                android:textSize="20sp" />
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/main_textView_add_teacher"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Добавить преподавателей"
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/main_textView_make_schedule"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="Составить расписание"
-                android:textSize="20sp" />
+                android:textSize="14sp" />
+
         </LinearLayout>
     </LinearLayout>
 
