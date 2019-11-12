@@ -1,19 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    android:orientation="horizontal"
-    android:padding="30dp"
+    android:padding="20dp"
     tools:context=".MainActivity">
 
 
     <LinearLayout
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:orientation="vertical">
 
         <LinearLayout
@@ -24,12 +22,11 @@
             tools:ignore="NestedWeights">
 
             <com.example.timetable.ResizableButton
-                android:id="@+id/main_btn1"
+                android:id="@+id/main_btn_add_items"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginEnd="15dp"
                 android:layout_weight="1"
-                android:background="@drawable/rounded_corner"
+                android:background="@drawable/main_activity_btn"
                 android:freezesText="false"
                 android:text=""
                 android:textColor="#ffffff"
@@ -37,12 +34,24 @@
                 android:textStyle="bold" />
 
             <com.example.timetable.ResizableButton
-                android:id="@+id/button2"
+                android:id="@+id/main_btn_add_teacher"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginStart="15dp"
                 android:layout_weight="1"
-                android:background="@drawable/rounded_corner"
+                android:background="@drawable/add_teacher_btn"
+                android:freezesText="false"
+                android:text=""
+                android:textColor="#ffffff"
+                android:textSize="120sp"
+                android:textStyle="bold"/>
+
+            <com.example.timetable.ResizableButton
+                android:id="@+id/main_btn_make_schedule"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/make_schedule_btn"
+                android:freezesText="false"
                 android:text=""
                 android:textColor="#ffffff"
                 android:textSize="120sp"
@@ -52,30 +61,37 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/main_textView_add_items"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="15dp"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="Добавить предметы"
-                android:textSize="20sp" />
+                android:textSize="14sp" />
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/main_textView_add_teacher"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Добавить преподавателей"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/main_textView_make_schedule"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="Составить расписание"
-                android:textSize="20sp" />
+                android:textSize="14sp" />
+
         </LinearLayout>
     </LinearLayout>
 
-</LinearLayout>
+</RelativeLayout>
