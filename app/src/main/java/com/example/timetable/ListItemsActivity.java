@@ -30,7 +30,8 @@ public class ListItemsActivity extends AppCompatActivity {
         toolbar.setTitle("Предметы");
         toolbar.setNavigationIcon(R.drawable.toolbar_back_btn);
 
-        goBackToMainActivity();
+//        goBackToMainActivity();
+        ButtonToReturnToMainActivity toolbarBtn = new ButtonToReturnToMainActivity(toolbar, this);
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -54,18 +55,18 @@ public class ListItemsActivity extends AppCompatActivity {
         recyclerView.setAdapter(itemsAdapter);
     }
 
-    public void goBackToMainActivity(){
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                launchMainActivity();
-            }
-        });
-    }
-
-    public void launchMainActivity(){
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-    }
+//    public void goBackToMainActivity(){
+//        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                launchMainActivity();
+//            }
+//        });
+//    }
+//
+//    public void launchMainActivity(){
+//        Intent intent = new Intent(this, MainActivity.class);
+//        startActivity(intent);
+//    }
 
 }
