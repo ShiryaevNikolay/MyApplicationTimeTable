@@ -12,8 +12,6 @@ import android.view.View;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
-
 public class ListItemsActivity extends AppCompatActivity {
 
     Toolbar toolbar;
@@ -30,8 +28,7 @@ public class ListItemsActivity extends AppCompatActivity {
         toolbar.setTitle("Предметы");
         toolbar.setNavigationIcon(R.drawable.toolbar_back_btn);
 
-//        goBackToMainActivity();
-        ButtonToReturnToMainActivity toolbarBtn = new ButtonToReturnToMainActivity(toolbar, this);
+        new ButtonToReturnToMainActivity(toolbar, this);
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -54,19 +51,5 @@ public class ListItemsActivity extends AppCompatActivity {
         //назначаем RecyclerView созданный Adapter
         recyclerView.setAdapter(itemsAdapter);
     }
-
-//    public void goBackToMainActivity(){
-//        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                launchMainActivity();
-//            }
-//        });
-//    }
-//
-//    public void launchMainActivity(){
-//        Intent intent = new Intent(this, MainActivity.class);
-//        startActivity(intent);
-//    }
 
 }
