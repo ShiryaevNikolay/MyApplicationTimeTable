@@ -10,9 +10,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".ListTeacherActivity"
+            android:label="@string/title_activity_list_teacher"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
             android:name=".ListItemsActivity"
             android:label="Предметы"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

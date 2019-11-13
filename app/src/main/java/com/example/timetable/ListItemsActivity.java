@@ -16,9 +16,6 @@ public class ListItemsActivity extends AppCompatActivity {
 
     Toolbar toolbar;
 
-    private RecyclerView recyclerView;
-    private ItemsAdapter itemsAdapter;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,7 +36,7 @@ public class ListItemsActivity extends AppCompatActivity {
         });
 
         // Находим RecyclerView
-        recyclerView = findViewById(R.id.recyclerView);
+        RecyclerView recyclerView = findViewById(R.id.recyclerView);
         // то, как будет выглядеть RecyclerView (то есть список)
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         // передаём layoutManager в RecyclerView
@@ -47,7 +44,7 @@ public class ListItemsActivity extends AppCompatActivity {
         // значит, что список фиксированный
         recyclerView.setHasFixedSize(true);
         // 50 - кол-во элементов в списке
-        itemsAdapter = new ItemsAdapter(50);
+        ItemsAdapter itemsAdapter = new ItemsAdapter(50);
         //назначаем RecyclerView созданный Adapter
         recyclerView.setAdapter(itemsAdapter);
     }
