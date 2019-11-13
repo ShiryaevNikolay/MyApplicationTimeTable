@@ -11,7 +11,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".ListTeacherActivity"
-            android:label="@string/title_activity_list_teacher"
+            android:label="Преподаватели"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".ListItemsActivity"

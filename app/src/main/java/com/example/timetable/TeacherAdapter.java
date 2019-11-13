@@ -8,13 +8,13 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class ItemsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class TeacherAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static int viewHolderCount;
-    private int numberItems;
+    private int numberTeacher;
 
-    public ItemsAdapter(int numberOfItems){
-        numberItems = numberOfItems;
+    public TeacherAdapter(int numberOfItems){
+        numberTeacher = numberOfItems;
         viewHolderCount = 0;
     }
 
@@ -23,13 +23,13 @@ public class ItemsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Context context = parent.getContext();
         // находим recyclerview_item.xml
-        int layoutIdForListItem = R.layout.recyclerview_item;
+        int layoutIdForListItem = R.layout.recyclerview_teacher;
         // нужен для создания нового xml файла на основе recyclerview_item.xml
         LayoutInflater inflater = LayoutInflater.from(context);
         // создаём новое представление (элемент) из layoutIdForItem, parent - <RecyclerView> в activity_list_items.xml, false - нужно ли помещать созданный объект layoutIdForItem внутрь parent(<RecyclerView>)
         View view = inflater.inflate(layoutIdForListItem, parent, false);
         // обернём созданный элемент списка в ViewHolder
-        ItemsViewHolder viewHolder = new ItemsViewHolder(view);
+        TeacherViewHolder viewHolder = new TeacherViewHolder(view);
         //...
         return viewHolder;
     }
@@ -41,12 +41,12 @@ public class ItemsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     @Override
     public int getItemCount() {
-        return numberItems;
+        return numberTeacher;
     }
 
-    static class ItemsViewHolder extends RecyclerView.ViewHolder {
+    static class TeacherViewHolder extends RecyclerView.ViewHolder {
 
-        public ItemsViewHolder(@NonNull View itemView) {
+        public TeacherViewHolder(@NonNull View itemView) {
             super(itemView);
         }
 

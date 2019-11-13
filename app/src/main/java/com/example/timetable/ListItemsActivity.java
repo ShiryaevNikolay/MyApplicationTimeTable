@@ -20,9 +20,8 @@ public class ListItemsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_items);
-        toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar_item);
         setSupportActionBar(toolbar);
-        toolbar.setTitle("Предметы");
         toolbar.setNavigationIcon(R.drawable.toolbar_back_btn);
 
         new ButtonToReturnToMainActivity(toolbar, this);
