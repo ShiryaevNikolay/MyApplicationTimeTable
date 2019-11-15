@@ -14,6 +14,7 @@ public class ButtonToReturnToMainActivity {
             @Override
             public void onClick(View v) {
                 launchMainActivity(activity);
+                activity.finish();
             }
         });
     }

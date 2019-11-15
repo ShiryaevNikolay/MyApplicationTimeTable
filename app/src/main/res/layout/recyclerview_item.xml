@@ -23,19 +23,6 @@
                 android:text="A name of an item"
                 android:textSize="16sp"
                 android:textStyle="bold"/>
-            <TextView
-                android:id="@+id/rv_card_teacher"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Преподаватель:"
-                android:layout_below="@+id/rv_card_item"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Name"
-                android:layout_below="@+id/rv_card_item"
-                android:layout_toEndOf="@+id/rv_card_teacher"
-                android:layout_marginStart="5dp"/>
         </RelativeLayout>
 
     </androidx.cardview.widget.CardView>
