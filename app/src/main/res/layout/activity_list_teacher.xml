@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ListItemsActivity">
+    tools:context=".ListTeacherActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -12,7 +12,7 @@
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar_item"
+            android:id="@+id/toolbar_teacher"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
@@ -20,7 +20,7 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <include layout="@layout/content_list_items" />
+    <include layout="@layout/content_list_teacher" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
@@ -30,6 +30,6 @@
         android:layout_margin="@dimen/fab_margin"
         app:srcCompat="@drawable/ic_add_black_24dp"
         android:backgroundTint="@color/colorPrimary"
-        app:borderWidth="0dp"/>
+        app:borderWidth="0dp" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

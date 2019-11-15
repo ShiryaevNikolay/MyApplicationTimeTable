@@ -13,13 +13,8 @@ public class ButtonToReturnToMainActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                launchMainActivity(activity);
+                activity.finish();
             }
         });
-    }
-
-    public void launchMainActivity(Activity activity){
-        Intent intent = new Intent(activity, MainActivity.class);
-        activity.startActivity(intent);
     }
 }
