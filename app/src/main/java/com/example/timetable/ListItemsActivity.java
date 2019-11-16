@@ -45,7 +45,7 @@ public class ListItemsActivity extends AppCompatActivity {
         // значит, что список фиксированный
         recyclerView.setHasFixedSize(true);
         // 50 - кол-во элементов в списке
-        ItemsAdapter itemsAdapter = new ItemsAdapter(50);
+        ItemsAdapter itemsAdapter = new ItemsAdapter(0);
         //назначаем RecyclerView созданный Adapter
         recyclerView.setAdapter(itemsAdapter);
     }
