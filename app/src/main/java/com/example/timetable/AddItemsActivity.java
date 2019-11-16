@@ -13,7 +13,7 @@ import android.widget.EditText;
 
 public class AddItemsActivity extends AppCompatActivity {
 
-    String text;
+    String text = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,10 +76,8 @@ public class AddItemsActivity extends AppCompatActivity {
         okBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!text.equals("")){
+                if(text.length() != 0){
                     sendMessage(text);
-                } else {
-                    sendMessage("ВОТ ТУТ ЭТА ХРЕНЬ!");
                 }
             }
         });
