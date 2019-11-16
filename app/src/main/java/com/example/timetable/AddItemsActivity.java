@@ -13,6 +13,8 @@ import android.widget.EditText;
 
 public class AddItemsActivity extends AppCompatActivity {
 
+    String text;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +59,7 @@ public class AddItemsActivity extends AppCompatActivity {
                 } else { // иначе зеленая (активная)
                     okBtn.setBackground(getDrawable(R.drawable.bg_green_corner_view));
                 }
+                text = editText.getText().toString();
             }
         });
 
@@ -73,8 +76,10 @@ public class AddItemsActivity extends AppCompatActivity {
         okBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!editText.getText().toString().equals("")){
-                    sendMessage(editText.getText().toString());
+                if(!text.equals("")){
+                    sendMessage(text);
+                } else {
+                    sendMessage("ВОТ ТУТ ЭТА ХРЕНЬ!");
                 }
             }
         });

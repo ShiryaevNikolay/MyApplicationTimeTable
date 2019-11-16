@@ -9,10 +9,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.view.View;
-import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ListItemsActivity extends AppCompatActivity {
 
@@ -20,7 +22,11 @@ public class ListItemsActivity extends AppCompatActivity {
     static final String ACCESS_MESSAGE="ACCESS_MESSAGE";
 
     Toolbar toolbar;
-    TextView textView = null;
+    String nameItem;
+    int numberItems = 0;
+    RecyclerView recyclerView;
+
+    public List<RecyclerItem> listItems;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,25 +38,28 @@ public class ListItemsActivity extends AppCompatActivity {
 
         new ButtonToReturnToMainActivity(toolbar, this);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(ListItemsActivity.this, AddItemsActivity.class);
-                startActivity(intent);
-            }
-        });
+        listItems = new ArrayList<>();
 
         // Находим RecyclerView
-        RecyclerView recyclerView = findViewById(R.id.recyclerView);
+        recyclerView = findViewById(R.id.recyclerView);
         // то, как будет выглядеть RecyclerView (то есть список)
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         // передаём layoutManager в RecyclerView
         recyclerView.setLayoutManager(layoutManager);
         // значит, что список фиксированный
         recyclerView.setHasFixedSize(true);
-        // 50 - кол-во элементов в списке
-        ItemsAdapter itemsAdapter = new ItemsAdapter(0);
+
+        FloatingActionButton fab = findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ListItemsActivity.this, AddItemsActivity.class);
+                startActivityForResult(intent, 1);
+            }
+        });
+
+        // numberItems - кол-во элементов в списке, nameItem - название предмета
+        ItemsAdapter itemsAdapter = new ItemsAdapter(listItems);
         //назначаем RecyclerView созданный Adapter
         recyclerView.setAdapter(itemsAdapter);
     }
@@ -58,15 +67,21 @@ public class ListItemsActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode==REQUEST_ACCESS_TYPE){
             if(resultCode==RESULT_OK){
-                String accessMessage = data.getStringExtra(ACCESS_MESSAGE);
-                textView.setText(accessMessage);
+                nameItem = data.getStringExtra(ACCESS_MESSAGE);
+                numberItems++;
+                listItems.add(new RecyclerItem(nameItem));
             }
             else{
-                textView.setText("Ошибка доступа");
+                nameItem = "Ошибка доступа";
             }
         }
         else{
             super.onActivityResult(requestCode, resultCode, data);
-        };
+        }
+
+        // numberItems - кол-во элементов в списке, nameItem - название предмета
+        ItemsAdapter itemsAdapter = new ItemsAdapter(listItems);
+        //назначаем RecyclerView созданный Adapter
+        recyclerView.setAdapter(itemsAdapter);
     }
 }
