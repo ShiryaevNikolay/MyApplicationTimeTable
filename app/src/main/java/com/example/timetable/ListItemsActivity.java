@@ -9,13 +9,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class ListItemsActivity extends AppCompatActivity {
 
+    private static  final int REQUEST_ACCESS_TYPE=1;
+    static final String ACCESS_MESSAGE="ACCESS_MESSAGE";
+
     Toolbar toolbar;
+    TextView textView = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,4 +55,18 @@ public class ListItemsActivity extends AppCompatActivity {
         recyclerView.setAdapter(itemsAdapter);
     }
 
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode==REQUEST_ACCESS_TYPE){
+            if(resultCode==RESULT_OK){
+                String accessMessage = data.getStringExtra(ACCESS_MESSAGE);
+                textView.setText(accessMessage);
+            }
+            else{
+                textView.setText("Ошибка доступа");
+            }
+        }
+        else{
+            super.onActivityResult(requestCode, resultCode, data);
+        };
+    }
 }

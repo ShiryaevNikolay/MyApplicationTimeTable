@@ -3,6 +3,7 @@ package com.example.timetable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -23,16 +24,8 @@ public class AddItemsActivity extends AppCompatActivity {
 
         new ButtonToReturnToMainActivity(toolbar, this);
 
-        Button cancelBtn = findViewById(R.id.add_item_cancel_btn);
+        final Button cancelBtn = findViewById(R.id.add_item_cancel_btn);
         final Button okBtn = findViewById(R.id.add_item_ok_btn);
-
-        // при нажатии на "Отмена" закрывается текущее окно activity
-        cancelBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
 
         // находим поле с вводом текста "предметы"
         final EditText editText = findViewById(R.id.editText_item);
@@ -66,5 +59,32 @@ public class AddItemsActivity extends AppCompatActivity {
                 }
             }
         });
+
+        // при нажатии на "Отмена" закрывается текущее окно activity
+        cancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setResult(RESULT_CANCELED);
+                finish();
+            }
+        });
+
+        // при нажатии на "Ок", отправляется текст в ListItemActivity и закрывается текущее окно activity
+        okBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!editText.getText().toString().equals("")){
+                    sendMessage(editText.getText().toString());
+                }
+            }
+        });
+    }
+
+    // отправка результата EditText в ListItemActivity
+    private void sendMessage(String message){
+        Intent data = new Intent();
+        data.putExtra(ListItemsActivity.ACCESS_MESSAGE, message);
+        setResult(RESULT_OK, data);
+        finish();
     }
 }
