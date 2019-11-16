@@ -35,7 +35,7 @@
             android:layout_height="wrap_content">
 
             <EditText
-                android:id="@+id/editText"
+                android:id="@+id/editText_item"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -68,7 +68,7 @@
             android:layout_margin="15dp"
             android:layout_weight="1"
             android:text="Ок"
-            android:background="@drawable/bg_green_corner_view"
+            android:background="@drawable/btn_no_activated"
             android:textColor="#ffffff"/>
     </LinearLayout>
 
