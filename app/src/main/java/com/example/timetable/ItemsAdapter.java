@@ -19,7 +19,8 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemsViewHol
         this.listItems = listItems;
     }
 
-    public ItemsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    @NonNull
+    public ItemsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext();
         // находим recyclerview_item.xml
         int layoutIdForListItem = R.layout.recyclerview_item;

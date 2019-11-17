@@ -20,11 +20,10 @@ public class TeachersAdapter extends RecyclerView.Adapter<TeachersAdapter.Teache
     }
 
     @NonNull
-    @Override
     public TeachersViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Context context = parent.getContext();
         // находим recyclerview_teacher.xml
-        int layoutIdForListTeacher = R.id.recyclerView_teacher;
+        int layoutIdForListTeacher = R.layout.recyclerview_teacher;
         // нужен для создания нового xml файла на основе recyclerview_item.xml
         LayoutInflater inflater = LayoutInflater.from(context);
         // создаём новое представление (элемент) из layoutIdForItem, parent - <RecyclerView> в activity_list_items.xml, false - нужно ли помещать созданный объект layoutIdForItem внутрь parent(<RecyclerView>)
@@ -32,7 +31,6 @@ public class TeachersAdapter extends RecyclerView.Adapter<TeachersAdapter.Teache
         return new TeachersViewHolder(view);
     }
 
-    @Override
     public void onBindViewHolder(@NonNull TeachersViewHolder holder, int position) {
         final RecyclerItem itemList = listTeachers.get(position);
         holder.nameRvTeacher.setText(itemList.getText());

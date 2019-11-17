@@ -52,14 +52,8 @@ public class AddTeachersActivity extends AppCompatActivity {
         okBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                if (!etSurname.getText().toString().equals("") && !etName.getText().toString().equals("") && !etPatronymic.getText().toString().equals("")){
-//                    text = etSurname.getText().toString() + " " + etName.getText().toString() + " " + etPatronymic.getText().toString();
-//                } else {
-//                    text = "";
-//                }
-//                if (text.length() != 0){
-//                    sendMessage("TextTextTextTextText");
-//                }
+                text = etSurname.getText() + " " + etName.getText() + " " + etPatronymic.getText();
+                sendMessage(text);
             }
         });
     }
