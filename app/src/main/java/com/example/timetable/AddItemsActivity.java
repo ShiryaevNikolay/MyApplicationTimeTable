@@ -13,7 +13,7 @@ import android.widget.EditText;
 
 public class AddItemsActivity extends AppCompatActivity {
 
-    String text = "";
+    private String text = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

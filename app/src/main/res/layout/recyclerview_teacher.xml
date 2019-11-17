@@ -18,7 +18,7 @@
             android:background="@drawable/border_corner_view">
 
             <TextView
-                android:id="@+id/rv_card_item"
+                android:id="@+id/name_rv_teacher"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="A name teacher"

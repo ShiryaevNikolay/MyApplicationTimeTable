@@ -3,6 +3,7 @@ package com.example.timetable;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.example.timetable.util.RequestCode;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,7 +19,6 @@ import java.util.List;
 
 public class ListItemsActivity extends AppCompatActivity {
 
-    private static  final int REQUEST_ACCESS_TYPE=1;
     static final String ACCESS_MESSAGE="ACCESS_MESSAGE";
 
     Toolbar toolbar;
@@ -41,7 +41,7 @@ public class ListItemsActivity extends AppCompatActivity {
         listItems = new ArrayList<>();
 
         // Находим RecyclerView
-        recyclerView = findViewById(R.id.recyclerView);
+        recyclerView = findViewById(R.id.recyclerView_item);
         // то, как будет выглядеть RecyclerView (то есть список)
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         // передаём layoutManager в RecyclerView
@@ -54,7 +54,7 @@ public class ListItemsActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ListItemsActivity.this, AddItemsActivity.class);
-                startActivityForResult(intent, 1);
+                startActivityForResult(intent, RequestCode.REQUEST_CODE_ITEM);
             }
         });
 
@@ -65,7 +65,7 @@ public class ListItemsActivity extends AppCompatActivity {
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode==REQUEST_ACCESS_TYPE){
+        if(requestCode == RequestCode.REQUEST_CODE_ITEM){
             if(resultCode==RESULT_OK){
                 nameItem = data.getStringExtra(ACCESS_MESSAGE);
                 numberItems++;
@@ -79,7 +79,6 @@ public class ListItemsActivity extends AppCompatActivity {
             super.onActivityResult(requestCode, resultCode, data);
         }
 
-        // numberItems - кол-во элементов в списке, nameItem - название предмета
         ItemsAdapter itemsAdapter = new ItemsAdapter(listItems);
         //назначаем RecyclerView созданный Adapter
         recyclerView.setAdapter(itemsAdapter);
