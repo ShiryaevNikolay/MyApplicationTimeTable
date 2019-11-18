@@ -1,6 +1,9 @@
 package com.example.timetable;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 
@@ -27,6 +30,8 @@ public class ListTeacherActivity extends AppCompatActivity {
 
     public List<RecyclerItem> listTeacher;
 
+    TeacherDBHelper teacherDBHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,9 +40,22 @@ public class ListTeacherActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(R.drawable.toolbar_back_btn);
 
+        //для базы данных
+        teacherDBHelper = new TeacherDBHelper(this);
+        SQLiteDatabase database = teacherDBHelper.getWritableDatabase();
+        @SuppressLint("Recycle") Cursor cursor = database.query(TeacherDBHelper.TABLE_TEACHERS, null, null, null, null, null, null);
+
         new ButtonToReturnToMainActivity(toolbar, this);
 
         listTeacher = new ArrayList<>();
+
+        // добавляем в список данные (названия предметов) из базы данных
+        if (cursor.moveToFirst()){
+            do {
+                String nameTeacher = cursor.getString(cursor.getColumnIndex(TeacherDBHelper. KEY_NAME));
+                listTeacher.add(new RecyclerItem(nameTeacher));
+            }while (cursor.moveToNext());
+        }
 
         // Находим RecyclerView
         recyclerView = findViewById(R.id.recyclerView_teacher);
@@ -66,9 +84,6 @@ public class ListTeacherActivity extends AppCompatActivity {
         if (requestCode == RequestCode.REQUEST_CODE_TEAHER){
             if (resultCode == RESULT_OK){
                 nameTeacher = data.getStringExtra(ACCESS_MESSAGE);
-                System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
-                System.out.println(nameTeacher);
-                System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
                 numberTeacher++;
                 listTeacher.add(new RecyclerItem(nameTeacher));
             } else {

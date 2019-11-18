@@ -3,7 +3,10 @@ package com.example.timetable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -15,10 +18,23 @@ public class AddItemsActivity extends AppCompatActivity {
 
     private String text = "";
 
+    //==============================================================================================
+    ItemDBHelper itemDbHelper;
+    //==============================================================================================
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_items);
+
+        //==========================================================================================
+        itemDbHelper = new ItemDBHelper(this);
+
+        final SQLiteDatabase database = itemDbHelper.getWritableDatabase();
+
+        // для добавления новых строк в таблицу
+        final ContentValues contentValues = new ContentValues();
+        //==========================================================================================
 
         Toolbar toolbar = findViewById(R.id.toolbar_add_item);
         setSupportActionBar(toolbar);
@@ -77,6 +93,32 @@ public class AddItemsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(text.length() != 0){
+                    // ВЫВОД ДАННЫХ ИЗ БАЗЫ ДАННЫХ В ТЕРМИНАЛ
+                    //==============================================================================
+                    contentValues.put(ItemDBHelper.KEY_NAME, text);
+
+                    //вставляем данные в таблицу базы данных
+                    database.insert(ItemDBHelper.TABLE_ITEMS, null, contentValues);
+
+                    Cursor cursor = database.query(ItemDBHelper.TABLE_ITEMS, null, null, null, null, null, null);
+
+                    if (cursor.moveToFirst()){
+                        int idIndex = cursor.getColumnIndex(ItemDBHelper.KEY_ID);
+                        int nameIndex = cursor.getColumnIndex(ItemDBHelper. KEY_NAME);
+                        do {
+                            System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
+                            System.out.println("ID = " + cursor.getInt(idIndex) +
+                                    ", name = " + cursor.getString(nameIndex));
+                            System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
+                        }while (cursor.moveToNext());
+                    } else {
+                        System.out.println("0 rows");
+                    }
+
+                    cursor.close();
+                    itemDbHelper.close();
+                    //==============================================================================
+
                     sendMessage(text);
                 }
             }

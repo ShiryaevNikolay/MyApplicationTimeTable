@@ -1,6 +1,9 @@
 package com.example.timetable;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
 import com.example.timetable.util.RequestCode;
@@ -28,6 +31,8 @@ public class ListItemsActivity extends AppCompatActivity {
 
     public List<RecyclerItem> listItems;
 
+    ItemDBHelper itemDbHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,9 +41,25 @@ public class ListItemsActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(R.drawable.toolbar_back_btn);
 
+        //для базы данных
+        itemDbHelper = new ItemDBHelper(this);
+        SQLiteDatabase database = itemDbHelper.getWritableDatabase();
+        @SuppressLint("Recycle") Cursor cursor = database.query(ItemDBHelper.TABLE_ITEMS, null, null, null, null, null, null);
+
         new ButtonToReturnToMainActivity(toolbar, this);
 
         listItems = new ArrayList<>();
+
+//        // ОЧИСТКА БАЗЫ ДАННЫХ
+//        database.delete(ItemDBHelper.TABLE_ITEMS, null, null);
+
+        // добавляем в список данные (названия предметов) из базы данных
+        if (cursor.moveToFirst()){
+            do {
+                String nameItem = cursor.getString(cursor.getColumnIndex(ItemDBHelper. KEY_NAME));
+                listItems.add(new RecyclerItem(nameItem));
+            }while (cursor.moveToNext());
+        }
 
         // Находим RecyclerView
         recyclerView = findViewById(R.id.recyclerView_item);

@@ -3,7 +3,10 @@ package com.example.timetable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -15,10 +18,23 @@ public class AddTeachersActivity extends AppCompatActivity {
 
     private String text = "";
 
+    //==============================================================================================
+    TeacherDBHelper teacherDbHelper;
+    //==============================================================================================
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_teachers);
+
+        //==========================================================================================
+        teacherDbHelper = new TeacherDBHelper(this);
+
+        final SQLiteDatabase database = teacherDbHelper.getWritableDatabase();
+
+        // для добавления новых строк в таблицу
+        final ContentValues contentValues = new ContentValues();
+        //==========================================================================================
 
         Toolbar toolbar = findViewById(R.id.toolbar_add_teacher);
         setSupportActionBar(toolbar);
@@ -54,6 +70,31 @@ public class AddTeachersActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (!etSurname.getText().toString().equals("") || !etName.getText().toString().equals("") || !etPatronymic.getText().toString().equals("")){
                     text = etSurname.getText() + " " + etName.getText() + " " + etPatronymic.getText();
+
+                    // ВЫВОД ДАННЫХ ИЗ БАЗЫ ДАННЫХ В ТЕРМИНАЛ
+                    //==============================================================================
+                    contentValues.put(TeacherDBHelper.KEY_NAME, text);
+
+                    //вставляем данные в таблицу базы данных
+                    database.insert(TeacherDBHelper.TABLE_TEACHERS, null, contentValues);
+
+                    Cursor cursor = database.query(TeacherDBHelper.TABLE_TEACHERS, null, null, null, null, null, null);
+
+                    if (cursor.moveToFirst()){
+                        int idIndex = cursor.getColumnIndex(TeacherDBHelper.KEY_ID);
+                        int nameIndex = cursor.getColumnIndex(TeacherDBHelper. KEY_NAME);
+                        do {
+                            System.out.println("ID = " + cursor.getInt(idIndex) +
+                                    ", name = " + cursor.getString(nameIndex));
+                        }while (cursor.moveToNext());
+                    } else {
+                        System.out.println("0 rows");
+                    }
+
+                    cursor.close();
+                    teacherDbHelper.close();
+                    //==============================================================================
+
                     sendMessage(text);
                 } else {
                     text = "";
