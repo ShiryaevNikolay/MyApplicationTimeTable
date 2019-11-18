@@ -52,7 +52,7 @@ public class ListTeacherActivity extends AppCompatActivity {
         // добавляем в список данные (названия предметов) из базы данных
         if (cursor.moveToFirst()){
             do {
-                String nameTeacher = cursor.getString(cursor.getColumnIndex(ItemDBHelper. KEY_NAME));
+                String nameTeacher = cursor.getString(cursor.getColumnIndex(TeacherDBHelper. KEY_NAME));
                 listTeacher.add(new RecyclerItem(nameTeacher));
             }while (cursor.moveToNext());
         }
