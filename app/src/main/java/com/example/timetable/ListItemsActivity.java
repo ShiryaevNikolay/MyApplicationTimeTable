@@ -1,11 +1,11 @@
 package com.example.timetable;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
-import com.example.timetable.util.DBHelper;
 import com.example.timetable.util.RequestCode;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -31,8 +31,7 @@ public class ListItemsActivity extends AppCompatActivity {
 
     public List<RecyclerItem> listItems;
 
-    DBHelper dbHelper;
-
+    ItemDBHelper itemDbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,18 +42,21 @@ public class ListItemsActivity extends AppCompatActivity {
         toolbar.setNavigationIcon(R.drawable.toolbar_back_btn);
 
         //для базы данных
-        dbHelper = new DBHelper(this);
-        SQLiteDatabase database = dbHelper.getWritableDatabase();
-        Cursor cursor = database.query(DBHelper.TABLE_ITEMS, null, null, null, null, null, null);
+        itemDbHelper = new ItemDBHelper(this);
+        SQLiteDatabase database = itemDbHelper.getWritableDatabase();
+        @SuppressLint("Recycle") Cursor cursor = database.query(ItemDBHelper.TABLE_ITEMS, null, null, null, null, null, null);
 
         new ButtonToReturnToMainActivity(toolbar, this);
 
         listItems = new ArrayList<>();
 
+//        // ОЧИСТКА БАЗЫ ДАННЫХ
+//        database.delete(ItemDBHelper.TABLE_ITEMS, null, null);
+
         // добавляем в список данные (названия предметов) из базы данных
         if (cursor.moveToFirst()){
-            String nameItem = cursor.getString(cursor.getColumnIndex(DBHelper. KEY_NAME));
             do {
+                String nameItem = cursor.getString(cursor.getColumnIndex(ItemDBHelper. KEY_NAME));
                 listItems.add(new RecyclerItem(nameItem));
             }while (cursor.moveToNext());
         }
