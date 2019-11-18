@@ -3,6 +3,7 @@ package com.example.timetable;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.example.timetable.util.DBHelper;
 import com.example.timetable.util.RequestCode;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -27,6 +28,7 @@ public class ListItemsActivity extends AppCompatActivity {
     RecyclerView recyclerView;
 
     public List<RecyclerItem> listItems;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
