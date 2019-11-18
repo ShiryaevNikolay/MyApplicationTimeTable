@@ -95,9 +95,11 @@ public class AddItemsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(text.length() != 0){
+                    // ВЫВОД ДАННЫХ ИЗ БАЗЫ ДАННЫХ В ТЕРМИНАЛ
                     //==============================================================================
                     contentValues.put(DBHelper.KEY_NAME, text);
 
+                    //вставляем данные в таблицу базы данных
                     database.insert(DBHelper.TABLE_ITEMS, null, contentValues);
 
                     Cursor cursor = database.query(DBHelper.TABLE_ITEMS, null, null, null, null, null, null);

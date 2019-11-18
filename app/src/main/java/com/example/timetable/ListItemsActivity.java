@@ -1,6 +1,8 @@
 package com.example.timetable;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
 import com.example.timetable.util.DBHelper;
@@ -29,6 +31,8 @@ public class ListItemsActivity extends AppCompatActivity {
 
     public List<RecyclerItem> listItems;
 
+    DBHelper dbHelper;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,9 +42,22 @@ public class ListItemsActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(R.drawable.toolbar_back_btn);
 
+        //для базы данных
+        dbHelper = new DBHelper(this);
+        SQLiteDatabase database = dbHelper.getWritableDatabase();
+        Cursor cursor = database.query(DBHelper.TABLE_ITEMS, null, null, null, null, null, null);
+
         new ButtonToReturnToMainActivity(toolbar, this);
 
         listItems = new ArrayList<>();
+
+        // добавляем в список данные (названия предметов) из базы данных
+        if (cursor.moveToFirst()){
+            String nameItem = cursor.getString(cursor.getColumnIndex(DBHelper. KEY_NAME));
+            do {
+                listItems.add(new RecyclerItem(nameItem));
+            }while (cursor.moveToNext());
+        }
 
         // Находим RecyclerView
         recyclerView = findViewById(R.id.recyclerView_item);
