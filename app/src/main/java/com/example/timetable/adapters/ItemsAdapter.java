@@ -1,4 +1,4 @@
-package com.example.timetable;
+package com.example.timetable.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,13 +9,18 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.timetable.R;
+import com.example.timetable.RecyclerItem;
+import com.example.timetable.modules.ItemTouchHelperAdapter;
+
+import java.util.Collections;
 import java.util.List;
 
-public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemsViewHolder> {
+public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemsViewHolder> implements ItemTouchHelperAdapter {
 
     private List<RecyclerItem> listItems;
 
-    ItemsAdapter(List<RecyclerItem> listItems){
+    public ItemsAdapter(List<RecyclerItem> listItems){
         this.listItems = listItems;
     }
 
@@ -40,6 +45,26 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemsViewHol
     @Override
     public int getItemCount() {
         return listItems.size();
+    }
+
+    @Override
+    public void onItemMove(int fromPosition, int toPosition) {
+        if (fromPosition < toPosition) {
+            for (int i = fromPosition; i < toPosition; i++) {
+                Collections.swap(listItems, i, i + 1);
+            }
+        } else {
+            for (int i = fromPosition; i > toPosition; i--) {
+                Collections.swap(listItems, i, i - 1);
+            }
+        }
+        notifyItemMoved(fromPosition, toPosition);
+    }
+
+    @Override
+    public void onItemDismiss(int position) {
+        listItems.remove(position);
+        notifyItemRemoved(position);
     }
 
     static class ItemsViewHolder extends RecyclerView.ViewHolder {

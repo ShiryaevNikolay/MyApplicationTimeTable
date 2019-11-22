@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 
+import com.example.timetable.adapters.TeachersAdapter;
+import com.example.timetable.database.TeacherDBHelper;
 import com.example.timetable.util.RequestCode;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -71,7 +73,7 @@ public class ListTeacherActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ListTeacherActivity.this, AddTeachersActivity.class);
-                startActivityForResult(intent, RequestCode.REQUEST_CODE_TEAHER);
+                startActivityForResult(intent, RequestCode.REQUEST_CODE_TEACHER);
             }
         });
 
@@ -81,7 +83,7 @@ public class ListTeacherActivity extends AppCompatActivity {
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == RequestCode.REQUEST_CODE_TEAHER){
+        if (requestCode == RequestCode.REQUEST_CODE_TEACHER){
             if (resultCode == RESULT_OK){
                 nameTeacher = data.getStringExtra(ACCESS_MESSAGE);
                 numberTeacher++;

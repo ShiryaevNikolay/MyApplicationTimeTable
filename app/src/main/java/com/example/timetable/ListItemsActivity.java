@@ -6,6 +6,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
+import com.example.timetable.adapters.ItemsAdapter;
+import com.example.timetable.database.ItemDBHelper;
+import com.example.timetable.modules.SimpleItemTouchHelperCallback;
 import com.example.timetable.util.RequestCode;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -14,6 +17,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.view.View;
 
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -83,6 +87,10 @@ public class ListItemsActivity extends AppCompatActivity {
         ItemsAdapter itemsAdapter = new ItemsAdapter(listItems);
         //назначаем RecyclerView созданный Adapter
         recyclerView.setAdapter(itemsAdapter);
+
+        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(itemsAdapter);
+        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
+        touchHelper.attachToRecyclerView(recyclerView);
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

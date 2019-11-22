@@ -14,6 +14,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.example.timetable.database.ItemDBHelper;
+
 public class AddItemsActivity extends AppCompatActivity {
 
     private String text = "";
