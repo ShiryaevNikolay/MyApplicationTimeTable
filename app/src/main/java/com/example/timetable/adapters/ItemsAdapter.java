@@ -62,7 +62,6 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemsViewHol
     }
 
     static class ItemsViewHolder extends RecyclerView.ViewHolder {
-
         TextView nameRvItem;
 
         ItemsViewHolder(@NonNull View itemView) {
