@@ -48,20 +48,6 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemsViewHol
     }
 
     @Override
-    public void onItemMove(int fromPosition, int toPosition) {
-        if (fromPosition < toPosition) {
-            for (int i = fromPosition; i < toPosition; i++) {
-                Collections.swap(listItems, i, i + 1);
-            }
-        } else {
-            for (int i = fromPosition; i > toPosition; i--) {
-                Collections.swap(listItems, i, i - 1);
-            }
-        }
-        notifyItemMoved(fromPosition, toPosition);
-    }
-
-    @Override
     public void onItemDismiss(int position) {
         listItems.remove(position);
         notifyItemRemoved(position);
