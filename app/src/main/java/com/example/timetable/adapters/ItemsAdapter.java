@@ -13,7 +13,6 @@ import com.example.timetable.R;
 import com.example.timetable.RecyclerItem;
 import com.example.timetable.modules.ItemTouchHelperAdapter;
 
-import java.util.Collections;
 import java.util.List;
 
 public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemsViewHolder> implements ItemTouchHelperAdapter {
