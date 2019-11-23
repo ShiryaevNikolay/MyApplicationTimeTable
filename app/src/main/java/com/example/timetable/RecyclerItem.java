@@ -4,7 +4,7 @@ public class RecyclerItem {
 
     private String text;
 
-    public RecyclerItem(String text) {
+    RecyclerItem(String text) {
         this.text = text;
     }
 
