@@ -1,6 +1,7 @@
 package com.example.timetable.adapters;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,15 +12,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.timetable.R;
 import com.example.timetable.RecyclerItem;
+import com.example.timetable.database.TeacherDBHelper;
+import com.example.timetable.modules.ItemTouchHelperAdapter;
 
 import java.util.List;
 
-public class TeachersAdapter extends RecyclerView.Adapter<TeachersAdapter.TeachersViewHolder> {
+public class TeachersAdapter extends RecyclerView.Adapter<TeachersAdapter.TeachersViewHolder> implements ItemTouchHelperAdapter {
 
     private List<RecyclerItem> listTeachers;
+    private SQLiteDatabase database;
 
-    public TeachersAdapter(List<RecyclerItem> listTeachers){
+    public TeachersAdapter(List<RecyclerItem> listTeachers, SQLiteDatabase database){
         this.listTeachers = listTeachers;
+        this.database = database;
     }
 
     @NonNull
@@ -42,6 +47,17 @@ public class TeachersAdapter extends RecyclerView.Adapter<TeachersAdapter.Teache
     @Override
     public int getItemCount() {
         return listTeachers.size();
+    }
+
+    @Override
+    public void onItemDismiss(int position) {
+        // удаление элемента из списка по позиции
+        RecyclerItem teacher = listTeachers.get(position);
+        listTeachers.remove(position);
+        notifyItemRemoved(position);
+
+        // удаление элемента из базы данных
+        database.delete(TeacherDBHelper.TABLE_TEACHERS, TeacherDBHelper.KEY_NAME + "= ?", new String[] {teacher.getText()});
     }
 
     static class TeachersViewHolder extends RecyclerView.ViewHolder {

@@ -8,8 +8,8 @@ import androidx.annotation.Nullable;
 
 public class ItemDBHelper extends SQLiteOpenHelper {
 
-    public static final int DATABASE_VERSION = 1;
-    public static final String DATABASE_NAME = "itemDB";
+    private static final int DATABASE_VERSION = 1;
+    private static final String DATABASE_NAME = "itemDB";
     public static final String TABLE_ITEMS = "items";
 
     public static final String KEY_ID = "_id";

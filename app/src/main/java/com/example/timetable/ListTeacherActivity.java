@@ -9,11 +9,13 @@ import android.view.View;
 
 import com.example.timetable.adapters.TeachersAdapter;
 import com.example.timetable.database.TeacherDBHelper;
+import com.example.timetable.modules.SimpleItemTouchHelperCallback;
 import com.example.timetable.util.RequestCode;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -33,6 +35,7 @@ public class ListTeacherActivity extends AppCompatActivity {
     public List<RecyclerItem> listTeacher;
 
     TeacherDBHelper teacherDBHelper;
+    SQLiteDatabase database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +47,7 @@ public class ListTeacherActivity extends AppCompatActivity {
 
         //для базы данных
         teacherDBHelper = new TeacherDBHelper(this);
-        SQLiteDatabase database = teacherDBHelper.getWritableDatabase();
+        database = teacherDBHelper.getWritableDatabase();
         @SuppressLint("Recycle") Cursor cursor = database.query(TeacherDBHelper.TABLE_TEACHERS, null, null, null, null, null, null);
 
         new ButtonToReturnToMainActivity(toolbar, this);
@@ -77,9 +80,13 @@ public class ListTeacherActivity extends AppCompatActivity {
             }
         });
 
-        TeachersAdapter teachersAdapter = new TeachersAdapter(listTeacher);
+        TeachersAdapter teachersAdapter = new TeachersAdapter(listTeacher, database);
         //назначаем RecyclerView созданный Adapter
         recyclerView.setAdapter(teachersAdapter);
+
+        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(teachersAdapter);
+        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
+        touchHelper.attachToRecyclerView(recyclerView);
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -95,7 +102,7 @@ public class ListTeacherActivity extends AppCompatActivity {
             super.onActivityResult(requestCode, resultCode, data);
         }
 
-        TeachersAdapter teachersAdapter = new TeachersAdapter(listTeacher);
+        TeachersAdapter teachersAdapter = new TeachersAdapter(listTeacher, database);
         //назначаем RecyclerView созданный Adapter
         recyclerView.setAdapter(teachersAdapter);
     }
