@@ -6,6 +6,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
+import com.example.timetable.adapters.ItemsAdapter;
+import com.example.timetable.database.ItemDBHelper;
+import com.example.timetable.modules.SimpleItemTouchHelperCallback;
 import com.example.timetable.util.RequestCode;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -14,6 +17,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.view.View;
 
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -32,6 +36,7 @@ public class ListItemsActivity extends AppCompatActivity {
     public List<RecyclerItem> listItems;
 
     ItemDBHelper itemDbHelper;
+    SQLiteDatabase database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +48,7 @@ public class ListItemsActivity extends AppCompatActivity {
 
         //для базы данных
         itemDbHelper = new ItemDBHelper(this);
-        SQLiteDatabase database = itemDbHelper.getWritableDatabase();
+        database = itemDbHelper.getWritableDatabase();
         @SuppressLint("Recycle") Cursor cursor = database.query(ItemDBHelper.TABLE_ITEMS, null, null, null, null, null, null);
 
         new ButtonToReturnToMainActivity(toolbar, this);
@@ -80,9 +85,13 @@ public class ListItemsActivity extends AppCompatActivity {
         });
 
         // numberItems - кол-во элементов в списке, nameItem - название предмета
-        ItemsAdapter itemsAdapter = new ItemsAdapter(listItems);
+        ItemsAdapter itemsAdapter = new ItemsAdapter(listItems, database);
         //назначаем RecyclerView созданный Adapter
         recyclerView.setAdapter(itemsAdapter);
+
+        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(itemsAdapter);
+        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
+        touchHelper.attachToRecyclerView(recyclerView);
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -100,7 +109,7 @@ public class ListItemsActivity extends AppCompatActivity {
             super.onActivityResult(requestCode, resultCode, data);
         }
 
-        ItemsAdapter itemsAdapter = new ItemsAdapter(listItems);
+        ItemsAdapter itemsAdapter = new ItemsAdapter(listItems, database);
         //назначаем RecyclerView созданный Adapter
         recyclerView.setAdapter(itemsAdapter);
     }

@@ -1,6 +1,7 @@
-package com.example.timetable;
+package com.example.timetable.adapters;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,14 +10,21 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.timetable.R;
+import com.example.timetable.RecyclerItem;
+import com.example.timetable.database.ItemDBHelper;
+import com.example.timetable.modules.ItemTouchHelperAdapter;
+
 import java.util.List;
 
-public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemsViewHolder> {
+public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemsViewHolder> implements ItemTouchHelperAdapter {
 
     private List<RecyclerItem> listItems;
+    private SQLiteDatabase database;
 
-    ItemsAdapter(List<RecyclerItem> listItems){
+    public ItemsAdapter(List<RecyclerItem> listItems, SQLiteDatabase database){
         this.listItems = listItems;
+        this.database = database;
     }
 
     @NonNull
@@ -40,6 +48,17 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemsViewHol
     @Override
     public int getItemCount() {
         return listItems.size();
+    }
+
+    @Override
+    public void onItemDismiss(int position) {
+        // удаление элемента из списка по позиции
+        RecyclerItem item = listItems.get(position);
+        listItems.remove(position);
+        notifyItemRemoved(position);
+
+        // удаление элемента из базы данных
+        database.delete(ItemDBHelper.TABLE_ITEMS, ItemDBHelper.KEY_NAME + "= ?", new String[] {item.getText()});
     }
 
     static class ItemsViewHolder extends RecyclerView.ViewHolder {

@@ -1,4 +1,4 @@
-package com.example.timetable;
+package com.example.timetable.database;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -15,7 +15,7 @@ public class ItemDBHelper extends SQLiteOpenHelper {
     public static final String KEY_ID = "_id";
     public static final String KEY_NAME = "name";
 
-    ItemDBHelper(@Nullable Context context) {
+    public ItemDBHelper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 

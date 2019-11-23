@@ -1,4 +1,4 @@
-package com.example.timetable;
+package com.example.timetable.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,13 +9,16 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.timetable.R;
+import com.example.timetable.RecyclerItem;
+
 import java.util.List;
 
 public class TeachersAdapter extends RecyclerView.Adapter<TeachersAdapter.TeachersViewHolder> {
 
     private List<RecyclerItem> listTeachers;
 
-    TeachersAdapter(List<RecyclerItem> listTeachers){
+    public TeachersAdapter(List<RecyclerItem> listTeachers){
         this.listTeachers = listTeachers;
     }
 
