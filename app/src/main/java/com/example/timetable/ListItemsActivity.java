@@ -36,6 +36,7 @@ public class ListItemsActivity extends AppCompatActivity {
     public List<RecyclerItem> listItems;
 
     ItemDBHelper itemDbHelper;
+    SQLiteDatabase database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +48,7 @@ public class ListItemsActivity extends AppCompatActivity {
 
         //для базы данных
         itemDbHelper = new ItemDBHelper(this);
-        SQLiteDatabase database = itemDbHelper.getWritableDatabase();
+        database = itemDbHelper.getWritableDatabase();
         @SuppressLint("Recycle") Cursor cursor = database.query(ItemDBHelper.TABLE_ITEMS, null, null, null, null, null, null);
 
         new ButtonToReturnToMainActivity(toolbar, this);
@@ -84,7 +85,7 @@ public class ListItemsActivity extends AppCompatActivity {
         });
 
         // numberItems - кол-во элементов в списке, nameItem - название предмета
-        ItemsAdapter itemsAdapter = new ItemsAdapter(listItems);
+        ItemsAdapter itemsAdapter = new ItemsAdapter(listItems, database);
         //назначаем RecyclerView созданный Adapter
         recyclerView.setAdapter(itemsAdapter);
 
@@ -108,7 +109,7 @@ public class ListItemsActivity extends AppCompatActivity {
             super.onActivityResult(requestCode, resultCode, data);
         }
 
-        ItemsAdapter itemsAdapter = new ItemsAdapter(listItems);
+        ItemsAdapter itemsAdapter = new ItemsAdapter(listItems, database);
         //назначаем RecyclerView созданный Adapter
         recyclerView.setAdapter(itemsAdapter);
     }
