@@ -14,8 +14,6 @@ import com.example.timetable.R;
 import com.example.timetable.util.RequestCode;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.Objects;
-
 public class ScheduleFragment extends Fragment {
     private static final int LAYOUT = R.layout.fragment_schedule;
     private static int position;
@@ -34,6 +32,8 @@ public class ScheduleFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View view = inflater.inflate(LAYOUT, container, false);
+
+        // кнопка добавления элемента в список расписания
         FloatingActionButton fab = view.findViewById(R.id.fab_fragment_schedule);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
