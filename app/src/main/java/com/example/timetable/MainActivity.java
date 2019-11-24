@@ -11,6 +11,7 @@ public class MainActivity extends AppCompatActivity {
 
     Button addItemsBtn;
     Button addTeacherBtn;
+    Button makeScheduleBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +22,8 @@ public class MainActivity extends AppCompatActivity {
         addItems();
 //        Переход в activity "Добавить преподавателей"
         addTeacher();
+//        Переход в activity "составить расписание"
+        makeSchedule();
     }
 
     public void addItems(){
@@ -43,6 +46,16 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void makeSchedule(){
+        makeScheduleBtn = findViewById(R.id.main_btn_make_schedule);
+        makeScheduleBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                launchMakeScheduleActivity();
+            }
+        });
+    }
+
     public void launchAddItemsActivity(){
         Intent intent = new Intent(this, ListItemsActivity.class);
         startActivity(intent);
@@ -50,6 +63,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void launchAddTeacherActivity(){
         Intent intent = new Intent(this, ListTeacherActivity.class);
+        startActivity(intent);
+    }
+
+    private void launchMakeScheduleActivity(){
+        Intent intent = new Intent(this, ListScheduleActivity.class);
         startActivity(intent);
     }
 }
