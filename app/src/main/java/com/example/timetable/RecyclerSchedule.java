@@ -6,7 +6,7 @@ public class RecyclerSchedule {
     private String name;
     private String teacher;
 
-    RecyclerSchedule(String clock, String name, String teacher) {
+    public RecyclerSchedule(String clock, String name, String teacher) {
         this.clock = clock;
         this.name = name;
         this.teacher = teacher;

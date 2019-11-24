@@ -27,8 +27,6 @@
             app:tabSelectedTextColor="#ffffff"/>
     </com.google.android.material.appbar.AppBarLayout>
 
-    <include layout="@layout/content_list_schedule" />
-
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewPager_schedule"
         android:layout_width="match_parent"

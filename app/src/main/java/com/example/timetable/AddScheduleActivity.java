@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.timetable.database.ScheduleDBHelper;
+import com.example.timetable.fragments.ScheduleFragment;
 
 public class AddScheduleActivity extends AppCompatActivity {
 
@@ -158,9 +159,9 @@ public class AddScheduleActivity extends AppCompatActivity {
     // отправка результата EditText в ListItemActivity
     private void sendMessage(String clock, String name, String teacher){
         Intent data = new Intent();
-        data.putExtra(ListScheduleActivity.ACCESS_MESSAGE_CLOCK, clock);
-        data.putExtra(ListScheduleActivity.ACCESS_MESSAGE_NAME, name);
-        data.putExtra(ListScheduleActivity.ACCESS_MESSAGE_TEACHER, teacher);
+        data.putExtra(ScheduleFragment.ACCESS_MESSAGE_CLOCK, clock);
+        data.putExtra(ScheduleFragment.ACCESS_MESSAGE_NAME, name);
+        data.putExtra(ScheduleFragment.ACCESS_MESSAGE_TEACHER, teacher);
         setResult(RESULT_OK, data);
         finish();
     }
