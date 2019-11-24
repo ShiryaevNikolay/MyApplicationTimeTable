@@ -6,6 +6,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
+import com.example.timetable.fragments.ExampleFragment;
+
 public class TabsPagerFragmentAdapter extends FragmentPagerAdapter {
 
     private String[] tabs;
@@ -33,23 +35,17 @@ public class TabsPagerFragmentAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position){
             case 0:
-
-                break;
+                return ExampleFragment.getInstance();
             case 1:
-
-                break;
+                return ExampleFragment.getInstance();
             case 2:
-
-                break;
+                return ExampleFragment.getInstance();
             case 3:
-
-                break;
+                return ExampleFragment.getInstance();
             case 4:
-
-                break;
+                return ExampleFragment.getInstance();
             case 5:
-
-                break;
+                return ExampleFragment.getInstance();
         }
         return null;
     }
