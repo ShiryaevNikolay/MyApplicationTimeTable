@@ -10,14 +10,12 @@ import androidx.fragment.app.Fragment;
 
 import com.example.timetable.R;
 
-public class ExampleFragment extends Fragment {
-    private static final int LAYOUT = R.layout.fragment_example;
+public class ScheduleFragment extends Fragment {
+    private static final int LAYOUT = R.layout.fragment_schedule;
 
-    private View view;
-
-    public static ExampleFragment getInstance() {
+    public static ScheduleFragment getInstance(int position) {
         Bundle args = new Bundle();
-        ExampleFragment fragment = new ExampleFragment();
+        ScheduleFragment fragment = new ScheduleFragment();
         fragment.setArguments(args);
 
         return fragment;
@@ -26,7 +24,7 @@ public class ExampleFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-        view = inflater.inflate(LAYOUT, container, false);
+        View view = inflater.inflate(LAYOUT, container, false);
         return view;
     }
 }
