@@ -75,7 +75,7 @@ public class ListItemsActivity extends AppCompatActivity {
         // значит, что список фиксированный
         recyclerView.setHasFixedSize(true);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab_list_item);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
