@@ -19,6 +19,7 @@ import com.example.timetable.fragments.ScheduleFragment;
 
 public class AddScheduleActivity extends AppCompatActivity {
 
+    private String day = "";
     private String clock = "";
     private String name = "";
     private String teacher = "";
@@ -31,6 +32,9 @@ public class AddScheduleActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_schedule);
+
+        final Intent intent = getIntent();
+        day = intent.getStringExtra("day");
 
         //==========================================================================================
         scheduleDBHelper = new ScheduleDBHelper(this);
@@ -84,8 +88,7 @@ public class AddScheduleActivity extends AppCompatActivity {
                     name = etName.getText().toString();
                     teacher = etTeacher.getText().toString();
 
-                    // ВЫВОД ДАННЫХ ИЗ БАЗЫ ДАННЫХ В ТЕРМИНАЛ
-                    //==============================================================================
+                    contentValues.put(ScheduleDBHelper.KEY_DAY, day);
                     contentValues.put(ScheduleDBHelper.KEY_CLOCK, clock);
                     contentValues.put(ScheduleDBHelper.KEY_NAME, name);
                     contentValues.put(ScheduleDBHelper.KEY_TEACHER, teacher);
@@ -93,19 +96,29 @@ public class AddScheduleActivity extends AppCompatActivity {
                     //вставляем данные в таблицу базы данных
                     database.insert(ScheduleDBHelper.TABLE_SCHEDULE, null, contentValues);
 
+                    // ВЫВОД ДАННЫХ ИЗ БАЗЫ ДАННЫХ В ТЕРМИНАЛ
+                    //==============================================================================
                     Cursor cursor = database.query(ScheduleDBHelper.TABLE_SCHEDULE, null, null, null, null, null, null);
 
                     if (cursor.moveToFirst()){
+                        int dayIndex = cursor.getColumnIndex(ScheduleDBHelper.KEY_DAY);
                         int idIndex = cursor.getColumnIndex(ScheduleDBHelper.KEY_ID);
                         int clockIndex = cursor.getColumnIndex(ScheduleDBHelper.KEY_CLOCK);
                         int nameIndex = cursor.getColumnIndex(ScheduleDBHelper.KEY_NAME);
                         int teacherIndex = cursor.getColumnIndex(ScheduleDBHelper.KEY_TEACHER);
+                        System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
+                        System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
+                        System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
                         do {
                             System.out.println("ID = " + cursor.getInt(idIndex) +
+                                    ", day = " + cursor.getString(dayIndex) +
                                     ", clock = " + cursor.getString(clockIndex) +
                                     ", name = " + cursor.getString(nameIndex) +
                                     ", teacher = " + cursor.getString(teacherIndex));
-                        }while (cursor.moveToNext());
+                            }while (cursor.moveToNext());
+                        System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
+                        System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
+                        System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
                     } else {
                         System.out.println("0 rows");
                     }
@@ -114,7 +127,7 @@ public class AddScheduleActivity extends AppCompatActivity {
                     scheduleDBHelper.close();
                     //==============================================================================
 
-                    sendMessage(clock, name, teacher);
+                    sendMessage(day, clock, name, teacher);
                 } else {
                     clock = "";
                     name = "";
@@ -157,8 +170,9 @@ public class AddScheduleActivity extends AppCompatActivity {
     }
 
     // отправка результата EditText в ListItemActivity
-    private void sendMessage(String clock, String name, String teacher){
+    private void sendMessage(String day, String clock, String name, String teacher){
         Intent data = new Intent();
+        data.putExtra(ScheduleFragment.ACCESS_MESSAGE_DAY, day);
         data.putExtra(ScheduleFragment.ACCESS_MESSAGE_CLOCK, clock);
         data.putExtra(ScheduleFragment.ACCESS_MESSAGE_NAME, name);
         data.putExtra(ScheduleFragment.ACCESS_MESSAGE_TEACHER, teacher);

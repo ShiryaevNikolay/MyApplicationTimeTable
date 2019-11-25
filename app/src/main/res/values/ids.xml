@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="fab_fragment_schedule_mon" type="id"/>
+    <item name="fab_fragment_schedule_tues" type="id"/>
+    <item name="fab_fragment_schedule_wed" type="id"/>
+    <item name="fab_fragment_schedule_thurs" type="id"/>
+    <item name="fab_fragment_schedule_fri" type="id"/>
+    <item name="fab_fragment_schedule_sat" type="id"/>
+</resources>

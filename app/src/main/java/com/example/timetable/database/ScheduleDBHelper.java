@@ -13,6 +13,7 @@ public class ScheduleDBHelper extends SQLiteOpenHelper {
     public static final String TABLE_SCHEDULE = "schedule";
 
     public static final String KEY_ID = "_id";
+    public static final String KEY_DAY = "day";
     public static final String KEY_CLOCK = "clock";
     public static final String KEY_NAME = "name";
     public static final String KEY_TEACHER = "teacher";
@@ -23,7 +24,7 @@ public class ScheduleDBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String strItem = "CREATE TABLE " + TABLE_SCHEDULE + "(" + KEY_ID + " INTEGER PRIMARY KEY," + KEY_CLOCK + " TEXT, " + KEY_NAME + " TEXT, " + KEY_TEACHER + " TEXT)";
+        String strItem = "CREATE TABLE " + TABLE_SCHEDULE + "(" + KEY_ID + " INTEGER PRIMARY KEY, " + KEY_DAY + " TEXT, " + KEY_CLOCK + " TEXT, " + KEY_NAME + " TEXT, " + KEY_TEACHER + " TEXT)";
         db.execSQL(strItem);
     }
 

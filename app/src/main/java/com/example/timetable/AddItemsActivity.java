@@ -108,10 +108,8 @@ public class AddItemsActivity extends AppCompatActivity {
                         int idIndex = cursor.getColumnIndex(ItemDBHelper.KEY_ID);
                         int nameIndex = cursor.getColumnIndex(ItemDBHelper. KEY_NAME);
                         do {
-                            System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
                             System.out.println("ID = " + cursor.getInt(idIndex) +
                                     ", name = " + cursor.getString(nameIndex));
-                            System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
                         }while (cursor.moveToNext());
                     } else {
                         System.out.println("0 rows");
