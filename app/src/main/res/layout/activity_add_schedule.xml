@@ -30,18 +30,19 @@
 
 
         <LinearLayout
-            android:orientation="vertical"
+            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <EditText
-                android:id="@+id/editText_clock_schedule"
-                android:layout_width="match_parent"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/tv_clock_schedule_icon"/>
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:hint="Время"
-                android:theme="@style/ThemeEditText"/>
+                android:hint="Select Time"
+                android:id="@+id/tv_clock_schedule"/>
         </LinearLayout>
 
         <LinearLayout
