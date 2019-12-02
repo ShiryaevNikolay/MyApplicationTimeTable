@@ -41,16 +41,15 @@
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical">
 
-                    <com.example.timetable.ResizableHeightView
+                    <TextView
                         android:id="@+id/tv_clock_schedule_icon"
-                        android:layout_width="0dp"
+                        android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:layout_weight="1"
                         android:background="@drawable/ic_access_time" />
 
                     <TextView
                         android:id="@+id/tv_clock_schedule"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
                         android:layout_weight="1"
@@ -65,11 +64,10 @@
                     android:layout_marginBottom="20dp"
                     android:gravity="center_vertical">
 
-                    <com.example.timetable.ResizableHeightView
+                    <TextView
                         android:id="@+id/tv_item_schedule_icon"
-                        android:layout_width="0dp"
+                        android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:layout_weight="1"
                         android:background="@drawable/ic_item" />
 
                     <TextView
@@ -87,11 +85,10 @@
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical">
 
-                    <com.example.timetable.ResizableHeightView
+                    <TextView
                         android:id="@+id/tv_teacher_schedule_icon"
-                        android:layout_width="0dp"
+                        android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:layout_weight="1"
                         android:background="@drawable/ic_person" />
 
                     <TextView
