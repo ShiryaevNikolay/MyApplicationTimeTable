@@ -16,7 +16,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
             android:layout_weight="1"
             android:orientation="horizontal"
             tools:ignore="NestedWeights">
@@ -25,21 +25,16 @@
                 android:id="@+id/main_layout_btn_items"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
                 android:layout_margin="15dp"
-                android:padding="10dp"
-                android:background="@drawable/border_corner_view">
+                android:layout_weight="1"
+                android:background="@drawable/border_corner_view"
+                android:padding="10dp">
 
-                <com.example.timetable.ResizableButton
+                <com.example.timetable.ResizableWidthButton
                     android:id="@+id/main_btn_add_items"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@drawable/main_activity_btn"
-                    android:freezesText="false"
-                    android:text=""
-                    android:textColor="#ffffff"
-                    android:textSize="120sp"
-                    android:textStyle="bold" />
+                    android:background="@drawable/main_activity_btn" />
 
             </FrameLayout>
 
@@ -47,42 +42,32 @@
                 android:id="@+id/main_layout_btn_teacher"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
                 android:layout_margin="15dp"
-                android:padding="10dp"
-                android:background="@drawable/border_corner_view">
+                android:layout_weight="1"
+                android:background="@drawable/border_corner_view"
+                android:padding="10dp">
 
-                <com.example.timetable.ResizableButton
+                <com.example.timetable.ResizableWidthButton
                     android:id="@+id/main_btn_add_teacher"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@drawable/add_teacher_btn"
-                    android:freezesText="false"
-                    android:text=""
-                    android:textColor="#ffffff"
-                    android:textSize="120sp"
-                    android:textStyle="bold" />
+                    android:background="@drawable/add_teacher_btn" />
             </FrameLayout>
 
             <FrameLayout
                 android:id="@+id/main_layout_btn_make_schedule"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
                 android:layout_margin="15dp"
-                android:padding="10dp"
-                android:background="@drawable/border_corner_view">
+                android:layout_weight="1"
+                android:background="@drawable/border_corner_view"
+                android:padding="10dp">
 
-                <com.example.timetable.ResizableButton
+                <com.example.timetable.ResizableWidthButton
                     android:id="@+id/main_btn_make_schedule"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@drawable/make_schedule_btn"
-                    android:freezesText="false"
-                    android:text=""
-                    android:textColor="#ffffff"
-                    android:textSize="120sp"
-                    android:textStyle="bold" />
+                    android:background="@drawable/make_schedule_btn" />
             </FrameLayout>
 
         </LinearLayout>

@@ -14,17 +14,21 @@ import com.example.timetable.R;
 import com.example.timetable.RecyclerItem;
 import com.example.timetable.database.TeacherDBHelper;
 import com.example.timetable.modules.ItemTouchHelperAdapter;
+import com.example.timetable.modules.OnItemListener;
 
 import java.util.List;
 
 public class TeachersAdapter extends RecyclerView.Adapter<TeachersAdapter.TeachersViewHolder> implements ItemTouchHelperAdapter {
 
+    private OnItemListener onItemListener;
+
     private List<RecyclerItem> listTeachers;
     private SQLiteDatabase database;
 
-    public TeachersAdapter(List<RecyclerItem> listTeachers, SQLiteDatabase database){
+    public TeachersAdapter(List<RecyclerItem> listTeachers, SQLiteDatabase database, OnItemListener onItemListener){
         this.listTeachers = listTeachers;
         this.database = database;
+        this.onItemListener = onItemListener;
     }
 
     @NonNull
@@ -36,7 +40,7 @@ public class TeachersAdapter extends RecyclerView.Adapter<TeachersAdapter.Teache
         LayoutInflater inflater = LayoutInflater.from(context);
         // создаём новое представление (элемент) из layoutIdForItem, parent - <RecyclerView> в activity_list_items.xml, false - нужно ли помещать созданный объект layoutIdForItem внутрь parent(<RecyclerView>)
         View view = inflater.inflate(layoutIdForListTeacher, parent, false);
-        return new TeachersViewHolder(view);
+        return new TeachersViewHolder(view, onItemListener);
     }
 
     public void onBindViewHolder(@NonNull TeachersViewHolder holder, int position) {
@@ -60,12 +64,21 @@ public class TeachersAdapter extends RecyclerView.Adapter<TeachersAdapter.Teache
         database.delete(TeacherDBHelper.TABLE_TEACHERS, TeacherDBHelper.KEY_NAME + "= ?", new String[] {teacher.getText()});
     }
 
-    static class TeachersViewHolder extends RecyclerView.ViewHolder {
+    static class TeachersViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView nameRvTeacher;
+        OnItemListener onItemListener;
 
-        TeachersViewHolder(View itemView){
+        TeachersViewHolder(View itemView, OnItemListener onItemListener){
             super(itemView);
             nameRvTeacher = itemView.findViewById(R.id.name_rv_teacher);
+            this.onItemListener = onItemListener;
+
+            nameRvTeacher.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            onItemListener.onItemClick(getAdapterPosition());
         }
     }
 }

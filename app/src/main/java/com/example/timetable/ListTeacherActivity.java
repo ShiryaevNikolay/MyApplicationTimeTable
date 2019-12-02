@@ -9,6 +9,7 @@ import android.view.View;
 
 import com.example.timetable.adapters.TeachersAdapter;
 import com.example.timetable.database.TeacherDBHelper;
+import com.example.timetable.modules.OnItemListener;
 import com.example.timetable.modules.SimpleItemTouchHelperCallback;
 import com.example.timetable.util.RequestCode;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -23,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class ListTeacherActivity extends AppCompatActivity {
+public class ListTeacherActivity extends AppCompatActivity implements OnItemListener {
 
     static final String ACCESS_MESSAGE="ACCESS_MESSAGE";
 
@@ -80,7 +81,7 @@ public class ListTeacherActivity extends AppCompatActivity {
             }
         });
 
-        TeachersAdapter teachersAdapter = new TeachersAdapter(listTeacher, database);
+        TeachersAdapter teachersAdapter = new TeachersAdapter(listTeacher, database, this);
         //назначаем RecyclerView созданный Adapter
         recyclerView.setAdapter(teachersAdapter);
 
@@ -102,8 +103,13 @@ public class ListTeacherActivity extends AppCompatActivity {
             super.onActivityResult(requestCode, resultCode, data);
         }
 
-        TeachersAdapter teachersAdapter = new TeachersAdapter(listTeacher, database);
+        TeachersAdapter teachersAdapter = new TeachersAdapter(listTeacher, database, this);
         //назначаем RecyclerView созданный Adapter
         recyclerView.setAdapter(teachersAdapter);
+    }
+
+    @Override
+    public void onItemClick(int position) {
+
     }
 }

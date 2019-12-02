@@ -20,69 +20,91 @@
             app:popupTheme="@style/AppTheme.PopupOverlay"/>
     </com.google.android.material.appbar.AppBarLayout>
 
-    <LinearLayout
-        android:id="@+id/add_schedule_layout_vertical"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/app_bar_layout_add_schedule"
-        android:orientation="vertical"
-        android:padding="15dp">
-
+        android:layout_above="@+id/layout_btn_add_schedule">
 
         <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <EditText
-                android:id="@+id/editText_clock_schedule"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:hint="Время"
-                android:theme="@style/ThemeEditText"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp">
-
-            <EditText
-                android:id="@+id/editText_name_schedule"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:hint="Название предмета"
-                android:theme="@style/ThemeEditText"/>
-        </LinearLayout>
-
-        <LinearLayout
             android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:padding="15dp">
 
-            <EditText
-                android:id="@+id/editText_teacher_schedule"
+            <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:hint="Имя преподавателя"
-                android:theme="@style/ThemeEditText"/>
-        </LinearLayout>
+                android:gravity="center_vertical">
 
-    </LinearLayout>
+                <TextView
+                    android:id="@+id/tv_clock_schedule_icon"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/ic_access_time" />
+
+                <TextView
+                    android:id="@+id/tv_clock_schedule"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="1"
+                    android:hint="Select time"
+                    android:textSize="20sp" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/tv_item_schedule_icon"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/ic_item" />
+
+                <TextView
+                    android:id="@+id/tv_item_schedule"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="1"
+                    android:hint="Select item"
+                    android:textSize="20sp" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/tv_teacher_schedule_icon"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/ic_person" />
+
+                <TextView
+                    android:id="@+id/tv_teacher_schedule"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="1"
+                    android:hint="Select teacher"
+                    android:textSize="20sp" />
+            </TableRow>
+        </LinearLayout>
+    </ScrollView>
 
     <LinearLayout
+        android:id="@+id/layout_btn_add_schedule"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_alignParentBottom="true">
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
 
         <Button
             android:id="@+id/add_schedule_cancel_btn"
@@ -90,9 +112,9 @@
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
             android:layout_weight="1"
-            android:text="Отмена"
             android:background="@drawable/bg_red_corner_view"
-            android:textColor="#ffffff"/>
+            android:text="Отмена"
+            android:textColor="#ffffff" />
 
         <Button
             android:id="@+id/add_schedule_ok_btn"
@@ -100,8 +122,8 @@
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
             android:layout_weight="1"
-            android:text="Ок"
             android:background="@drawable/btn_no_activated"
-            android:textColor="#ffffff"/>
+            android:text="Ок"
+            android:textColor="#ffffff" />
     </LinearLayout>
 </RelativeLayout>

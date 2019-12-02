@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#0189ff</color>
+    <color name="colorPrimary">#ffffff</color>
     <color name="colorPrimaryDark">#0189ff</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorAccent">#0189ff</color>
     <color name="colorEditTextControlActivated">#212121</color>
+    <color name="colorAccept">#4CAF50</color>
+    <color name="colorCancel">#F44336</color>
+    <color name="colorNotActive">#999999</color>
 </resources>
