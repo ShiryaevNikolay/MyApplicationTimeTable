@@ -98,7 +98,7 @@ public class SelectListItemActivity extends AppCompatActivity implements OnItemL
         }
 
         ItemsAdapter itemsAdapter = new ItemsAdapter(listItem, database, this);
-        TeachersAdapter teachersAdapter = new TeachersAdapter(listItem, database);
+        TeachersAdapter teachersAdapter = new TeachersAdapter(listItem, database, this);
         if (Objects.equals(intent.getStringExtra("selectBtn"), "item")) {
             //назначаем RecyclerView созданный Adapter
             recyclerView.setAdapter(itemsAdapter);

@@ -31,7 +31,6 @@ public class ListItemsActivity extends AppCompatActivity implements OnItemListen
 
     Toolbar toolbar;
     String nameItem;
-    int numberItems = 0;
     RecyclerView recyclerView;
 
     public List<RecyclerItem> listItems;
