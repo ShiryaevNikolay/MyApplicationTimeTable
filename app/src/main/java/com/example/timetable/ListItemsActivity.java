@@ -8,6 +8,7 @@ import android.os.Bundle;
 
 import com.example.timetable.adapters.ItemsAdapter;
 import com.example.timetable.database.ItemDBHelper;
+import com.example.timetable.modules.OnItemListener;
 import com.example.timetable.modules.SimpleItemTouchHelperCallback;
 import com.example.timetable.util.RequestCode;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -24,7 +25,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListItemsActivity extends AppCompatActivity {
+public class ListItemsActivity extends AppCompatActivity implements OnItemListener {
 
     static final String ACCESS_MESSAGE="ACCESS_MESSAGE";
 
@@ -85,7 +86,7 @@ public class ListItemsActivity extends AppCompatActivity {
         });
 
         // numberItems - кол-во элементов в списке, nameItem - название предмета
-        ItemsAdapter itemsAdapter = new ItemsAdapter(listItems, database);
+        ItemsAdapter itemsAdapter = new ItemsAdapter(listItems, database, this);
         //назначаем RecyclerView созданный Adapter
         recyclerView.setAdapter(itemsAdapter);
 
@@ -98,7 +99,6 @@ public class ListItemsActivity extends AppCompatActivity {
         if(requestCode == RequestCode.REQUEST_CODE_ITEM){
             if(resultCode==RESULT_OK){
                 nameItem = data.getStringExtra(ACCESS_MESSAGE);
-                numberItems++;
                 listItems.add(new RecyclerItem(nameItem));
             }
             else{
@@ -109,8 +109,13 @@ public class ListItemsActivity extends AppCompatActivity {
             super.onActivityResult(requestCode, resultCode, data);
         }
 
-        ItemsAdapter itemsAdapter = new ItemsAdapter(listItems, database);
+        ItemsAdapter itemsAdapter = new ItemsAdapter(listItems, database, this);
         //назначаем RecyclerView созданный Adapter
         recyclerView.setAdapter(itemsAdapter);
+    }
+
+    @Override
+    public void onItemClick(int position) {
+
     }
 }

@@ -14,17 +14,21 @@ import com.example.timetable.R;
 import com.example.timetable.RecyclerItem;
 import com.example.timetable.database.ItemDBHelper;
 import com.example.timetable.modules.ItemTouchHelperAdapter;
+import com.example.timetable.modules.OnItemListener;
 
 import java.util.List;
 
 public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemsViewHolder> implements ItemTouchHelperAdapter {
 
+    private OnItemListener onItemListener;
+
     private List<RecyclerItem> listItems;
     private SQLiteDatabase database;
 
-    public ItemsAdapter(List<RecyclerItem> listItems, SQLiteDatabase database){
+    public ItemsAdapter(List<RecyclerItem> listItems, SQLiteDatabase database, OnItemListener onItemListener){
         this.listItems = listItems;
         this.database = database;
+        this.onItemListener = onItemListener;
     }
 
     @NonNull
@@ -37,7 +41,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemsViewHol
         // создаём новое представление (элемент) из layoutIdForItem, parent - <RecyclerView> в activity_list_items.xml, false - нужно ли помещать созданный объект layoutIdForItem внутрь parent(<RecyclerView>)
         View view = inflater.inflate(layoutIdForListItem, parent, false);
         // обернём созданный элемент списка в ViewHolder
-        return new ItemsViewHolder(view);
+        return new ItemsViewHolder(view, onItemListener);
     }
 
     public void onBindViewHolder(@NonNull ItemsViewHolder holder, int position) {
@@ -61,12 +65,21 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemsViewHol
         database.delete(ItemDBHelper.TABLE_ITEMS, ItemDBHelper.KEY_NAME + "= ?", new String[] {item.getText()});
     }
 
-    static class ItemsViewHolder extends RecyclerView.ViewHolder {
+    static class ItemsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView nameRvItem;
+        OnItemListener onItemListener;
 
-        ItemsViewHolder(@NonNull View itemView) {
+        ItemsViewHolder(@NonNull View itemView, OnItemListener onItemListener) {
             super(itemView);
             nameRvItem = itemView.findViewById(R.id.name_rv_item);
+            this.onItemListener = onItemListener;
+
+            nameRvItem.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            onItemListener.onItemClick(getAdapterPosition());
         }
     }
 }

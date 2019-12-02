@@ -3,6 +3,7 @@ package com.example.timetable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.TimePickerDialog;
 import android.content.ContentValues;
@@ -19,11 +20,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.example.timetable.adapters.ItemsAdapter;
 import com.example.timetable.database.ScheduleDBHelper;
 import com.example.timetable.fragments.ScheduleFragment;
 import com.example.timetable.util.RequestCode;
 
 import java.util.Calendar;
+import java.util.Objects;
 
 public class AddScheduleActivity extends AppCompatActivity implements View.OnClickListener {
     static final String ACCESS_MESSAGE="ACCESS_MESSAGE";
@@ -159,6 +162,29 @@ public class AddScheduleActivity extends AppCompatActivity implements View.OnCli
                 setResult(RESULT_CANCELED);
                 finish();
                 break;
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == RequestCode.REQUEST_CODE_ITEM){
+            if(resultCode==RESULT_OK){
+                if (Objects.equals(data.getStringExtra("selectBtn"), "item")) {
+                    tvItem.setText(data.getStringExtra(ACCESS_MESSAGE));
+                } else if (Objects.equals(data.getStringExtra("selectBtn"), "teacher")) {
+                    tvTeacher.setText(data.getStringExtra(ACCESS_MESSAGE));
+                }
+            }
+            else if(resultCode==RESULT_CANCELED) {
+                if (Objects.equals(data.getStringExtra("selectBtn"), "item")) {
+                    tvItem.setText("Select item");
+                } else if (Objects.equals(data.getStringExtra("selectBtn"), "teacher")) {
+                    tvTeacher.setText("Select teacher");
+                }
+            }
+        }
+        else{
+            super.onActivityResult(requestCode, resultCode, data);
         }
     }
 
