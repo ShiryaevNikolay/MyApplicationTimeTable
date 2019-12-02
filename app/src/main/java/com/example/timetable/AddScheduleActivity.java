@@ -9,6 +9,7 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -20,10 +21,12 @@ import android.widget.TimePicker;
 
 import com.example.timetable.database.ScheduleDBHelper;
 import com.example.timetable.fragments.ScheduleFragment;
+import com.example.timetable.util.RequestCode;
 
 import java.util.Calendar;
 
 public class AddScheduleActivity extends AppCompatActivity implements View.OnClickListener {
+    static final String ACCESS_MESSAGE="ACCESS_MESSAGE";
 
     private String day = "";
     private String clock = "";
@@ -31,7 +34,8 @@ public class AddScheduleActivity extends AppCompatActivity implements View.OnCli
     private String teacher = "";
 
     private TextView tvClock;
-    private int hour, minute;
+    private TextView tvItem;
+    private TextView tvTeacher;
 
     //==============================================================================================
     ScheduleDBHelper scheduleDBHelper;
@@ -66,31 +70,22 @@ public class AddScheduleActivity extends AppCompatActivity implements View.OnCli
         //__________________________________________________________________________________________
         //__________________________________________________________________________________________
         //__________________________________________________________________________________________
-        // находим поля с вводом текста "Фамилия, имя, отчество"
-//        final EditText etClock = findViewById(R.id.editText_clock_schedule);
-        final EditText etName = findViewById(R.id.editText_name_schedule);
-        final EditText etTeacher = findViewById(R.id.editText_teacher_schedule);
-
-        // проверяем, пустое ли поле ввода
-//        checkEmptyField(etClock, okBtn);
-        checkEmptyField(etName, okBtn);
-        checkEmptyField(etTeacher, okBtn);
-
         tvClock = findViewById(R.id.tv_clock_schedule);
+        tvItem = findViewById(R.id.tv_item_schedule);
+        tvTeacher = findViewById(R.id.tv_teacher_schedule);
 
         tvClock.setOnClickListener(this);
+        checkSelection(tvClock);
+        tvItem.setOnClickListener(this);
+        checkSelection(tvItem);
+        tvTeacher.setOnClickListener(this);
+        checkSelection(tvTeacher);
         //__________________________________________________________________________________________
         //__________________________________________________________________________________________
         //__________________________________________________________________________________________
 
         // при нажатии на "Отмена" закрывается текущее окно activity
-        cancelBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setResult(RESULT_CANCELED);
-                finish();
-            }
-        });
+        cancelBtn.setOnClickListener(this);
 
         // при нажатии на "Ок", отправляется текст в ListItemActivity и закрывается текущее окно activity
 //        okBtn.setOnClickListener(new View.OnClickListener() {
@@ -150,14 +145,28 @@ public class AddScheduleActivity extends AppCompatActivity implements View.OnCli
             case R.id.tv_clock_schedule:
                 callTimePicker();
                 break;
+            case R.id.tv_item_schedule:
+                Intent intentItem = new Intent(this, SelectListItemActivity.class);
+                intentItem.putExtra("selectBtn", "item");
+                startActivityForResult(intentItem, RequestCode.REQUEST_CODE_ITEM);
+                break;
+            case R.id.tv_teacher_schedule:
+                Intent intentTeacher = new Intent(this, SelectListItemActivity.class);
+                intentTeacher.putExtra("selectBtn", "teacher");
+                startActivityForResult(intentTeacher, RequestCode.REQUEST_CODE_ITEM);
+                break;
+            case R.id.add_schedule_cancel_btn:
+                setResult(RESULT_CANCELED);
+                finish();
+                break;
         }
     }
 
     private void callTimePicker(){
         // получаем текущее время
         final Calendar calendar = Calendar.getInstance();
-        hour = calendar.get(Calendar.HOUR_OF_DAY);
-        minute = calendar.get(Calendar.MINUTE);
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        int minute = calendar.get(Calendar.MINUTE);
 
         // инициализируем диалог выбора времени текущими значениями
         TimePickerDialog timePickerDialog = new TimePickerDialog(this, AlertDialog.THEME_HOLO_LIGHT, new TimePickerDialog.OnTimeSetListener() {
@@ -211,5 +220,9 @@ public class AddScheduleActivity extends AppCompatActivity implements View.OnCli
         data.putExtra(ScheduleFragment.ACCESS_MESSAGE_TEACHER, teacher);
         setResult(RESULT_OK, data);
         finish();
+    }
+
+    private void checkSelection(TextView textView){
+        textView.setTextColor(Color.BLACK);
     }
 }

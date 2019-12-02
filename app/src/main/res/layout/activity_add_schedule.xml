@@ -20,70 +20,81 @@
             app:popupTheme="@style/AppTheme.PopupOverlay"/>
     </com.google.android.material.appbar.AppBarLayout>
 
-    <LinearLayout
-        android:id="@+id/add_schedule_layout_vertical"
+    <TableLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/app_bar_layout_add_schedule"
-        android:orientation="vertical"
         android:padding="15dp">
 
-
-        <LinearLayout
-            android:orientation="horizontal"
+        <TableRow
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent" >
+
+            <com.example.timetable.ResizableHeightView
+                android:id="@+id/tv_clock_schedule_icon"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/ic_access_time" />
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:id="@+id/tv_clock_schedule_icon"/>
-            <TextView
+                android:id="@+id/tv_clock_schedule"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="Select Time"
-                android:id="@+id/tv_clock_schedule"/>
-        </LinearLayout>
+                android:layout_marginStart="10dp"
+                android:hint="Select time"
+                android:textSize="20sp" />
+        </TableRow>
 
-        <LinearLayout
-            android:orientation="vertical"
+        <TableRow
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="20dp">
 
-            <EditText
-                android:id="@+id/editText_name_schedule"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:hint="Название предмета"
-                android:theme="@style/ThemeEditText"/>
-        </LinearLayout>
+            <com.example.timetable.ResizableHeightView
+                android:id="@+id/tv_item_schedule_icon"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/make_schedule_btn" />
 
-        <LinearLayout
-            android:orientation="vertical"
+            <TextView
+                android:id="@+id/tv_item_schedule"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:hint="Select item"
+                android:textSize="20sp" />
+        </TableRow>
+
+        <TableRow
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent" >
 
-            <EditText
-                android:id="@+id/editText_teacher_schedule"
-                android:layout_width="match_parent"
+            <com.example.timetable.ResizableHeightView
+                android:id="@+id/tv_teacher_schedule_icon"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/ic_person" />
+
+            <TextView
+                android:id="@+id/tv_teacher_schedule"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:hint="Имя преподавателя"
-                android:theme="@style/ThemeEditText"/>
-        </LinearLayout>
+                android:layout_marginStart="10dp"
+                android:hint="Select teacher"
+                android:textSize="20sp" />
+        </TableRow>
 
-    </LinearLayout>
+    </TableLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_alignParentBottom="true">
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
 
         <Button
             android:id="@+id/add_schedule_cancel_btn"
@@ -91,9 +102,9 @@
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
             android:layout_weight="1"
-            android:text="Отмена"
             android:background="@drawable/bg_red_corner_view"
-            android:textColor="#ffffff"/>
+            android:text="Отмена"
+            android:textColor="#ffffff" />
 
         <Button
             android:id="@+id/add_schedule_ok_btn"
@@ -101,8 +112,8 @@
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
             android:layout_weight="1"
-            android:text="Ок"
             android:background="@drawable/btn_no_activated"
-            android:textColor="#ffffff"/>
+            android:text="Ок"
+            android:textColor="#ffffff" />
     </LinearLayout>
 </RelativeLayout>
