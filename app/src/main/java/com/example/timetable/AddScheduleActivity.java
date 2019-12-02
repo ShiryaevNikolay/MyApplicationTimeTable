@@ -78,11 +78,8 @@ public class AddScheduleActivity extends AppCompatActivity implements View.OnCli
         tvTeacher = findViewById(R.id.tv_teacher_schedule);
 
         tvClock.setOnClickListener(this);
-        checkSelection(tvClock);
         tvItem.setOnClickListener(this);
-        checkSelection(tvItem);
         tvTeacher.setOnClickListener(this);
-        checkSelection(tvTeacher);
         //__________________________________________________________________________________________
         //__________________________________________________________________________________________
         //__________________________________________________________________________________________
@@ -177,9 +174,9 @@ public class AddScheduleActivity extends AppCompatActivity implements View.OnCli
             }
             else if(resultCode==RESULT_CANCELED) {
                 if (Objects.equals(data.getStringExtra("selectBtn"), "item")) {
-                    tvItem.setText("Select item");
+                    tvItem.setText("");
                 } else if (Objects.equals(data.getStringExtra("selectBtn"), "teacher")) {
-                    tvTeacher.setText("Select teacher");
+                    tvTeacher.setText("r");
                 }
             }
         }
@@ -246,9 +243,5 @@ public class AddScheduleActivity extends AppCompatActivity implements View.OnCli
         data.putExtra(ScheduleFragment.ACCESS_MESSAGE_TEACHER, teacher);
         setResult(RESULT_OK, data);
         finish();
-    }
-
-    private void checkSelection(TextView textView){
-        textView.setTextColor(Color.BLACK);
     }
 }
