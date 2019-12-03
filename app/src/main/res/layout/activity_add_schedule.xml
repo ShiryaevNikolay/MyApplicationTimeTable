@@ -33,7 +33,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="15dp">
+            android:paddingBottom="15dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp">
 
             <TableRow
                 android:layout_width="match_parent"
@@ -53,14 +55,16 @@
                     android:layout_marginStart="10dp"
                     android:layout_weight="1"
                     android:hint="Select time"
-                    android:textSize="20sp" />
+                    android:textSize="20sp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"/>
             </TableRow>
 
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginBottom="25dp"
                 android:gravity="center_vertical">
 
                 <TextView
@@ -76,7 +80,9 @@
                     android:layout_marginStart="10dp"
                     android:layout_weight="1"
                     android:hint="Select item"
-                    android:textSize="20sp" />
+                    android:textSize="20sp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"/>
             </TableRow>
 
             <TableRow
@@ -97,7 +103,9 @@
                     android:layout_marginStart="10dp"
                     android:layout_weight="1"
                     android:hint="Select teacher"
-                    android:textSize="20sp" />
+                    android:textSize="20sp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"/>
             </TableRow>
         </LinearLayout>
     </ScrollView>
