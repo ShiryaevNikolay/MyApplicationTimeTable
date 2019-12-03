@@ -33,16 +33,20 @@ public class AddScheduleActivity extends AppCompatActivity implements View.OnCli
 
     private String day = "";
     private String clock = "";
-    private String name = "";
-    private String teacher = "";
 
     private TextView tvClock;
     private TextView tvItem;
     private TextView tvTeacher;
 
+    private SQLiteDatabase database;
+    private ContentValues contentValues;
+
     private Button okBtn;
     //==============================================================================================
     ScheduleDBHelper scheduleDBHelper;
+
+    public AddScheduleActivity() {
+    }
     //==============================================================================================
 
     @Override
@@ -56,10 +60,10 @@ public class AddScheduleActivity extends AppCompatActivity implements View.OnCli
         //==========================================================================================
         scheduleDBHelper = new ScheduleDBHelper(this);
 
-        final SQLiteDatabase database = scheduleDBHelper.getWritableDatabase();
+        database = scheduleDBHelper.getWritableDatabase();
 
         // для добавления новых строк в таблицу
-        final ContentValues contentValues = new ContentValues();
+        contentValues = new ContentValues();
         //==========================================================================================
 
         Toolbar toolbar = findViewById(R.id.toolbar_add_schedule);
@@ -156,7 +160,45 @@ public class AddScheduleActivity extends AppCompatActivity implements View.OnCli
                 finish();
                 break;
             case R.id.add_schedule_ok_btn:
+                if (!tvClock.getText().equals("") && !tvItem.getText().equals("") && !tvTeacher.getText().equals("")) {
+                    clock = tvClock.getText().toString();
+                    String name = tvItem.getText().toString();
+                    String teacher = tvTeacher.getText().toString();
 
+                    contentValues.put(ScheduleDBHelper.KEY_DAY, day);
+                    contentValues.put(ScheduleDBHelper.KEY_CLOCK, clock);
+                    contentValues.put(ScheduleDBHelper.KEY_NAME, name);
+                    contentValues.put(ScheduleDBHelper.KEY_TEACHER, teacher);
+
+                    //вставляем данные в таблицу базы данных
+                    database.insert(ScheduleDBHelper.TABLE_SCHEDULE, null, contentValues);
+
+                    // ВЫВОД ДАННЫХ ИЗ БАЗЫ ДАННЫХ В ТЕРМИНАЛ
+                    //==============================================================================
+                    Cursor cursor = database.query(ScheduleDBHelper.TABLE_SCHEDULE, null, null, null, null, null, null);
+
+                    if (cursor.moveToFirst()){
+                        int dayIndex = cursor.getColumnIndex(ScheduleDBHelper.KEY_DAY);
+                        int idIndex = cursor.getColumnIndex(ScheduleDBHelper.KEY_ID);
+                        int clockIndex = cursor.getColumnIndex(ScheduleDBHelper.KEY_CLOCK);
+                        int nameIndex = cursor.getColumnIndex(ScheduleDBHelper.KEY_NAME);
+                        int teacherIndex = cursor.getColumnIndex(ScheduleDBHelper.KEY_TEACHER);
+                        do {
+                            System.out.println("ID = " + cursor.getInt(idIndex) +
+                                    ", day = " + cursor.getString(dayIndex) +
+                                    ", clock = " + cursor.getString(clockIndex) +
+                                    ", name = " + cursor.getString(nameIndex) +
+                                    ", teacher = " + cursor.getString(teacherIndex));
+                            }while (cursor.moveToNext());
+                    } else {
+                        System.out.println("0 rows");
+                    }
+
+                    cursor.close();
+                    scheduleDBHelper.close();
+                    //==============================================================================
+                    sendMessage(day, clock, name, teacher);
+                }
                 break;
         }
     }
