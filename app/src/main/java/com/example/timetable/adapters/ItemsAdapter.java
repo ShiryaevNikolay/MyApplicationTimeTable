@@ -15,6 +15,7 @@ import com.example.timetable.RecyclerItem;
 import com.example.timetable.database.ItemDBHelper;
 import com.example.timetable.modules.ItemTouchHelperAdapter;
 import com.example.timetable.modules.OnItemListener;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
 

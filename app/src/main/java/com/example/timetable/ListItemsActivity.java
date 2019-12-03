@@ -12,6 +12,7 @@ import com.example.timetable.modules.OnItemListener;
 import com.example.timetable.modules.SimpleItemTouchHelperCallback;
 import com.example.timetable.util.RequestCode;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -35,7 +36,6 @@ public class ListItemsActivity extends AppCompatActivity implements OnItemListen
 
     public List<RecyclerItem> listItems;
 
-    ItemDBHelper itemDbHelper;
     SQLiteDatabase database;
 
     @Override
@@ -47,7 +47,7 @@ public class ListItemsActivity extends AppCompatActivity implements OnItemListen
         toolbar.setNavigationIcon(R.drawable.toolbar_back_btn);
 
         //для базы данных
-        itemDbHelper = new ItemDBHelper(this);
+        ItemDBHelper itemDbHelper = new ItemDBHelper(this);
         database = itemDbHelper.getWritableDatabase();
         @SuppressLint("Recycle") Cursor cursor = database.query(ItemDBHelper.TABLE_ITEMS, null, null, null, null, null, null);
 
