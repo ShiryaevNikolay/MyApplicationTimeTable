@@ -86,9 +86,7 @@ public class AddScheduleActivity extends AppCompatActivity implements View.OnCli
         cancelBtn.setOnClickListener(this);
 
         // при нажатии на "Ок", отправляется текст в ListItemActivity и закрывается текущее окно activity
-//        okBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
+        okBtn.setOnClickListener(this);
 //                if (!etClock.getText().toString().equals("") || !etName.getText().toString().equals("") || !etTeacher.getText().toString().equals("")){
 //                    clock = etClock.getText().toString();
 //                    name = etName.getText().toString();
@@ -134,7 +132,6 @@ public class AddScheduleActivity extends AppCompatActivity implements View.OnCli
 //                    teacher = "";
 //                }
 //            }
-//        });
     }
 
     @Override
@@ -179,8 +176,10 @@ public class AddScheduleActivity extends AppCompatActivity implements View.OnCli
             else if(resultCode==RESULT_CANCELED) {
                 if (Objects.equals(data.getStringExtra("selectBtn"), "item")) {
                     tvItem.setText("");
+                    checkEmptyField(tvClock, tvItem, tvTeacher, okBtn);
                 } else if (Objects.equals(data.getStringExtra("selectBtn"), "teacher")) {
                     tvTeacher.setText("");
+                    checkEmptyField(tvClock, tvItem, tvTeacher, okBtn);
                 }
             }
         }
