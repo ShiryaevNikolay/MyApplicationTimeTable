@@ -91,51 +91,6 @@ public class AddScheduleActivity extends AppCompatActivity implements View.OnCli
 
         // при нажатии на "Ок", отправляется текст в ListItemActivity и закрывается текущее окно activity
         okBtn.setOnClickListener(this);
-//                if (!etClock.getText().toString().equals("") || !etName.getText().toString().equals("") || !etTeacher.getText().toString().equals("")){
-//                    clock = etClock.getText().toString();
-//                    name = etName.getText().toString();
-//                    teacher = etTeacher.getText().toString();
-//
-//                    contentValues.put(ScheduleDBHelper.KEY_DAY, day);
-//                    contentValues.put(ScheduleDBHelper.KEY_CLOCK, clock);
-//                    contentValues.put(ScheduleDBHelper.KEY_NAME, name);
-//                    contentValues.put(ScheduleDBHelper.KEY_TEACHER, teacher);
-//
-//                    //вставляем данные в таблицу базы данных
-//                    database.insert(ScheduleDBHelper.TABLE_SCHEDULE, null, contentValues);
-//
-//                    // ВЫВОД ДАННЫХ ИЗ БАЗЫ ДАННЫХ В ТЕРМИНАЛ
-//                    //==============================================================================
-//                    Cursor cursor = database.query(ScheduleDBHelper.TABLE_SCHEDULE, null, null, null, null, null, null);
-//
-//                    if (cursor.moveToFirst()){
-//                        int dayIndex = cursor.getColumnIndex(ScheduleDBHelper.KEY_DAY);
-//                        int idIndex = cursor.getColumnIndex(ScheduleDBHelper.KEY_ID);
-//                        int clockIndex = cursor.getColumnIndex(ScheduleDBHelper.KEY_CLOCK);
-//                        int nameIndex = cursor.getColumnIndex(ScheduleDBHelper.KEY_NAME);
-//                        int teacherIndex = cursor.getColumnIndex(ScheduleDBHelper.KEY_TEACHER);
-//                        do {
-//                            System.out.println("ID = " + cursor.getInt(idIndex) +
-//                                    ", day = " + cursor.getString(dayIndex) +
-//                                    ", clock = " + cursor.getString(clockIndex) +
-//                                    ", name = " + cursor.getString(nameIndex) +
-//                                    ", teacher = " + cursor.getString(teacherIndex));
-//                            }while (cursor.moveToNext());
-//                    } else {
-//                        System.out.println("0 rows");
-//                    }
-//
-//                    cursor.close();
-//                    scheduleDBHelper.close();
-//                    //==============================================================================
-//
-//                    sendMessage(day, clock, name, teacher);
-//                } else {
-//                    clock = "";
-//                    name = "";
-//                    teacher = "";
-//                }
-//            }
     }
 
     @Override
