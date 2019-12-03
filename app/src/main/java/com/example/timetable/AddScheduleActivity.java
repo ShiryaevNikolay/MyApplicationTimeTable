@@ -40,6 +40,7 @@ public class AddScheduleActivity extends AppCompatActivity implements View.OnCli
     private TextView tvItem;
     private TextView tvTeacher;
 
+    private Button okBtn;
     //==============================================================================================
     ScheduleDBHelper scheduleDBHelper;
     //==============================================================================================
@@ -68,21 +69,18 @@ public class AddScheduleActivity extends AppCompatActivity implements View.OnCli
         new ButtonToReturnToMainActivity(toolbar, this);
 
         Button cancelBtn = findViewById(R.id.add_schedule_cancel_btn);
-        Button okBtn = findViewById(R.id.add_schedule_ok_btn);
+        okBtn = findViewById(R.id.add_schedule_ok_btn);
 
-        //__________________________________________________________________________________________
-        //__________________________________________________________________________________________
-        //__________________________________________________________________________________________
         tvClock = findViewById(R.id.tv_clock_schedule);
+        tvClock.setText("");
         tvItem = findViewById(R.id.tv_item_schedule);
+        tvItem.setText("");
         tvTeacher = findViewById(R.id.tv_teacher_schedule);
+        tvTeacher.setText("");
 
         tvClock.setOnClickListener(this);
         tvItem.setOnClickListener(this);
         tvTeacher.setOnClickListener(this);
-        //__________________________________________________________________________________________
-        //__________________________________________________________________________________________
-        //__________________________________________________________________________________________
 
         // при нажатии на "Отмена" закрывается текущее окно activity
         cancelBtn.setOnClickListener(this);
@@ -144,6 +142,7 @@ public class AddScheduleActivity extends AppCompatActivity implements View.OnCli
         switch(v.getId()){
             case R.id.tv_clock_schedule:
                 callTimePicker();
+                checkEmptyField(tvClock, tvItem, tvTeacher, okBtn);
                 break;
             case R.id.tv_item_schedule:
                 Intent intentItem = new Intent(this, SelectListItemActivity.class);
@@ -159,6 +158,9 @@ public class AddScheduleActivity extends AppCompatActivity implements View.OnCli
                 setResult(RESULT_CANCELED);
                 finish();
                 break;
+            case R.id.add_schedule_ok_btn:
+
+                break;
         }
     }
 
@@ -168,15 +170,17 @@ public class AddScheduleActivity extends AppCompatActivity implements View.OnCli
             if(resultCode==RESULT_OK){
                 if (Objects.equals(data.getStringExtra("selectBtn"), "item")) {
                     tvItem.setText(data.getStringExtra(ACCESS_MESSAGE));
+                    checkEmptyField(tvClock, tvItem, tvTeacher, okBtn);
                 } else if (Objects.equals(data.getStringExtra("selectBtn"), "teacher")) {
                     tvTeacher.setText(data.getStringExtra(ACCESS_MESSAGE));
+                    checkEmptyField(tvClock, tvItem, tvTeacher, okBtn);
                 }
             }
             else if(resultCode==RESULT_CANCELED) {
                 if (Objects.equals(data.getStringExtra("selectBtn"), "item")) {
                     tvItem.setText("");
                 } else if (Objects.equals(data.getStringExtra("selectBtn"), "teacher")) {
-                    tvTeacher.setText("r");
+                    tvTeacher.setText("");
                 }
             }
         }
@@ -197,41 +201,18 @@ public class AddScheduleActivity extends AppCompatActivity implements View.OnCli
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                 String editTextTimeParam = hourOfDay + " : " + minute;
                 tvClock.setText(editTextTimeParam);
+                clock = tvClock.getText().toString();
             }
         }, hour, minute, true);
         timePickerDialog.show();
     }
 
-    protected void checkEmptyField(final EditText editText, final Button btn){
-        editText.addTextChangedListener(new TextWatcher() {
-            // действия перед тем, как что то введено
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                // если текст пустой, то кнопка "Ок" серая (неактивная)
-                if (s.toString().equals("")){
-                    btn.setBackground(getDrawable(R.drawable.btn_no_activated));
-                } else { // иначе зеленая (активная)
-                    btn.setBackground(getDrawable(R.drawable.bg_green_corner_view));
-                }
-            }
-            // действия, когда вводится какой то текст
-            // s - то, что вводится, для преобразования в строку - s.toString()
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-            // действия после того, как что то введено
-            // editable - то, что введено. В строку - editable.toString()
-            @Override
-            public void afterTextChanged(Editable s) {
-                // если текст пустой, то кнопка "Ок" серая (неактивная)
-                if (s.toString().equals("")){
-                    btn.setBackground(getDrawable(R.drawable.btn_no_activated));
-                } else { // иначе зеленая (активная)
-                    btn.setBackground(getDrawable(R.drawable.bg_green_corner_view));
-                }
-            }
-        });
+    protected void checkEmptyField(TextView tvClock, TextView tvItem, TextView tvTeacher, final Button btn){
+        if (!tvClock.getText().equals("") && !tvItem.getText().equals("") && !tvTeacher.getText().equals("")) {
+            btn.setBackground(getDrawable(R.drawable.bg_green_corner_view));
+        } else {
+            btn.setBackground(getDrawable(R.drawable.btn_no_activated));
+        }
     }
 
     // отправка результата EditText в ListItemActivity
