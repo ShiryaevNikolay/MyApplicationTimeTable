@@ -33,15 +33,20 @@ public class AddScheduleActivity extends AppCompatActivity implements View.OnCli
 
     private String day = "";
     private String clock = "";
-    private String name = "";
-    private String teacher = "";
 
     private TextView tvClock;
     private TextView tvItem;
     private TextView tvTeacher;
 
+    private SQLiteDatabase database;
+    private ContentValues contentValues;
+
+    private Button okBtn;
     //==============================================================================================
     ScheduleDBHelper scheduleDBHelper;
+
+    public AddScheduleActivity() {
+    }
     //==============================================================================================
 
     @Override
@@ -55,10 +60,10 @@ public class AddScheduleActivity extends AppCompatActivity implements View.OnCli
         //==========================================================================================
         scheduleDBHelper = new ScheduleDBHelper(this);
 
-        final SQLiteDatabase database = scheduleDBHelper.getWritableDatabase();
+        database = scheduleDBHelper.getWritableDatabase();
 
         // для добавления новых строк в таблицу
-        final ContentValues contentValues = new ContentValues();
+        contentValues = new ContentValues();
         //==========================================================================================
 
         Toolbar toolbar = findViewById(R.id.toolbar_add_schedule);
@@ -68,75 +73,24 @@ public class AddScheduleActivity extends AppCompatActivity implements View.OnCli
         new ButtonToReturnToMainActivity(toolbar, this);
 
         Button cancelBtn = findViewById(R.id.add_schedule_cancel_btn);
-        Button okBtn = findViewById(R.id.add_schedule_ok_btn);
+        okBtn = findViewById(R.id.add_schedule_ok_btn);
 
-        //__________________________________________________________________________________________
-        //__________________________________________________________________________________________
-        //__________________________________________________________________________________________
         tvClock = findViewById(R.id.tv_clock_schedule);
+        tvClock.setText("");
         tvItem = findViewById(R.id.tv_item_schedule);
+        tvItem.setText("");
         tvTeacher = findViewById(R.id.tv_teacher_schedule);
+        tvTeacher.setText("");
 
         tvClock.setOnClickListener(this);
         tvItem.setOnClickListener(this);
         tvTeacher.setOnClickListener(this);
-        //__________________________________________________________________________________________
-        //__________________________________________________________________________________________
-        //__________________________________________________________________________________________
 
         // при нажатии на "Отмена" закрывается текущее окно activity
         cancelBtn.setOnClickListener(this);
 
         // при нажатии на "Ок", отправляется текст в ListItemActivity и закрывается текущее окно activity
-//        okBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (!etClock.getText().toString().equals("") || !etName.getText().toString().equals("") || !etTeacher.getText().toString().equals("")){
-//                    clock = etClock.getText().toString();
-//                    name = etName.getText().toString();
-//                    teacher = etTeacher.getText().toString();
-//
-//                    contentValues.put(ScheduleDBHelper.KEY_DAY, day);
-//                    contentValues.put(ScheduleDBHelper.KEY_CLOCK, clock);
-//                    contentValues.put(ScheduleDBHelper.KEY_NAME, name);
-//                    contentValues.put(ScheduleDBHelper.KEY_TEACHER, teacher);
-//
-//                    //вставляем данные в таблицу базы данных
-//                    database.insert(ScheduleDBHelper.TABLE_SCHEDULE, null, contentValues);
-//
-//                    // ВЫВОД ДАННЫХ ИЗ БАЗЫ ДАННЫХ В ТЕРМИНАЛ
-//                    //==============================================================================
-//                    Cursor cursor = database.query(ScheduleDBHelper.TABLE_SCHEDULE, null, null, null, null, null, null);
-//
-//                    if (cursor.moveToFirst()){
-//                        int dayIndex = cursor.getColumnIndex(ScheduleDBHelper.KEY_DAY);
-//                        int idIndex = cursor.getColumnIndex(ScheduleDBHelper.KEY_ID);
-//                        int clockIndex = cursor.getColumnIndex(ScheduleDBHelper.KEY_CLOCK);
-//                        int nameIndex = cursor.getColumnIndex(ScheduleDBHelper.KEY_NAME);
-//                        int teacherIndex = cursor.getColumnIndex(ScheduleDBHelper.KEY_TEACHER);
-//                        do {
-//                            System.out.println("ID = " + cursor.getInt(idIndex) +
-//                                    ", day = " + cursor.getString(dayIndex) +
-//                                    ", clock = " + cursor.getString(clockIndex) +
-//                                    ", name = " + cursor.getString(nameIndex) +
-//                                    ", teacher = " + cursor.getString(teacherIndex));
-//                            }while (cursor.moveToNext());
-//                    } else {
-//                        System.out.println("0 rows");
-//                    }
-//
-//                    cursor.close();
-//                    scheduleDBHelper.close();
-//                    //==============================================================================
-//
-//                    sendMessage(day, clock, name, teacher);
-//                } else {
-//                    clock = "";
-//                    name = "";
-//                    teacher = "";
-//                }
-//            }
-//        });
+        okBtn.setOnClickListener(this);
     }
 
     @Override
@@ -144,6 +98,7 @@ public class AddScheduleActivity extends AppCompatActivity implements View.OnCli
         switch(v.getId()){
             case R.id.tv_clock_schedule:
                 callTimePicker();
+                checkEmptyField(tvClock, tvItem, tvTeacher, okBtn);
                 break;
             case R.id.tv_item_schedule:
                 Intent intentItem = new Intent(this, SelectListItemActivity.class);
@@ -159,6 +114,47 @@ public class AddScheduleActivity extends AppCompatActivity implements View.OnCli
                 setResult(RESULT_CANCELED);
                 finish();
                 break;
+            case R.id.add_schedule_ok_btn:
+                if (!tvClock.getText().equals("") && !tvItem.getText().equals("") && !tvTeacher.getText().equals("")) {
+                    clock = tvClock.getText().toString();
+                    String name = tvItem.getText().toString();
+                    String teacher = tvTeacher.getText().toString();
+
+                    contentValues.put(ScheduleDBHelper.KEY_DAY, day);
+                    contentValues.put(ScheduleDBHelper.KEY_CLOCK, clock);
+                    contentValues.put(ScheduleDBHelper.KEY_NAME, name);
+                    contentValues.put(ScheduleDBHelper.KEY_TEACHER, teacher);
+
+                    //вставляем данные в таблицу базы данных
+                    database.insert(ScheduleDBHelper.TABLE_SCHEDULE, null, contentValues);
+
+                    // ВЫВОД ДАННЫХ ИЗ БАЗЫ ДАННЫХ В ТЕРМИНАЛ
+                    //==============================================================================
+                    Cursor cursor = database.query(ScheduleDBHelper.TABLE_SCHEDULE, null, null, null, null, null, null);
+
+                    if (cursor.moveToFirst()){
+                        int dayIndex = cursor.getColumnIndex(ScheduleDBHelper.KEY_DAY);
+                        int idIndex = cursor.getColumnIndex(ScheduleDBHelper.KEY_ID);
+                        int clockIndex = cursor.getColumnIndex(ScheduleDBHelper.KEY_CLOCK);
+                        int nameIndex = cursor.getColumnIndex(ScheduleDBHelper.KEY_NAME);
+                        int teacherIndex = cursor.getColumnIndex(ScheduleDBHelper.KEY_TEACHER);
+                        do {
+                            System.out.println("ID = " + cursor.getInt(idIndex) +
+                                    ", day = " + cursor.getString(dayIndex) +
+                                    ", clock = " + cursor.getString(clockIndex) +
+                                    ", name = " + cursor.getString(nameIndex) +
+                                    ", teacher = " + cursor.getString(teacherIndex));
+                            }while (cursor.moveToNext());
+                    } else {
+                        System.out.println("0 rows");
+                    }
+
+                    cursor.close();
+                    scheduleDBHelper.close();
+                    //==============================================================================
+                    sendMessage(day, clock, name, teacher);
+                }
+                break;
         }
     }
 
@@ -168,15 +164,19 @@ public class AddScheduleActivity extends AppCompatActivity implements View.OnCli
             if(resultCode==RESULT_OK){
                 if (Objects.equals(data.getStringExtra("selectBtn"), "item")) {
                     tvItem.setText(data.getStringExtra(ACCESS_MESSAGE));
+                    checkEmptyField(tvClock, tvItem, tvTeacher, okBtn);
                 } else if (Objects.equals(data.getStringExtra("selectBtn"), "teacher")) {
                     tvTeacher.setText(data.getStringExtra(ACCESS_MESSAGE));
+                    checkEmptyField(tvClock, tvItem, tvTeacher, okBtn);
                 }
             }
             else if(resultCode==RESULT_CANCELED) {
                 if (Objects.equals(data.getStringExtra("selectBtn"), "item")) {
                     tvItem.setText("");
+                    checkEmptyField(tvClock, tvItem, tvTeacher, okBtn);
                 } else if (Objects.equals(data.getStringExtra("selectBtn"), "teacher")) {
-                    tvTeacher.setText("r");
+                    tvTeacher.setText("");
+                    checkEmptyField(tvClock, tvItem, tvTeacher, okBtn);
                 }
             }
         }
@@ -197,41 +197,18 @@ public class AddScheduleActivity extends AppCompatActivity implements View.OnCli
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                 String editTextTimeParam = hourOfDay + " : " + minute;
                 tvClock.setText(editTextTimeParam);
+                clock = tvClock.getText().toString();
             }
         }, hour, minute, true);
         timePickerDialog.show();
     }
 
-    protected void checkEmptyField(final EditText editText, final Button btn){
-        editText.addTextChangedListener(new TextWatcher() {
-            // действия перед тем, как что то введено
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                // если текст пустой, то кнопка "Ок" серая (неактивная)
-                if (s.toString().equals("")){
-                    btn.setBackground(getDrawable(R.drawable.btn_no_activated));
-                } else { // иначе зеленая (активная)
-                    btn.setBackground(getDrawable(R.drawable.bg_green_corner_view));
-                }
-            }
-            // действия, когда вводится какой то текст
-            // s - то, что вводится, для преобразования в строку - s.toString()
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-            // действия после того, как что то введено
-            // editable - то, что введено. В строку - editable.toString()
-            @Override
-            public void afterTextChanged(Editable s) {
-                // если текст пустой, то кнопка "Ок" серая (неактивная)
-                if (s.toString().equals("")){
-                    btn.setBackground(getDrawable(R.drawable.btn_no_activated));
-                } else { // иначе зеленая (активная)
-                    btn.setBackground(getDrawable(R.drawable.bg_green_corner_view));
-                }
-            }
-        });
+    protected void checkEmptyField(TextView tvClock, TextView tvItem, TextView tvTeacher, final Button btn){
+        if (!tvClock.getText().equals("") && !tvItem.getText().equals("") && !tvTeacher.getText().equals("")) {
+            btn.setBackground(getDrawable(R.drawable.bg_green_corner_view));
+        } else {
+            btn.setBackground(getDrawable(R.drawable.btn_no_activated));
+        }
     }
 
     // отправка результата EditText в ListItemActivity

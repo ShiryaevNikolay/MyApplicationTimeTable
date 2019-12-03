@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.timetable.AddScheduleActivity;
-import com.example.timetable.ListScheduleActivity;
 import com.example.timetable.R;
 import com.example.timetable.RecyclerSchedule;
 import com.example.timetable.adapters.ScheduleAdapter;
@@ -40,9 +39,9 @@ public class ScheduleFragment extends AbstractTabFragment implements View.OnClic
     private SQLiteDatabase database;
     private RecyclerView recyclerView;
 
-    String clockSchedule;
-    String nameSchedule;
-    String teacherSchedule;
+    private String clockSchedule;
+    private String nameSchedule;
+    private String teacherSchedule;
 
     private static final int LAYOUT = R.layout.fragment_schedule;
     private String daySchedule = "";
