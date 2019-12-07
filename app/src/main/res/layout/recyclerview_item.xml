@@ -4,10 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:cardCornerRadius="5dp"
+    app:cardElevation="0dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
     tools:ignore="NamespaceTypo"
-    app:cardUseCompatPadding="true">
+    android:layout_margin="3dp">
 
     <RelativeLayout
         android:layout_width="match_parent"

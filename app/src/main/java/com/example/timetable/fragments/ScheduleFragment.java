@@ -144,7 +144,7 @@ public class ScheduleFragment extends AbstractTabFragment implements View.OnClic
         //назначаем RecyclerView созданный Adapter
         recyclerView.setAdapter(itemsAdapter);
 
-        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(itemsAdapter);
+        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(itemsAdapter, context);
         ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
         touchHelper.attachToRecyclerView(recyclerView);
 

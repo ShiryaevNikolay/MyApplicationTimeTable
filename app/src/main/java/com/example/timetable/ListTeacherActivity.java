@@ -85,7 +85,7 @@ public class ListTeacherActivity extends AppCompatActivity implements OnItemList
         //назначаем RecyclerView созданный Adapter
         recyclerView.setAdapter(teachersAdapter);
 
-        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(teachersAdapter);
+        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(teachersAdapter, this);
         ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
         touchHelper.attachToRecyclerView(recyclerView);
     }
