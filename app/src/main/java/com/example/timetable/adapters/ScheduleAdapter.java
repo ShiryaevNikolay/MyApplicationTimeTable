@@ -1,5 +1,6 @@
 package com.example.timetable.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.view.LayoutInflater;
@@ -62,16 +63,26 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Schedu
         listItems.remove(position);
         notifyItemRemoved(position);
 
-        Snackbar.make(recyclerView, "Item has been deleted.", Snackbar.LENGTH_LONG).setAction("UNDO", new View.OnClickListener() {
+        Snackbar snackbar = Snackbar.make(recyclerView, "Item has been deleted.", Snackbar.LENGTH_LONG).setAction("UNDO", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 listItems.add(position, item);
                 notifyItemInserted(position);
             }
-        }).show();
-
-        // удаление элемента из базы данных
-        database.delete(ScheduleDBHelper.TABLE_SCHEDULE, ScheduleDBHelper.KEY_CLOCK + "= ?", new String[] {item.getClock()});
+        });
+        snackbar.show();
+        snackbar.addCallback(new Snackbar.Callback() {
+            @SuppressLint("SwitchIntDef")
+            public void onDismissed(Snackbar snackbar, int event) {
+                switch (event) {
+                    case Snackbar.Callback.DISMISS_EVENT_TIMEOUT:
+                    case Snackbar.Callback.DISMISS_EVENT_CONSECUTIVE:
+                        // удаление элемента из базы данных
+                        database.delete(ScheduleDBHelper.TABLE_SCHEDULE, ScheduleDBHelper.KEY_CLOCK + "= ?", new String[] {item.getClock()});
+                        break;
+                }
+            }
+        });
     }
 
     static class ScheduleViewHolder extends RecyclerView.ViewHolder {
