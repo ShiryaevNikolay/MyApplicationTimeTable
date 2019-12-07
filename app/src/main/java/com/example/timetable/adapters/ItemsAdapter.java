@@ -25,11 +25,13 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemsViewHol
 
     private List<RecyclerItem> listItems;
     private SQLiteDatabase database;
+    private RecyclerView recyclerView;
 
-    public ItemsAdapter(List<RecyclerItem> listItems, SQLiteDatabase database, OnItemListener onItemListener){
+    public ItemsAdapter(List<RecyclerItem> listItems, SQLiteDatabase database, OnItemListener onItemListener, RecyclerView recyclerView){
         this.listItems = listItems;
         this.database = database;
         this.onItemListener = onItemListener;
+        this.recyclerView = recyclerView;
     }
 
     @NonNull
@@ -56,11 +58,19 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemsViewHol
     }
 
     @Override
-    public void onItemDismiss(int position) {
+    public void onItemDismiss(final int position) {
         // удаление элемента из списка по позиции
-        RecyclerItem item = listItems.get(position);
+        final RecyclerItem item = listItems.get(position);
         listItems.remove(position);
         notifyItemRemoved(position);
+
+        Snackbar.make(recyclerView, "Item has been deleted.", Snackbar.LENGTH_LONG).setAction("UNDO", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listItems.add(position, item);
+                notifyItemInserted(position);
+            }
+        }).show();
 
         // удаление элемента из базы данных
         database.delete(ItemDBHelper.TABLE_ITEMS, ItemDBHelper.KEY_NAME + "= ?", new String[] {item.getText()});

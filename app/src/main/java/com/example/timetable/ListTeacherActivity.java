@@ -81,7 +81,7 @@ public class ListTeacherActivity extends AppCompatActivity implements OnItemList
             }
         });
 
-        TeachersAdapter teachersAdapter = new TeachersAdapter(listTeacher, database, this);
+        TeachersAdapter teachersAdapter = new TeachersAdapter(listTeacher, database, this, recyclerView);
         //назначаем RecyclerView созданный Adapter
         recyclerView.setAdapter(teachersAdapter);
 
@@ -103,7 +103,7 @@ public class ListTeacherActivity extends AppCompatActivity implements OnItemList
             super.onActivityResult(requestCode, resultCode, data);
         }
 
-        TeachersAdapter teachersAdapter = new TeachersAdapter(listTeacher, database, this);
+        TeachersAdapter teachersAdapter = new TeachersAdapter(listTeacher, database, this, recyclerView);
         //назначаем RecyclerView созданный Adapter
         recyclerView.setAdapter(teachersAdapter);
     }

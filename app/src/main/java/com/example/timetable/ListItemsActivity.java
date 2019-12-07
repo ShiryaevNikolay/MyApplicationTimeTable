@@ -85,7 +85,7 @@ public class ListItemsActivity extends AppCompatActivity implements OnItemListen
         });
 
         // numberItems - кол-во элементов в списке, nameItem - название предмета
-        ItemsAdapter itemsAdapter = new ItemsAdapter(listItems, database, this);
+        ItemsAdapter itemsAdapter = new ItemsAdapter(listItems, database, this, recyclerView);
         //назначаем RecyclerView созданный Adapter
         recyclerView.setAdapter(itemsAdapter);
 
@@ -108,7 +108,7 @@ public class ListItemsActivity extends AppCompatActivity implements OnItemListen
             super.onActivityResult(requestCode, resultCode, data);
         }
 
-        ItemsAdapter itemsAdapter = new ItemsAdapter(listItems, database, this);
+        ItemsAdapter itemsAdapter = new ItemsAdapter(listItems, database, this, recyclerView);
         //назначаем RecyclerView созданный Adapter
         recyclerView.setAdapter(itemsAdapter);
     }

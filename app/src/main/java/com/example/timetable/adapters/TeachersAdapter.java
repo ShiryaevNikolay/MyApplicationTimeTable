@@ -15,6 +15,7 @@ import com.example.timetable.RecyclerItem;
 import com.example.timetable.database.TeacherDBHelper;
 import com.example.timetable.modules.ItemTouchHelperAdapter;
 import com.example.timetable.modules.OnItemListener;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
 
@@ -24,11 +25,13 @@ public class TeachersAdapter extends RecyclerView.Adapter<TeachersAdapter.Teache
 
     private List<RecyclerItem> listTeachers;
     private SQLiteDatabase database;
+    private RecyclerView recyclerView;
 
-    public TeachersAdapter(List<RecyclerItem> listTeachers, SQLiteDatabase database, OnItemListener onItemListener){
+    public TeachersAdapter(List<RecyclerItem> listTeachers, SQLiteDatabase database, OnItemListener onItemListener, RecyclerView recyclerView){
         this.listTeachers = listTeachers;
         this.database = database;
         this.onItemListener = onItemListener;
+        this.recyclerView = recyclerView;
     }
 
     @NonNull
@@ -54,11 +57,19 @@ public class TeachersAdapter extends RecyclerView.Adapter<TeachersAdapter.Teache
     }
 
     @Override
-    public void onItemDismiss(int position) {
+    public void onItemDismiss(final int position) {
         // удаление элемента из списка по позиции
-        RecyclerItem teacher = listTeachers.get(position);
+        final RecyclerItem teacher = listTeachers.get(position);
         listTeachers.remove(position);
         notifyItemRemoved(position);
+
+        Snackbar.make(recyclerView, "Item has been deleted.", Snackbar.LENGTH_LONG).setAction("UNDO", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listTeachers.add(position, teacher);
+                notifyItemInserted(position);
+            }
+        }).show();
 
         // удаление элемента из базы данных
         database.delete(TeacherDBHelper.TABLE_TEACHERS, TeacherDBHelper.KEY_NAME + "= ?", new String[] {teacher.getText()});

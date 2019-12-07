@@ -140,7 +140,7 @@ public class ScheduleFragment extends AbstractTabFragment implements View.OnClic
         recyclerView.setHasFixedSize(true);
 
         // numberItems - кол-во элементов в списке, nameItem - название предмета
-        ScheduleAdapter itemsAdapter = new ScheduleAdapter(listItems, database);
+        ScheduleAdapter itemsAdapter = new ScheduleAdapter(listItems, database, recyclerView);
         //назначаем RecyclerView созданный Adapter
         recyclerView.setAdapter(itemsAdapter);
 
@@ -214,7 +214,7 @@ public class ScheduleFragment extends AbstractTabFragment implements View.OnClic
             super.onActivityResult(requestCode, resultCode, data);
         }
 
-        ScheduleAdapter itemsAdapter = new ScheduleAdapter(listItems, database);
+        ScheduleAdapter itemsAdapter = new ScheduleAdapter(listItems, database, recyclerView);
         //назначаем RecyclerView созданный Adapter
         recyclerView.setAdapter(itemsAdapter);
     }

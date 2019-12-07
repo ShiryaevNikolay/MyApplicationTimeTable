@@ -14,6 +14,7 @@ import com.example.timetable.R;
 import com.example.timetable.RecyclerSchedule;
 import com.example.timetable.database.ScheduleDBHelper;
 import com.example.timetable.modules.ItemTouchHelperAdapter;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
 
@@ -21,10 +22,12 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Schedu
 
     private List<RecyclerSchedule> listItems;
     private SQLiteDatabase database;
+    private RecyclerView recyclerView;
 
-    public ScheduleAdapter(List<RecyclerSchedule> listItems, SQLiteDatabase database){
+    public ScheduleAdapter(List<RecyclerSchedule> listItems, SQLiteDatabase database, RecyclerView recyclerView){
         this.listItems = listItems;
         this.database = database;
+        this.recyclerView = recyclerView;
     }
 
     public ScheduleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -53,11 +56,19 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Schedu
     }
 
     @Override
-    public void onItemDismiss(int position) {
+    public void onItemDismiss(final int position) {
         // удаление элемента из списка по позиции
-        RecyclerSchedule item = listItems.get(position);
+        final RecyclerSchedule item = listItems.get(position);
         listItems.remove(position);
         notifyItemRemoved(position);
+
+        Snackbar.make(recyclerView, "Item has been deleted.", Snackbar.LENGTH_LONG).setAction("UNDO", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listItems.add(position, item);
+                notifyItemInserted(position);
+            }
+        }).show();
 
         // удаление элемента из базы данных
         database.delete(ScheduleDBHelper.TABLE_SCHEDULE, ScheduleDBHelper.KEY_CLOCK + "= ?", new String[] {item.getClock()});
