@@ -3,6 +3,7 @@ package com.example.timetable.adapters;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,13 +65,15 @@ public class TeachersAdapter extends RecyclerView.Adapter<TeachersAdapter.Teache
         listTeachers.remove(position);
         notifyItemRemoved(position);
 
-        Snackbar snackbar = Snackbar.make(recyclerView, "Item has been deleted.", Snackbar.LENGTH_LONG).setAction("UNDO", new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listTeachers.add(position, teacher);
-                notifyItemInserted(position);
-            }
-        });
+        Snackbar snackbar = Snackbar.make(recyclerView, "Item has been deleted.", Snackbar.LENGTH_LONG)
+                .setActionTextColor(Color.YELLOW)
+                .setAction("UNDO", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        listTeachers.add(position, teacher);
+                        notifyItemInserted(position);
+                    }
+                });
         snackbar.show();
         snackbar.addCallback(new Snackbar.Callback() {
             @SuppressLint("SwitchIntDef")
