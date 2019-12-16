@@ -83,7 +83,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemsViewHol
                     case Snackbar.Callback.DISMISS_EVENT_TIMEOUT:
                     case Snackbar.Callback.DISMISS_EVENT_CONSECUTIVE:
                         // удаление элемента из базы данных
-                        database.delete(ItemDBHelper.TABLE_ITEMS, ItemDBHelper.KEY_NAME + "= ?", new String[]{item.getText()});
+                        database.delete(ItemDBHelper.TABLE_ITEMS, ItemDBHelper.KEY_ID + " = " + item.getId(), null);
                         break;
                 }
             }
