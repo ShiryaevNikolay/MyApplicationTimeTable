@@ -28,10 +28,9 @@ import java.util.List;
 
 public class ListItemsActivity extends AppCompatActivity implements OnItemListener {
 
-    static final String ACCESS_MESSAGE="ACCESS_MESSAGE";
-
     Toolbar toolbar;
     String nameItem;
+    int idItem = 0;
     RecyclerView recyclerView;
 
     public List<RecyclerItem> listItems;
@@ -62,7 +61,8 @@ public class ListItemsActivity extends AppCompatActivity implements OnItemListen
         if (cursor.moveToFirst()){
             do {
                 String nameItem = cursor.getString(cursor.getColumnIndex(ItemDBHelper. KEY_NAME));
-                listItems.add(new RecyclerItem(nameItem));
+                idItem = cursor.getInt(cursor.getColumnIndex(ItemDBHelper. KEY_ID));
+                listItems.add(new RecyclerItem(nameItem, idItem));
             }while (cursor.moveToNext());
         }
 
@@ -97,8 +97,9 @@ public class ListItemsActivity extends AppCompatActivity implements OnItemListen
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode == RequestCode.REQUEST_CODE_ITEM){
             if(resultCode==RESULT_OK){
-                nameItem = data.getStringExtra(ACCESS_MESSAGE);
-                listItems.add(new RecyclerItem(nameItem));
+                nameItem = data.getStringExtra("text");
+                idItem = data.getIntExtra("idItem", 0);
+                listItems.add(new RecyclerItem(nameItem, idItem));
             }
             else{
                 nameItem = "Ошибка доступа";

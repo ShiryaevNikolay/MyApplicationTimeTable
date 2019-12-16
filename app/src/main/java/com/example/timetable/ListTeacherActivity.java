@@ -26,11 +26,9 @@ import java.util.List;
 
 public class ListTeacherActivity extends AppCompatActivity implements OnItemListener {
 
-    static final String ACCESS_MESSAGE="ACCESS_MESSAGE";
-
     Toolbar toolbar;
     String nameTeacher;
-    int numberTeacher = 0;
+    int idItem = 0;
     RecyclerView recyclerView;
 
     public List<RecyclerItem> listTeacher;
@@ -59,7 +57,8 @@ public class ListTeacherActivity extends AppCompatActivity implements OnItemList
         if (cursor.moveToFirst()){
             do {
                 String nameTeacher = cursor.getString(cursor.getColumnIndex(TeacherDBHelper. KEY_NAME));
-                listTeacher.add(new RecyclerItem(nameTeacher));
+                int idItem = cursor.getInt(cursor.getColumnIndex(TeacherDBHelper. KEY_ID));
+                listTeacher.add(new RecyclerItem(nameTeacher, idItem));
             }while (cursor.moveToNext());
         }
 
@@ -93,9 +92,9 @@ public class ListTeacherActivity extends AppCompatActivity implements OnItemList
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == RequestCode.REQUEST_CODE_TEACHER){
             if (resultCode == RESULT_OK){
-                nameTeacher = data.getStringExtra(ACCESS_MESSAGE);
-                numberTeacher++;
-                listTeacher.add(new RecyclerItem(nameTeacher));
+                nameTeacher = data.getStringExtra("text");
+                idItem = data.getIntExtra("idItem", idItem);
+                listTeacher.add(new RecyclerItem(nameTeacher, idItem));
             } else {
                 nameTeacher = "Ошибка доступа";
             }

@@ -19,6 +19,7 @@ import com.example.timetable.database.TeacherDBHelper;
 public class AddTeachersActivity extends AppCompatActivity {
 
     private String text = "";
+    private int idItem = 0;
 
     //==============================================================================================
     TeacherDBHelper teacherDbHelper;
@@ -88,6 +89,7 @@ public class AddTeachersActivity extends AppCompatActivity {
                         do {
                             System.out.println("ID = " + cursor.getInt(idIndex) +
                                     ", name = " + cursor.getString(nameIndex));
+                            idItem = cursor.getInt(idIndex);
                         }while (cursor.moveToNext());
                     } else {
                         System.out.println("0 rows");
@@ -97,7 +99,7 @@ public class AddTeachersActivity extends AppCompatActivity {
                     teacherDbHelper.close();
                     //==============================================================================
 
-                    sendMessage(text);
+                    sendMessage(text, idItem);
                 } else {
                     text = "";
                 }
@@ -138,9 +140,10 @@ public class AddTeachersActivity extends AppCompatActivity {
     }
 
     // отправка результата EditText в ListItemActivity
-    private void sendMessage(String message){
+    private void sendMessage(String message, int idItem){
         Intent data = new Intent();
-        data.putExtra(ListTeacherActivity.ACCESS_MESSAGE, message);
+        data.putExtra("text", message);
+        data.putExtra("idItem", idItem);
         setResult(RESULT_OK, data);
         finish();
     }

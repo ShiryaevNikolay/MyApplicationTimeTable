@@ -19,6 +19,7 @@ import com.example.timetable.database.ItemDBHelper;
 public class AddItemsActivity extends AppCompatActivity {
 
     private String text = "";
+    private int idItem = 0;
 
     //==============================================================================================
     ItemDBHelper itemDbHelper;
@@ -95,13 +96,13 @@ public class AddItemsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(text.length() != 0){
-                    // ВЫВОД ДАННЫХ ИЗ БАЗЫ ДАННЫХ В ТЕРМИНАЛ
-                    //==============================================================================
                     contentValues.put(ItemDBHelper.KEY_NAME, text);
 
                     //вставляем данные в таблицу базы данных
                     database.insert(ItemDBHelper.TABLE_ITEMS, null, contentValues);
 
+                    // ВЫВОД ДАННЫХ ИЗ БАЗЫ ДАННЫХ В ТЕРМИНАЛ
+                    //==============================================================================
                     Cursor cursor = database.query(ItemDBHelper.TABLE_ITEMS, null, null, null, null, null, null);
 
                     if (cursor.moveToFirst()){
@@ -110,6 +111,7 @@ public class AddItemsActivity extends AppCompatActivity {
                         do {
                             System.out.println("ID = " + cursor.getInt(idIndex) +
                                     ", name = " + cursor.getString(nameIndex));
+                            idItem = cursor.getInt(idIndex);
                         }while (cursor.moveToNext());
                     } else {
                         System.out.println("0 rows");
@@ -119,16 +121,17 @@ public class AddItemsActivity extends AppCompatActivity {
                     itemDbHelper.close();
                     //==============================================================================
 
-                    sendMessage(text);
+                    sendMessage(text, idItem);
                 }
             }
         });
     }
 
     // отправка результата EditText в ListItemActivity
-    private void sendMessage(String message){
+    private void sendMessage(String message, int idItem){
         Intent data = new Intent();
-        data.putExtra(ListItemsActivity.ACCESS_MESSAGE, message);
+        data.putExtra("text", message);
+        data.putExtra("idItem", idItem);
         setResult(RESULT_OK, data);
         finish();
     }
