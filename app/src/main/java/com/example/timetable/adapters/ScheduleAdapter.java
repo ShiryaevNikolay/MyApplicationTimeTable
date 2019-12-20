@@ -81,7 +81,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Schedu
                     case Snackbar.Callback.DISMISS_EVENT_TIMEOUT:
                     case Snackbar.Callback.DISMISS_EVENT_CONSECUTIVE:
                         // удаление элемента из базы данных
-                        database.delete(ScheduleDBHelper.TABLE_SCHEDULE, ScheduleDBHelper.KEY_CLOCK + "= ?", new String[] {item.getClock()});
+                        database.delete(ScheduleDBHelper.TABLE_SCHEDULE, ScheduleDBHelper.KEY_ID + " = " + item.getId(), null);
                         break;
                 }
             }

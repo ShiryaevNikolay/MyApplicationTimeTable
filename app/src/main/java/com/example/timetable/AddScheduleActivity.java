@@ -33,6 +33,7 @@ public class AddScheduleActivity extends AppCompatActivity implements View.OnCli
 
     private String day = "";
     private String clock = "";
+    private int idItem = 0;
 
     private TextView tvClock;
     private TextView tvItem;
@@ -134,12 +135,12 @@ public class AddScheduleActivity extends AppCompatActivity implements View.OnCli
 
                     if (cursor.moveToFirst()){
                         int dayIndex = cursor.getColumnIndex(ScheduleDBHelper.KEY_DAY);
-                        int idIndex = cursor.getColumnIndex(ScheduleDBHelper.KEY_ID);
+                        idItem = cursor.getColumnIndex(ScheduleDBHelper.KEY_ID);
                         int clockIndex = cursor.getColumnIndex(ScheduleDBHelper.KEY_CLOCK);
                         int nameIndex = cursor.getColumnIndex(ScheduleDBHelper.KEY_NAME);
                         int teacherIndex = cursor.getColumnIndex(ScheduleDBHelper.KEY_TEACHER);
                         do {
-                            System.out.println("ID = " + cursor.getInt(idIndex) +
+                            System.out.println("ID = " + cursor.getInt(idItem) +
                                     ", day = " + cursor.getString(dayIndex) +
                                     ", clock = " + cursor.getString(clockIndex) +
                                     ", name = " + cursor.getString(nameIndex) +
@@ -152,7 +153,7 @@ public class AddScheduleActivity extends AppCompatActivity implements View.OnCli
                     cursor.close();
                     scheduleDBHelper.close();
                     //==============================================================================
-                    sendMessage(day, clock, name, teacher);
+                    sendMessage(day, clock, name, teacher, idItem);
                 }
                 break;
         }
@@ -212,12 +213,13 @@ public class AddScheduleActivity extends AppCompatActivity implements View.OnCli
     }
 
     // отправка результата EditText в ListItemActivity
-    private void sendMessage(String day, String clock, String name, String teacher){
+    private void sendMessage(String day, String clock, String name, String teacher, int idItem){
         Intent data = new Intent();
         data.putExtra(ScheduleFragment.ACCESS_MESSAGE_DAY, day);
         data.putExtra(ScheduleFragment.ACCESS_MESSAGE_CLOCK, clock);
         data.putExtra(ScheduleFragment.ACCESS_MESSAGE_NAME, name);
         data.putExtra(ScheduleFragment.ACCESS_MESSAGE_TEACHER, teacher);
+        data.putExtra("idItem", idItem);
         setResult(RESULT_OK, data);
         finish();
     }
