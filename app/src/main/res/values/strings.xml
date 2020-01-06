@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TimeTable</string>
+    <string name="app_name">Расписание</string>
     <string name="toolbar_add_items">Предметы</string>
     <string name="title_activity_main2">Main2Activity</string>
     <string name="title_activity_list_items">ListItemsActivity</string>

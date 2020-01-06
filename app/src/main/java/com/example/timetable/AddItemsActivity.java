@@ -1,5 +1,6 @@
 package com.example.timetable;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -10,11 +11,15 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.timetable.database.ItemDBHelper;
+
+import java.util.Objects;
 
 public class AddItemsActivity extends AppCompatActivity {
 
@@ -23,6 +28,8 @@ public class AddItemsActivity extends AppCompatActivity {
 
     //==============================================================================================
     ItemDBHelper itemDbHelper;
+    ContentValues contentValues;
+    SQLiteDatabase database;
     //==============================================================================================
 
     @Override
@@ -33,10 +40,10 @@ public class AddItemsActivity extends AppCompatActivity {
         //==========================================================================================
         itemDbHelper = new ItemDBHelper(this);
 
-        final SQLiteDatabase database = itemDbHelper.getWritableDatabase();
+        database = itemDbHelper.getWritableDatabase();
 
         // для добавления новых строк в таблицу
-        final ContentValues contentValues = new ContentValues();
+        contentValues = new ContentValues();
         //==========================================================================================
 
         Toolbar toolbar = findViewById(R.id.toolbar_add_item);
@@ -107,14 +114,9 @@ public class AddItemsActivity extends AppCompatActivity {
 
                     if (cursor.moveToFirst()){
                         int idIndex = cursor.getColumnIndex(ItemDBHelper.KEY_ID);
-                        int nameIndex = cursor.getColumnIndex(ItemDBHelper. KEY_NAME);
                         do {
-                            System.out.println("ID = " + cursor.getInt(idIndex) +
-                                    ", name = " + cursor.getString(nameIndex));
                             idItem = cursor.getInt(idIndex);
                         }while (cursor.moveToNext());
-                    } else {
-                        System.out.println("0 rows");
                     }
 
                     cursor.close();
@@ -125,6 +127,42 @@ public class AddItemsActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_toolbar, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.menu_action_save) {
+            if(text.length() != 0){
+                contentValues.put(ItemDBHelper.KEY_NAME, text);
+
+                //вставляем данные в таблицу базы данных
+                database.insert(ItemDBHelper.TABLE_ITEMS, null, contentValues);
+
+                // ВЫВОД ДАННЫХ ИЗ БАЗЫ ДАННЫХ В ТЕРМИНАЛ
+                //==============================================================================
+                Cursor cursor = database.query(ItemDBHelper.TABLE_ITEMS, null, null, null, null, null, null);
+
+                if (cursor.moveToFirst()){
+                    int idIndex = cursor.getColumnIndex(ItemDBHelper.KEY_ID);
+                    do {
+                        idItem = cursor.getInt(idIndex);
+                    }while (cursor.moveToNext());
+                }
+
+                cursor.close();
+                itemDbHelper.close();
+                //==============================================================================
+
+                sendMessage(text, idItem);
+            }
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     // отправка результата EditText в ListItemActivity

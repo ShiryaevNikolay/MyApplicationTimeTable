@@ -53,7 +53,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_weight="1"
-                    android:hint="Select time"
+                    android:hint="Выбрать время"
                     android:textSize="20sp"
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"/>
@@ -78,7 +78,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_weight="1"
-                    android:hint="Select item"
+                    android:hint="Выбрать предмет"
                     android:textSize="20sp"
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"/>
@@ -101,7 +101,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_weight="1"
-                    android:hint="Select teacher"
+                    android:hint="Выбрать преподавателя"
                     android:textSize="20sp"
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"/>

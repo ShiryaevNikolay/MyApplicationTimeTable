@@ -23,32 +23,39 @@
             app:elevation="0dp"/>
     </com.google.android.material.appbar.AppBarLayout>
 
-    <LinearLayout
-        android:id="@+id/add_item_layout_vertical"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/app_bar_layout_add_item"
-        android:orientation="vertical"
-        android:padding="15dp">
-
+        android:layout_above="@+id/add_item_btn">
 
         <LinearLayout
-            android:orientation="vertical"
+            android:id="@+id/add_item_layout_vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="15dp">
 
-            <EditText
-                android:id="@+id/editText_item"
+
+            <LinearLayout
+                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:hint="Предмет"
-                android:theme="@style/ThemeEditText"/>
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/editText_item"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:inputType="textMultiLine"
+                    android:hint="Предмет"
+                    android:theme="@style/ThemeEditText"/>
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
+    </ScrollView>
 
     <LinearLayout
+        android:id="@+id/add_item_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
