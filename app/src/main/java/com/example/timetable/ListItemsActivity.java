@@ -4,10 +4,12 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import com.example.timetable.adapters.ItemsAdapter;
 import com.example.timetable.database.ItemDBHelper;
+import com.example.timetable.modules.ItemTouchHelperAdapter;
 import com.example.timetable.modules.OnItemListener;
 import com.example.timetable.modules.SimpleItemTouchHelperCallback;
 import com.example.timetable.util.RequestCode;
@@ -24,10 +26,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 
-public class ListItemsActivity extends AppCompatActivity implements OnItemListener {
+public class ListItemsActivity extends AppCompatActivity implements OnItemListener, ItemTouchHelperAdapter {
 
     Toolbar toolbar;
     String nameItem;
@@ -37,7 +37,7 @@ public class ListItemsActivity extends AppCompatActivity implements OnItemListen
     ItemTouchHelper.Callback callback;
     ItemTouchHelper touchHelper;
 
-    public List<RecyclerItem> listItems;
+    public ArrayList<RecyclerItem> listItems;
 
     SQLiteDatabase database;
 
@@ -49,12 +49,12 @@ public class ListItemsActivity extends AppCompatActivity implements OnItemListen
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(R.drawable.toolbar_back_btn);
 
+        new ButtonToReturnToMainActivity(toolbar, this);
+
         //для базы данных
         ItemDBHelper itemDbHelper = new ItemDBHelper(this);
         database = itemDbHelper.getWritableDatabase();
         @SuppressLint("Recycle") Cursor cursor = database.query(ItemDBHelper.TABLE_ITEMS, null, null, null, null, null, null);
-
-        new ButtonToReturnToMainActivity(toolbar, this);
 
         listItems = new ArrayList<>();
 
@@ -89,11 +89,11 @@ public class ListItemsActivity extends AppCompatActivity implements OnItemListen
         });
 
         // numberItems - кол-во элементов в списке, nameItem - название предмета
-        itemsAdapter = new ItemsAdapter(listItems, database, this, recyclerView);
+        itemsAdapter = new ItemsAdapter(listItems, this);
         //назначаем RecyclerView созданный Adapter
         recyclerView.setAdapter(itemsAdapter);
 
-        callback = new SimpleItemTouchHelperCallback(itemsAdapter, this);
+        callback = new SimpleItemTouchHelperCallback( this, this);
         touchHelper = new ItemTouchHelper(callback);
         touchHelper.attachToRecyclerView(recyclerView);
     }
@@ -113,16 +113,44 @@ public class ListItemsActivity extends AppCompatActivity implements OnItemListen
             super.onActivityResult(requestCode, resultCode, data);
         }
 
-        itemsAdapter = new ItemsAdapter(listItems, database, this, recyclerView);
+
+        itemsAdapter = new ItemsAdapter(listItems, this);
         //назначаем RecyclerView созданный Adapter
         recyclerView.setAdapter(itemsAdapter);
-        callback = new SimpleItemTouchHelperCallback(itemsAdapter, this);
-        touchHelper = new ItemTouchHelper(callback);
-        touchHelper.attachToRecyclerView(recyclerView);
     }
 
     @Override
     public void onItemClick(int position) {
 
+    }
+
+    @Override
+    public void onItemDismiss(final int position) {
+        final RecyclerItem item = listItems.get(position);
+        listItems.remove(position);
+        itemsAdapter.notifyItemRemoved(position);
+
+        Snackbar snackbar = Snackbar.make(recyclerView, "Элемент был удалён.", Snackbar.LENGTH_LONG)
+                .setActionTextColor(Color.YELLOW)
+                .setAction("Отмена", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        listItems.add(position, item);
+                        itemsAdapter.notifyItemInserted(position);
+                    }
+                });
+        snackbar.show();
+        snackbar.addCallback(new Snackbar.Callback() {
+            @SuppressLint("SwitchIntDef")
+            public void onDismissed(Snackbar snackbar, int event) {
+                switch (event) {
+                    case Snackbar.Callback.DISMISS_EVENT_TIMEOUT:
+                    case Snackbar.Callback.DISMISS_EVENT_CONSECUTIVE:
+                        // удаление элемента из базы данных
+                        database.delete(ItemDBHelper.TABLE_ITEMS, ItemDBHelper.KEY_ID + " = " + item.getId(), null);
+                        break;
+                }
+            }
+        });
     }
 }
