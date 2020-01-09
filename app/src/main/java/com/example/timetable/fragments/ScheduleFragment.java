@@ -42,6 +42,7 @@ public class ScheduleFragment extends AbstractTabFragment implements View.OnClic
     private String clockSchedule;
     private String nameSchedule;
     private String teacherSchedule;
+    private int idItem = 0;
 
     private static final int LAYOUT = R.layout.fragment_schedule;
     private String daySchedule = "";
@@ -125,7 +126,8 @@ public class ScheduleFragment extends AbstractTabFragment implements View.OnClic
                     clockSchedule = cursor.getString(cursor.getColumnIndex(ScheduleDBHelper.KEY_CLOCK));
                     nameSchedule = cursor.getString(cursor.getColumnIndex(ScheduleDBHelper.KEY_NAME));
                     teacherSchedule = cursor.getString(cursor.getColumnIndex(ScheduleDBHelper.KEY_TEACHER));
-                    listItems.add(new RecyclerSchedule(clockSchedule, nameSchedule, teacherSchedule));
+                    idItem = cursor.getInt(cursor.getColumnIndex(ScheduleDBHelper.KEY_ID));
+                    listItems.add(new RecyclerSchedule(clockSchedule, nameSchedule, teacherSchedule, idItem));
                 }
             }while (cursor.moveToNext());
         }
@@ -140,11 +142,11 @@ public class ScheduleFragment extends AbstractTabFragment implements View.OnClic
         recyclerView.setHasFixedSize(true);
 
         // numberItems - кол-во элементов в списке, nameItem - название предмета
-        ScheduleAdapter itemsAdapter = new ScheduleAdapter(listItems, database);
+        ScheduleAdapter itemsAdapter = new ScheduleAdapter(listItems, database, recyclerView);
         //назначаем RecyclerView созданный Adapter
         recyclerView.setAdapter(itemsAdapter);
 
-        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(itemsAdapter);
+        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(itemsAdapter, context);
         ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
         touchHelper.attachToRecyclerView(recyclerView);
 
@@ -201,7 +203,8 @@ public class ScheduleFragment extends AbstractTabFragment implements View.OnClic
                     clockSchedule = data.getStringExtra(ACCESS_MESSAGE_CLOCK);
                     nameSchedule = data.getStringExtra(ACCESS_MESSAGE_NAME);
                     teacherSchedule = data.getStringExtra(ACCESS_MESSAGE_TEACHER);
-                    listItems.add(new RecyclerSchedule(clockSchedule, nameSchedule, teacherSchedule));
+                    idItem = data.getIntExtra("idItem", 0);
+                    listItems.add(new RecyclerSchedule(clockSchedule, nameSchedule, teacherSchedule, idItem));
                 }
             }
             else{
@@ -214,7 +217,7 @@ public class ScheduleFragment extends AbstractTabFragment implements View.OnClic
             super.onActivityResult(requestCode, resultCode, data);
         }
 
-        ScheduleAdapter itemsAdapter = new ScheduleAdapter(listItems, database);
+        ScheduleAdapter itemsAdapter = new ScheduleAdapter(listItems, database, recyclerView);
         //назначаем RecyclerView созданный Adapter
         recyclerView.setAdapter(itemsAdapter);
     }

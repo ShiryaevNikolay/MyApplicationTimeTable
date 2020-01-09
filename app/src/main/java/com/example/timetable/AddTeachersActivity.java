@@ -1,5 +1,6 @@
 package com.example.timetable;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -10,18 +11,28 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.example.timetable.database.ItemDBHelper;
 import com.example.timetable.database.TeacherDBHelper;
 
 public class AddTeachersActivity extends AppCompatActivity {
 
     private String text = "";
+    private int idItem = 0;
+
+    EditText etSurname;
+    EditText etName;
+    EditText etPatronymic;
 
     //==============================================================================================
     TeacherDBHelper teacherDbHelper;
+    ContentValues contentValues;
+    SQLiteDatabase database;
     //==============================================================================================
 
     @Override
@@ -32,10 +43,10 @@ public class AddTeachersActivity extends AppCompatActivity {
         //==========================================================================================
         teacherDbHelper = new TeacherDBHelper(this);
 
-        final SQLiteDatabase database = teacherDbHelper.getWritableDatabase();
+        database = teacherDbHelper.getWritableDatabase();
 
         // для добавления новых строк в таблицу
-        final ContentValues contentValues = new ContentValues();
+        contentValues = new ContentValues();
         //==========================================================================================
 
         Toolbar toolbar = findViewById(R.id.toolbar_add_teacher);
@@ -48,9 +59,9 @@ public class AddTeachersActivity extends AppCompatActivity {
         Button okBtn = findViewById(R.id.add_teacher_ok_btn);
 
         // находим поля с вводом текста "Фамилия, имя, отчество"
-        final EditText etSurname = findViewById(R.id.editText_surname);
-        final EditText etName = findViewById(R.id.editText_name);
-        final EditText etPatronymic = findViewById(R.id.editText_patronymic);
+        etSurname = findViewById(R.id.editText_surname);
+        etName = findViewById(R.id.editText_name);
+        etPatronymic = findViewById(R.id.editText_patronymic);
 
         // проверяем, пустое ли поле ввода
         checkEmptyField(etSurname, okBtn);
@@ -88,6 +99,7 @@ public class AddTeachersActivity extends AppCompatActivity {
                         do {
                             System.out.println("ID = " + cursor.getInt(idIndex) +
                                     ", name = " + cursor.getString(nameIndex));
+                            idItem = cursor.getInt(idIndex);
                         }while (cursor.moveToNext());
                     } else {
                         System.out.println("0 rows");
@@ -97,12 +109,50 @@ public class AddTeachersActivity extends AppCompatActivity {
                     teacherDbHelper.close();
                     //==============================================================================
 
-                    sendMessage(text);
+                    sendMessage(text, idItem);
                 } else {
                     text = "";
                 }
             }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_toolbar, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (!etSurname.getText().toString().equals("") || !etName.getText().toString().equals("") || !etPatronymic.getText().toString().equals("")){
+            text = etSurname.getText() + " " + etName.getText() + " " + etPatronymic.getText();
+
+            // ВЫВОД ДАННЫХ ИЗ БАЗЫ ДАННЫХ В ТЕРМИНАЛ
+            //==============================================================================
+            contentValues.put(TeacherDBHelper.KEY_NAME, text);
+
+            //вставляем данные в таблицу базы данных
+            database.insert(TeacherDBHelper.TABLE_TEACHERS, null, contentValues);
+
+            Cursor cursor = database.query(TeacherDBHelper.TABLE_TEACHERS, null, null, null, null, null, null);
+
+            if (cursor.moveToFirst()){
+                int idIndex = cursor.getColumnIndex(TeacherDBHelper.KEY_ID);
+                do {
+                    idItem = cursor.getInt(idIndex);
+                }while (cursor.moveToNext());
+            }
+
+            cursor.close();
+            teacherDbHelper.close();
+            //==============================================================================
+
+            sendMessage(text, idItem);
+        } else {
+            text = "";
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     protected void checkEmptyField(final EditText editText, final Button btn){
@@ -138,9 +188,10 @@ public class AddTeachersActivity extends AppCompatActivity {
     }
 
     // отправка результата EditText в ListItemActivity
-    private void sendMessage(String message){
+    private void sendMessage(String message, int idItem){
         Intent data = new Intent();
-        data.putExtra(ListTeacherActivity.ACCESS_MESSAGE, message);
+        data.putExtra("text", message);
+        data.putExtra("idItem", idItem);
         setResult(RESULT_OK, data);
         finish();
     }

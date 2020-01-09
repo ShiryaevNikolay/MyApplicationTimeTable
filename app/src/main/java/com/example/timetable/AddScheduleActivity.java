@@ -1,5 +1,6 @@
 package com.example.timetable;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -14,6 +15,8 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,6 +25,7 @@ import android.widget.TimePicker;
 
 import com.example.timetable.adapters.ItemsAdapter;
 import com.example.timetable.database.ScheduleDBHelper;
+import com.example.timetable.database.TeacherDBHelper;
 import com.example.timetable.fragments.ScheduleFragment;
 import com.example.timetable.util.RequestCode;
 
@@ -33,6 +37,7 @@ public class AddScheduleActivity extends AppCompatActivity implements View.OnCli
 
     private String day = "";
     private String clock = "";
+    private int idItem = 0;
 
     private TextView tvClock;
     private TextView tvItem;
@@ -94,6 +99,42 @@ public class AddScheduleActivity extends AppCompatActivity implements View.OnCli
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_toolbar, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (!tvClock.getText().equals("") && !tvItem.getText().equals("") && !tvTeacher.getText().equals("")) {
+            clock = tvClock.getText().toString();
+            String name = tvItem.getText().toString();
+            String teacher = tvTeacher.getText().toString();
+
+            contentValues.put(ScheduleDBHelper.KEY_DAY, day);
+            contentValues.put(ScheduleDBHelper.KEY_CLOCK, clock);
+            contentValues.put(ScheduleDBHelper.KEY_NAME, name);
+            contentValues.put(ScheduleDBHelper.KEY_TEACHER, teacher);
+
+            //вставляем данные в таблицу базы данных
+            database.insert(ScheduleDBHelper.TABLE_SCHEDULE, null, contentValues);
+
+            // ВЫВОД ДАННЫХ ИЗ БАЗЫ ДАННЫХ В ТЕРМИНАЛ
+            //==============================================================================
+            Cursor cursor = database.query(ScheduleDBHelper.TABLE_SCHEDULE, null, null, null, null, null, null);
+
+            if (cursor.moveToFirst()){
+                idItem = cursor.getColumnIndex(ScheduleDBHelper.KEY_ID);
+            }
+            cursor.close();
+            scheduleDBHelper.close();
+            //==============================================================================
+            sendMessage(day, clock, name, teacher, idItem);
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public void onClick(View v) {
         switch(v.getId()){
             case R.id.tv_clock_schedule:
@@ -133,26 +174,13 @@ public class AddScheduleActivity extends AppCompatActivity implements View.OnCli
                     Cursor cursor = database.query(ScheduleDBHelper.TABLE_SCHEDULE, null, null, null, null, null, null);
 
                     if (cursor.moveToFirst()){
-                        int dayIndex = cursor.getColumnIndex(ScheduleDBHelper.KEY_DAY);
-                        int idIndex = cursor.getColumnIndex(ScheduleDBHelper.KEY_ID);
-                        int clockIndex = cursor.getColumnIndex(ScheduleDBHelper.KEY_CLOCK);
-                        int nameIndex = cursor.getColumnIndex(ScheduleDBHelper.KEY_NAME);
-                        int teacherIndex = cursor.getColumnIndex(ScheduleDBHelper.KEY_TEACHER);
-                        do {
-                            System.out.println("ID = " + cursor.getInt(idIndex) +
-                                    ", day = " + cursor.getString(dayIndex) +
-                                    ", clock = " + cursor.getString(clockIndex) +
-                                    ", name = " + cursor.getString(nameIndex) +
-                                    ", teacher = " + cursor.getString(teacherIndex));
-                            }while (cursor.moveToNext());
-                    } else {
-                        System.out.println("0 rows");
+                        idItem = cursor.getColumnIndex(ScheduleDBHelper.KEY_ID);
                     }
 
                     cursor.close();
                     scheduleDBHelper.close();
                     //==============================================================================
-                    sendMessage(day, clock, name, teacher);
+                    sendMessage(day, clock, name, teacher, idItem);
                 }
                 break;
         }
@@ -212,12 +240,13 @@ public class AddScheduleActivity extends AppCompatActivity implements View.OnCli
     }
 
     // отправка результата EditText в ListItemActivity
-    private void sendMessage(String day, String clock, String name, String teacher){
+    private void sendMessage(String day, String clock, String name, String teacher, int idItem){
         Intent data = new Intent();
         data.putExtra(ScheduleFragment.ACCESS_MESSAGE_DAY, day);
         data.putExtra(ScheduleFragment.ACCESS_MESSAGE_CLOCK, clock);
         data.putExtra(ScheduleFragment.ACCESS_MESSAGE_NAME, name);
         data.putExtra(ScheduleFragment.ACCESS_MESSAGE_TEACHER, teacher);
+        data.putExtra("idItem", idItem);
         setResult(RESULT_OK, data);
         finish();
     }

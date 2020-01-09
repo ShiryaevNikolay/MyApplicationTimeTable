@@ -35,7 +35,8 @@
                     android:id="@+id/main_btn_add_items"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@drawable/main_activity_btn" />
+                    android:background="@drawable/main_activity_btn"
+                    android:elevation="5dp"/>
 
             </FrameLayout>
 
@@ -103,7 +104,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="Составить расписание"
-                android:textSize="14sp" />
+                android:textSize="14sp"/>
 
         </LinearLayout>
     </LinearLayout>

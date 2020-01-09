@@ -1,7 +1,9 @@
 package com.example.timetable.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +17,7 @@ import com.example.timetable.RecyclerItem;
 import com.example.timetable.database.ItemDBHelper;
 import com.example.timetable.modules.ItemTouchHelperAdapter;
 import com.example.timetable.modules.OnItemListener;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
 
@@ -24,11 +27,13 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemsViewHol
 
     private List<RecyclerItem> listItems;
     private SQLiteDatabase database;
+    private RecyclerView recyclerView;
 
-    public ItemsAdapter(List<RecyclerItem> listItems, SQLiteDatabase database, OnItemListener onItemListener){
+    public ItemsAdapter(List<RecyclerItem> listItems, SQLiteDatabase database, OnItemListener onItemListener, RecyclerView recyclerView){
         this.listItems = listItems;
         this.database = database;
         this.onItemListener = onItemListener;
+        this.recyclerView = recyclerView;
     }
 
     @NonNull
@@ -55,14 +60,34 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemsViewHol
     }
 
     @Override
-    public void onItemDismiss(int position) {
+    public void onItemDismiss(final int position) {
         // удаление элемента из списка по позиции
-        RecyclerItem item = listItems.get(position);
+        final RecyclerItem item = listItems.get(position);
         listItems.remove(position);
         notifyItemRemoved(position);
 
-        // удаление элемента из базы данных
-        database.delete(ItemDBHelper.TABLE_ITEMS, ItemDBHelper.KEY_NAME + "= ?", new String[] {item.getText()});
+        Snackbar snackbar = Snackbar.make(recyclerView, "Элемент был удалён.", Snackbar.LENGTH_LONG)
+                .setActionTextColor(Color.YELLOW)
+                .setAction("Отмена", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        listItems.add(position, item);
+                        notifyItemInserted(position);
+                    }
+                });
+        snackbar.show();
+        snackbar.addCallback(new Snackbar.Callback() {
+            @SuppressLint("SwitchIntDef")
+            public void onDismissed(Snackbar snackbar, int event) {
+                switch (event) {
+                    case Snackbar.Callback.DISMISS_EVENT_TIMEOUT:
+                    case Snackbar.Callback.DISMISS_EVENT_CONSECUTIVE:
+                        // удаление элемента из базы данных
+                        database.delete(ItemDBHelper.TABLE_ITEMS, ItemDBHelper.KEY_ID + " = " + item.getId(), null);
+                        break;
+                }
+            }
+        });
     }
 
     static class ItemsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

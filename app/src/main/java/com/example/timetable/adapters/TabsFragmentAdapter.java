@@ -19,11 +19,9 @@ import java.util.Objects;
 public class TabsFragmentAdapter extends FragmentPagerAdapter {
 
     private Map<Integer, AbstractTabFragment> tabs;
-    private Context context;
 
     public TabsFragmentAdapter(Context context, @NonNull FragmentManager fm) {
         super(fm);
-        this.context = context;
         initTabsMap(context);
     }
 

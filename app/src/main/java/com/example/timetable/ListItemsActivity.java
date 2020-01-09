@@ -12,6 +12,7 @@ import com.example.timetable.modules.OnItemListener;
 import com.example.timetable.modules.SimpleItemTouchHelperCallback;
 import com.example.timetable.util.RequestCode;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -24,18 +25,20 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ListItemsActivity extends AppCompatActivity implements OnItemListener {
 
-    static final String ACCESS_MESSAGE="ACCESS_MESSAGE";
-
     Toolbar toolbar;
     String nameItem;
+    int idItem = 0;
     RecyclerView recyclerView;
+    ItemsAdapter itemsAdapter;
+    ItemTouchHelper.Callback callback;
+    ItemTouchHelper touchHelper;
 
     public List<RecyclerItem> listItems;
 
-    ItemDBHelper itemDbHelper;
     SQLiteDatabase database;
 
     @Override
@@ -47,7 +50,7 @@ public class ListItemsActivity extends AppCompatActivity implements OnItemListen
         toolbar.setNavigationIcon(R.drawable.toolbar_back_btn);
 
         //для базы данных
-        itemDbHelper = new ItemDBHelper(this);
+        ItemDBHelper itemDbHelper = new ItemDBHelper(this);
         database = itemDbHelper.getWritableDatabase();
         @SuppressLint("Recycle") Cursor cursor = database.query(ItemDBHelper.TABLE_ITEMS, null, null, null, null, null, null);
 
@@ -62,7 +65,8 @@ public class ListItemsActivity extends AppCompatActivity implements OnItemListen
         if (cursor.moveToFirst()){
             do {
                 String nameItem = cursor.getString(cursor.getColumnIndex(ItemDBHelper. KEY_NAME));
-                listItems.add(new RecyclerItem(nameItem));
+                idItem = cursor.getInt(cursor.getColumnIndex(ItemDBHelper. KEY_ID));
+                listItems.add(new RecyclerItem(nameItem, idItem));
             }while (cursor.moveToNext());
         }
 
@@ -85,20 +89,21 @@ public class ListItemsActivity extends AppCompatActivity implements OnItemListen
         });
 
         // numberItems - кол-во элементов в списке, nameItem - название предмета
-        ItemsAdapter itemsAdapter = new ItemsAdapter(listItems, database, this);
+        itemsAdapter = new ItemsAdapter(listItems, database, this, recyclerView);
         //назначаем RecyclerView созданный Adapter
         recyclerView.setAdapter(itemsAdapter);
 
-        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(itemsAdapter);
-        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
+        callback = new SimpleItemTouchHelperCallback(itemsAdapter, this);
+        touchHelper = new ItemTouchHelper(callback);
         touchHelper.attachToRecyclerView(recyclerView);
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode == RequestCode.REQUEST_CODE_ITEM){
             if(resultCode==RESULT_OK){
-                nameItem = data.getStringExtra(ACCESS_MESSAGE);
-                listItems.add(new RecyclerItem(nameItem));
+                nameItem = data.getStringExtra("text");
+                idItem = data.getIntExtra("idItem", 0);
+                listItems.add(new RecyclerItem(nameItem, idItem));
             }
             else{
                 nameItem = "Ошибка доступа";
@@ -108,9 +113,12 @@ public class ListItemsActivity extends AppCompatActivity implements OnItemListen
             super.onActivityResult(requestCode, resultCode, data);
         }
 
-        ItemsAdapter itemsAdapter = new ItemsAdapter(listItems, database, this);
+        itemsAdapter = new ItemsAdapter(listItems, database, this, recyclerView);
         //назначаем RecyclerView созданный Adapter
         recyclerView.setAdapter(itemsAdapter);
+        callback = new SimpleItemTouchHelperCallback(itemsAdapter, this);
+        touchHelper = new ItemTouchHelper(callback);
+        touchHelper.attachToRecyclerView(recyclerView);
     }
 
     @Override
