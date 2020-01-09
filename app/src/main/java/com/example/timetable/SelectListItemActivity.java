@@ -19,7 +19,6 @@ import com.example.timetable.database.TeacherDBHelper;
 import com.example.timetable.modules.OnItemListener;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 public class SelectListItemActivity extends AppCompatActivity implements OnItemListener {
@@ -30,7 +29,7 @@ public class SelectListItemActivity extends AppCompatActivity implements OnItemL
     SQLiteDatabase database;
     Intent intent;
 
-    public List<RecyclerItem> listItem;
+    public ArrayList<RecyclerItem> listItem;
 
     @SuppressLint("Recycle")
     @Override
@@ -100,8 +99,8 @@ public class SelectListItemActivity extends AppCompatActivity implements OnItemL
             }while (cursor.moveToNext());
         }
 
-        ItemsAdapter itemsAdapter = new ItemsAdapter(listItem, database, this, recyclerView);
-        TeachersAdapter teachersAdapter = new TeachersAdapter(listItem, database, this, recyclerView);
+        ItemsAdapter itemsAdapter = new ItemsAdapter(listItem, this);
+        TeachersAdapter teachersAdapter = new TeachersAdapter(listItem, this);
         if (Objects.equals(intent.getStringExtra("selectBtn"), "item")) {
             //назначаем RecyclerView созданный Adapter
             recyclerView.setAdapter(itemsAdapter);

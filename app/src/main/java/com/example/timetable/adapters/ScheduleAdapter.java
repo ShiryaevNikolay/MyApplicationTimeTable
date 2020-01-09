@@ -20,16 +20,12 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
 
-public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ScheduleViewHolder> implements ItemTouchHelperAdapter {
+public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ScheduleViewHolder> {
 
     private List<RecyclerSchedule> listItems;
-    private SQLiteDatabase database;
-    private RecyclerView recyclerView;
 
-    public ScheduleAdapter(List<RecyclerSchedule> listItems, SQLiteDatabase database, RecyclerView recyclerView){
+    public ScheduleAdapter(List<RecyclerSchedule> listItems){
         this.listItems = listItems;
-        this.database = database;
-        this.recyclerView = recyclerView;
     }
 
     public ScheduleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -55,37 +51,6 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Schedu
     @Override
     public int getItemCount() {
         return listItems.size();
-    }
-
-    @Override
-    public void onItemDismiss(final int position) {
-        // удаление элемента из списка по позиции
-        final RecyclerSchedule item = listItems.get(position);
-        listItems.remove(position);
-        notifyItemRemoved(position);
-
-        Snackbar snackbar = Snackbar.make(recyclerView, "Элемент был удалён.", Snackbar.LENGTH_LONG)
-                .setActionTextColor(Color.YELLOW)
-                .setAction("Отмена", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        listItems.add(position, item);
-                        notifyItemInserted(position);
-                    }
-                });
-        snackbar.show();
-        snackbar.addCallback(new Snackbar.Callback() {
-            @SuppressLint("SwitchIntDef")
-            public void onDismissed(Snackbar snackbar, int event) {
-                switch (event) {
-                    case Snackbar.Callback.DISMISS_EVENT_TIMEOUT:
-                    case Snackbar.Callback.DISMISS_EVENT_CONSECUTIVE:
-                        // удаление элемента из базы данных
-                        database.delete(ScheduleDBHelper.TABLE_SCHEDULE, ScheduleDBHelper.KEY_ID + " = " + item.getId(), null);
-                        break;
-                }
-            }
-        });
     }
 
     static class ScheduleViewHolder extends RecyclerView.ViewHolder {

@@ -4,15 +4,18 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 
 import com.example.timetable.adapters.TeachersAdapter;
 import com.example.timetable.database.TeacherDBHelper;
+import com.example.timetable.modules.ItemTouchHelperAdapter;
 import com.example.timetable.modules.OnItemListener;
 import com.example.timetable.modules.SimpleItemTouchHelperCallback;
 import com.example.timetable.util.RequestCode;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -24,12 +27,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class ListTeacherActivity extends AppCompatActivity implements OnItemListener {
+public class ListTeacherActivity extends AppCompatActivity implements OnItemListener, ItemTouchHelperAdapter {
 
     Toolbar toolbar;
     String nameTeacher;
     int idItem = 0;
     RecyclerView recyclerView;
+    TeachersAdapter teachersAdapter;
 
     public List<RecyclerItem> listTeacher;
 
@@ -80,11 +84,11 @@ public class ListTeacherActivity extends AppCompatActivity implements OnItemList
             }
         });
 
-        TeachersAdapter teachersAdapter = new TeachersAdapter(listTeacher, database, this, recyclerView);
+        teachersAdapter = new TeachersAdapter(listTeacher, this);
         //назначаем RecyclerView созданный Adapter
         recyclerView.setAdapter(teachersAdapter);
 
-        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(teachersAdapter, this);
+        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(this, this);
         ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
         touchHelper.attachToRecyclerView(recyclerView);
     }
@@ -102,7 +106,7 @@ public class ListTeacherActivity extends AppCompatActivity implements OnItemList
             super.onActivityResult(requestCode, resultCode, data);
         }
 
-        TeachersAdapter teachersAdapter = new TeachersAdapter(listTeacher, database, this, recyclerView);
+        teachersAdapter = new TeachersAdapter(listTeacher, this);
         //назначаем RecyclerView созданный Adapter
         recyclerView.setAdapter(teachersAdapter);
     }
@@ -110,5 +114,35 @@ public class ListTeacherActivity extends AppCompatActivity implements OnItemList
     @Override
     public void onItemClick(int position) {
 
+    }
+
+    @Override
+    public void onItemDismiss(final int position) {
+        final RecyclerItem item = listTeacher.get(position);
+        listTeacher.remove(position);
+        teachersAdapter.notifyItemRemoved(position);
+
+        Snackbar snackbar = Snackbar.make(recyclerView, "Элемент был удалён.", Snackbar.LENGTH_LONG)
+                .setActionTextColor(Color.YELLOW)
+                .setAction("Отмена", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        listTeacher.add(position, item);
+                        teachersAdapter.notifyItemInserted(position);
+                    }
+                });
+        snackbar.show();
+        snackbar.addCallback(new Snackbar.Callback() {
+            @SuppressLint("SwitchIntDef")
+            public void onDismissed(Snackbar snackbar, int event) {
+                switch (event) {
+                    case Snackbar.Callback.DISMISS_EVENT_TIMEOUT:
+                    case Snackbar.Callback.DISMISS_EVENT_CONSECUTIVE:
+                        // удаление элемента из базы данных
+                        database.delete(TeacherDBHelper.TABLE_TEACHERS, TeacherDBHelper.KEY_ID + " = " + item.getId(), null);
+                        break;
+                }
+            }
+        });
     }
 }
