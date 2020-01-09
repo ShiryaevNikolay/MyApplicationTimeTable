@@ -25,6 +25,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ListItemsActivity extends AppCompatActivity implements OnItemListener {
 
@@ -32,6 +33,9 @@ public class ListItemsActivity extends AppCompatActivity implements OnItemListen
     String nameItem;
     int idItem = 0;
     RecyclerView recyclerView;
+    ItemsAdapter itemsAdapter;
+    ItemTouchHelper.Callback callback;
+    ItemTouchHelper touchHelper;
 
     public List<RecyclerItem> listItems;
 
@@ -85,12 +89,12 @@ public class ListItemsActivity extends AppCompatActivity implements OnItemListen
         });
 
         // numberItems - кол-во элементов в списке, nameItem - название предмета
-        ItemsAdapter itemsAdapter = new ItemsAdapter(listItems, database, this, recyclerView);
+        itemsAdapter = new ItemsAdapter(listItems, database, this, recyclerView);
         //назначаем RecyclerView созданный Adapter
         recyclerView.setAdapter(itemsAdapter);
 
-        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(itemsAdapter, this);
-        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
+        callback = new SimpleItemTouchHelperCallback(itemsAdapter, this);
+        touchHelper = new ItemTouchHelper(callback);
         touchHelper.attachToRecyclerView(recyclerView);
     }
 
@@ -109,9 +113,12 @@ public class ListItemsActivity extends AppCompatActivity implements OnItemListen
             super.onActivityResult(requestCode, resultCode, data);
         }
 
-        ItemsAdapter itemsAdapter = new ItemsAdapter(listItems, database, this, recyclerView);
+        itemsAdapter = new ItemsAdapter(listItems, database, this, recyclerView);
         //назначаем RecyclerView созданный Adapter
         recyclerView.setAdapter(itemsAdapter);
+        callback = new SimpleItemTouchHelperCallback(itemsAdapter, this);
+        touchHelper = new ItemTouchHelper(callback);
+        touchHelper.attachToRecyclerView(recyclerView);
     }
 
     @Override

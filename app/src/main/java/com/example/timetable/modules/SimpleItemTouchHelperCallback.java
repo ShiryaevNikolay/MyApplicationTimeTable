@@ -9,12 +9,11 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.timetable.R;
-import com.example.timetable.fragments.ScheduleFragment;
 
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
 public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
-    private final ItemTouchHelperAdapter mAdapter;
+    private ItemTouchHelperAdapter mAdapter;
     private Context context;
 
     public SimpleItemTouchHelperCallback(ItemTouchHelperAdapter adapter, Context context) {
@@ -52,8 +51,8 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
         new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
                 .addBackgroundColor(ContextCompat.getColor(context, R.color.colorCancel))
                 .addActionIcon(R.drawable.ic_delete)
-                .addSwipeLeftLabel("Delete")
-                .addSwipeRightLabel("Delete")
+                .addSwipeLeftLabel("Удалить")
+                .addSwipeRightLabel("Удалить")
                 .setSwipeLeftLabelColor(ContextCompat.getColor(context, R.color.colorPrimary))
                 .setSwipeRightLabelColor(ContextCompat.getColor(context, R.color.colorPrimary))
                 .create()

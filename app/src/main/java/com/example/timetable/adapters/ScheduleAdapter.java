@@ -64,9 +64,9 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Schedu
         listItems.remove(position);
         notifyItemRemoved(position);
 
-        Snackbar snackbar = Snackbar.make(recyclerView, "Item has been deleted.", Snackbar.LENGTH_LONG)
+        Snackbar snackbar = Snackbar.make(recyclerView, "Элемент был удалён.", Snackbar.LENGTH_LONG)
                 .setActionTextColor(Color.YELLOW)
-                .setAction("UNDO", new View.OnClickListener() {
+                .setAction("Отмена", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         listItems.add(position, item);

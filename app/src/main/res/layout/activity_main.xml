@@ -104,7 +104,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="Составить расписание"
-                android:textSize="14sp" />
+                android:textSize="14sp"/>
 
         </LinearLayout>
     </LinearLayout>
