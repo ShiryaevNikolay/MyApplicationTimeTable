@@ -223,7 +223,17 @@ public class AddScheduleActivity extends AppCompatActivity implements View.OnCli
         TimePickerDialog timePickerDialog = new TimePickerDialog(this, AlertDialog.THEME_HOLO_LIGHT, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                String editTextTimeParam = hourOfDay + " : " + minute;
+                String editTextTimeParam;
+                if (hourOfDay < 10) {
+                    editTextTimeParam = "0" + hourOfDay + ":";
+                } else {
+                    editTextTimeParam = hourOfDay + ":";
+                }
+                if (minute < 10) {
+                    editTextTimeParam = editTextTimeParam + "0" + minute;
+                } else {
+                    editTextTimeParam = editTextTimeParam + minute;
+                }
                 tvClock.setText(editTextTimeParam);
                 clock = tvClock.getText().toString();
             }
