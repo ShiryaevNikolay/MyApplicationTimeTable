@@ -1,25 +1,15 @@
 package com.example.timetable.adapters;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.timetable.R;
 import com.example.timetable.RecyclerItem;
-import com.example.timetable.database.ItemDBHelper;
-import com.example.timetable.modules.ItemTouchHelperAdapter;
 import com.example.timetable.modules.OnItemListener;
-import com.example.timetable.modules.SimpleItemTouchHelperCallback;
-import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 

@@ -11,4 +11,8 @@
     <string name="tab_item_thurs">ЧТ</string>
     <string name="tab_item_fri">ПТ</string>
     <string name="tab_item_sat">СБ</string>
+
+    <string name="del_dialog_message">Удалить элемент?</string>
+    <string name="del_dialog_remove">Удалить</string>
+    <string name="del_dialog_cancel">Отмена</string>
 </resources>

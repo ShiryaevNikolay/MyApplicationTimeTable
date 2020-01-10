@@ -12,6 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,6 +23,8 @@ import com.example.timetable.R;
 import com.example.timetable.RecyclerSchedule;
 import com.example.timetable.adapters.ScheduleAdapter;
 import com.example.timetable.database.ScheduleDBHelper;
+import com.example.timetable.dialogs.DeleteDialog;
+import com.example.timetable.modules.DialogListener;
 import com.example.timetable.modules.ItemTouchHelperAdapter;
 import com.example.timetable.modules.SimpleItemTouchHelperCallback;
 import com.example.timetable.util.RequestCode;
@@ -31,7 +35,7 @@ import java.util.ArrayList;
 
 import static android.app.Activity.RESULT_OK;
 
-public class ScheduleFragment extends AbstractTabFragment implements View.OnClickListener, ItemTouchHelperAdapter {
+public class ScheduleFragment extends AbstractTabFragment implements View.OnClickListener, ItemTouchHelperAdapter, DialogListener {
     public static final String ACCESS_MESSAGE_CLOCK="ACCESS_MESSAGE_CLOCK";
     public static final String ACCESS_MESSAGE_NAME="ACCESS_MESSAGE_NAME";
     public static final String ACCESS_MESSAGE_TEACHER="ACCESS_MESSAGE_TEACHER";
@@ -50,7 +54,7 @@ public class ScheduleFragment extends AbstractTabFragment implements View.OnClic
     private static final int LAYOUT = R.layout.fragment_schedule;
     private String daySchedule = "";
     private int position;
-    private Context activity;
+    private RecyclerSchedule item;
 
     public static ScheduleFragment getInstance(Context context, int position) {
         Bundle args = new Bundle();
@@ -158,7 +162,7 @@ public class ScheduleFragment extends AbstractTabFragment implements View.OnClic
     }
 
     public void setContext(Context context) {
-        this.activity = context;
+        this.context = context;
     }
 
     @Override
@@ -228,31 +232,24 @@ public class ScheduleFragment extends AbstractTabFragment implements View.OnClic
 
     @Override
     public void onItemDismiss(final int position) {
-        final RecyclerSchedule item = listItems.get(position);
+        item = listItems.get(position);
         listItems.remove(position);
         itemsAdapter.notifyItemRemoved(position);
 
-        Snackbar snackbar = Snackbar.make(recyclerView, "Элемент был удалён.", Snackbar.LENGTH_LONG)
-                .setActionTextColor(Color.YELLOW)
-                .setAction("Отмена", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        listItems.add(position, item);
-                        itemsAdapter.notifyItemInserted(position);
-                    }
-                });
-        snackbar.show();
-        snackbar.addCallback(new Snackbar.Callback() {
-            @SuppressLint("SwitchIntDef")
-            public void onDismissed(Snackbar snackbar, int event) {
-                switch (event) {
-                    case Snackbar.Callback.DISMISS_EVENT_TIMEOUT:
-                    case Snackbar.Callback.DISMISS_EVENT_CONSECUTIVE:
-                        // удаление элемента из базы данных
-                        database.delete(ScheduleDBHelper.TABLE_SCHEDULE, ScheduleDBHelper.KEY_ID + " = " + item.getId(), null);
-                        break;
-                }
-            }
-        });
+        DialogFragment deleteDialog = new DeleteDialog(this, position);
+        FragmentManager fragmentManager = (getFragmentManager());
+        assert fragmentManager != null;
+        deleteDialog.show(fragmentManager, "deleteDialog");
+    }
+
+    @Override
+    public void onClickRemoveDialog(int position) {
+        database.delete(ScheduleDBHelper.TABLE_SCHEDULE, ScheduleDBHelper.KEY_ID + " = " + item.getId(), null);
+    }
+
+    @Override
+    public void onClickCancelDialog(int position) {
+        listItems.add(position, item);
+        itemsAdapter.notifyItemInserted(position);
     }
 }
