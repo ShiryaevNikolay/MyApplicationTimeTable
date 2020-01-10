@@ -9,6 +9,8 @@ import android.os.Bundle;
 
 import com.example.timetable.adapters.ItemsAdapter;
 import com.example.timetable.database.ItemDBHelper;
+import com.example.timetable.dialogs.DeleteDialog;
+import com.example.timetable.modules.DialogListener;
 import com.example.timetable.modules.ItemTouchHelperAdapter;
 import com.example.timetable.modules.OnItemListener;
 import com.example.timetable.modules.SimpleItemTouchHelperCallback;
@@ -21,13 +23,15 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.view.View;
 
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class ListItemsActivity extends AppCompatActivity implements OnItemListener, ItemTouchHelperAdapter {
+public class ListItemsActivity extends AppCompatActivity implements OnItemListener, ItemTouchHelperAdapter, DialogListener {
 
     Toolbar toolbar;
     String nameItem;
@@ -38,6 +42,7 @@ public class ListItemsActivity extends AppCompatActivity implements OnItemListen
     ItemTouchHelper touchHelper;
 
     public ArrayList<RecyclerItem> listItems;
+    RecyclerItem item;
 
     SQLiteDatabase database;
 
@@ -126,31 +131,23 @@ public class ListItemsActivity extends AppCompatActivity implements OnItemListen
 
     @Override
     public void onItemDismiss(final int position) {
-        final RecyclerItem item = listItems.get(position);
+        item = listItems.get(position);
         listItems.remove(position);
         itemsAdapter.notifyItemRemoved(position);
 
-        Snackbar snackbar = Snackbar.make(recyclerView, "Элемент был удалён.", Snackbar.LENGTH_LONG)
-                .setActionTextColor(Color.YELLOW)
-                .setAction("Отмена", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        listItems.add(position, item);
-                        itemsAdapter.notifyItemInserted(position);
-                    }
-                });
-        snackbar.show();
-        snackbar.addCallback(new Snackbar.Callback() {
-            @SuppressLint("SwitchIntDef")
-            public void onDismissed(Snackbar snackbar, int event) {
-                switch (event) {
-                    case Snackbar.Callback.DISMISS_EVENT_TIMEOUT:
-                    case Snackbar.Callback.DISMISS_EVENT_CONSECUTIVE:
-                        // удаление элемента из базы данных
-                        database.delete(ItemDBHelper.TABLE_ITEMS, ItemDBHelper.KEY_ID + " = " + item.getId(), null);
-                        break;
-                }
-            }
-        });
+        DialogFragment deleteDialog = new DeleteDialog(this, position);
+        FragmentManager fragmentManager = (this.getSupportFragmentManager());
+        deleteDialog.show(fragmentManager, "deleteDialog");
+    }
+
+    @Override
+    public void onClickRemoveDialog(int position) {
+        database.delete(ItemDBHelper.TABLE_ITEMS, ItemDBHelper.KEY_ID + " = " + item.getId(), null);
+    }
+
+    @Override
+    public void onClickCancelDialog(int position) {
+        listItems.add(position, item);
+        itemsAdapter.notifyItemInserted(position);
     }
 }

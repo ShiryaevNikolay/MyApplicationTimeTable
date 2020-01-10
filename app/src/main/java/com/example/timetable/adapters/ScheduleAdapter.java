@@ -1,9 +1,6 @@
 package com.example.timetable.adapters;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,17 +11,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.timetable.R;
 import com.example.timetable.RecyclerSchedule;
-import com.example.timetable.database.ScheduleDBHelper;
-import com.example.timetable.modules.ItemTouchHelperAdapter;
-import com.google.android.material.snackbar.Snackbar;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ScheduleViewHolder> {
 
-    private List<RecyclerSchedule> listItems;
+    private ArrayList<RecyclerSchedule> listItems;
 
-    public ScheduleAdapter(List<RecyclerSchedule> listItems){
+    public ScheduleAdapter(ArrayList<RecyclerSchedule> listItems){
         this.listItems = listItems;
     }
 

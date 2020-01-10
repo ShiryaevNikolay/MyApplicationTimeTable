@@ -10,6 +10,8 @@ import android.view.View;
 
 import com.example.timetable.adapters.TeachersAdapter;
 import com.example.timetable.database.TeacherDBHelper;
+import com.example.timetable.dialogs.DeleteDialog;
+import com.example.timetable.modules.DialogListener;
 import com.example.timetable.modules.ItemTouchHelperAdapter;
 import com.example.timetable.modules.OnItemListener;
 import com.example.timetable.modules.SimpleItemTouchHelperCallback;
@@ -19,15 +21,15 @@ import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-import java.util.List;
 
-
-public class ListTeacherActivity extends AppCompatActivity implements OnItemListener, ItemTouchHelperAdapter {
+public class ListTeacherActivity extends AppCompatActivity implements OnItemListener, ItemTouchHelperAdapter, DialogListener {
 
     Toolbar toolbar;
     String nameTeacher;
@@ -35,7 +37,8 @@ public class ListTeacherActivity extends AppCompatActivity implements OnItemList
     RecyclerView recyclerView;
     TeachersAdapter teachersAdapter;
 
-    public List<RecyclerItem> listTeacher;
+    public ArrayList<RecyclerItem> listTeacher;
+    RecyclerItem item;
 
     TeacherDBHelper teacherDBHelper;
     SQLiteDatabase database;
@@ -118,31 +121,23 @@ public class ListTeacherActivity extends AppCompatActivity implements OnItemList
 
     @Override
     public void onItemDismiss(final int position) {
-        final RecyclerItem item = listTeacher.get(position);
+        item = listTeacher.get(position);
         listTeacher.remove(position);
         teachersAdapter.notifyItemRemoved(position);
 
-        Snackbar snackbar = Snackbar.make(recyclerView, "Элемент был удалён.", Snackbar.LENGTH_LONG)
-                .setActionTextColor(Color.YELLOW)
-                .setAction("Отмена", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        listTeacher.add(position, item);
-                        teachersAdapter.notifyItemInserted(position);
-                    }
-                });
-        snackbar.show();
-        snackbar.addCallback(new Snackbar.Callback() {
-            @SuppressLint("SwitchIntDef")
-            public void onDismissed(Snackbar snackbar, int event) {
-                switch (event) {
-                    case Snackbar.Callback.DISMISS_EVENT_TIMEOUT:
-                    case Snackbar.Callback.DISMISS_EVENT_CONSECUTIVE:
-                        // удаление элемента из базы данных
-                        database.delete(TeacherDBHelper.TABLE_TEACHERS, TeacherDBHelper.KEY_ID + " = " + item.getId(), null);
-                        break;
-                }
-            }
-        });
+        DialogFragment deleteDialog = new DeleteDialog(this, position);
+        FragmentManager fragmentManager = (this.getSupportFragmentManager());
+        deleteDialog.show(fragmentManager, "deleteDialog");
+    }
+
+    @Override
+    public void onClickRemoveDialog(int position) {
+        database.delete(TeacherDBHelper.TABLE_TEACHERS, TeacherDBHelper.KEY_ID + " = " + item.getId(), null);
+    }
+
+    @Override
+    public void onClickCancelDialog(int position) {
+        listTeacher.add(position, item);
+        teachersAdapter.notifyItemInserted(position);
     }
 }

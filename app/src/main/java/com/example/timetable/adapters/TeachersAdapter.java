@@ -13,15 +13,15 @@ import com.example.timetable.R;
 import com.example.timetable.RecyclerItem;
 import com.example.timetable.modules.OnItemListener;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public class TeachersAdapter extends RecyclerView.Adapter<TeachersAdapter.TeachersViewHolder> {
 
     private OnItemListener onItemListener;
 
-    private List<RecyclerItem> listTeachers;
+    private ArrayList<RecyclerItem> listTeachers;
 
-    public TeachersAdapter(List<RecyclerItem> listTeachers, OnItemListener onItemListener){
+    public TeachersAdapter(ArrayList<RecyclerItem> listTeachers, OnItemListener onItemListener){
         this.listTeachers = listTeachers;
         this.onItemListener = onItemListener;
     }
