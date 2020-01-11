@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,6 +36,8 @@ import static android.app.Activity.RESULT_OK;
 
 public class ScheduleFragment extends AbstractTabFragment implements View.OnClickListener, ItemTouchHelperAdapter, DialogListener {
     public static final String ACCESS_MESSAGE_CLOCK="ACCESS_MESSAGE_CLOCK";
+    public static final String ACCESS_MESSAGE_HOURS="ACCESS_MESSAGE_HOURS";
+    public static final String ACCESS_MESSAGE_MINUTES="ACCESS_MESSAGE_MINUTES";
     public static final String ACCESS_MESSAGE_NAME="ACCESS_MESSAGE_NAME";
     public static final String ACCESS_MESSAGE_TEACHER="ACCESS_MESSAGE_TEACHER";
     public static final String ACCESS_MESSAGE_DAY="ACCESS_MESSAGE_DAY";
@@ -50,16 +51,19 @@ public class ScheduleFragment extends AbstractTabFragment implements View.OnClic
     private String nameSchedule;
     private String teacherSchedule;
     private int idItem = 0;
+    private int hours = 0;
+    private int minutes = 0;
 
     private static final int LAYOUT = R.layout.fragment_schedule;
     private String daySchedule = "";
     private int position;
     private RecyclerSchedule item;
 
-    public static ScheduleFragment getInstance(Context context, int position) {
+    public static ScheduleFragment getInstance(Context context, int position, SQLiteDatabase database) {
         Bundle args = new Bundle();
         ScheduleFragment fragment = new ScheduleFragment();
         fragment.position = position;
+        fragment.database = database;
         fragment.setArguments(args);
         fragment.setContext(context);
         switch (position){
@@ -120,8 +124,6 @@ public class ScheduleFragment extends AbstractTabFragment implements View.OnClic
         btn.setOnClickListener(this);
 
         //для базы данных
-        ScheduleDBHelper scheduleDBHelper = new ScheduleDBHelper(getActivity());
-        database = scheduleDBHelper.getWritableDatabase();
         @SuppressLint("Recycle") Cursor cursor = database.query(ScheduleDBHelper.TABLE_SCHEDULE, null, null, null, null, null, null);
 
         listItems = new ArrayList<>();
@@ -135,7 +137,24 @@ public class ScheduleFragment extends AbstractTabFragment implements View.OnClic
                     nameSchedule = cursor.getString(cursor.getColumnIndex(ScheduleDBHelper.KEY_NAME));
                     teacherSchedule = cursor.getString(cursor.getColumnIndex(ScheduleDBHelper.KEY_TEACHER));
                     idItem = cursor.getInt(cursor.getColumnIndex(ScheduleDBHelper.KEY_ID));
-                    listItems.add(new RecyclerSchedule(clockSchedule, nameSchedule, teacherSchedule, idItem));
+                    hours = cursor.getInt(cursor.getColumnIndex(ScheduleDBHelper.KEY_HOURS));
+                    minutes = cursor.getInt(cursor.getColumnIndex(ScheduleDBHelper.KEY_MINUTES));
+                    if (!listItems.isEmpty()) {
+                        boolean flagLoop = false;
+                        for (RecyclerSchedule i : listItems) {
+                            if (hours < i.getHours() && minutes < i.getMinutes()) {
+                                flagLoop = true;
+                                int indexPosition = listItems.indexOf(i);
+                                listItems.add(indexPosition, new RecyclerSchedule(clockSchedule, nameSchedule, teacherSchedule, idItem, hours, minutes));
+                                break;
+                            }
+                        }
+                        if (!flagLoop) {
+                            listItems.add(new RecyclerSchedule(clockSchedule, nameSchedule, teacherSchedule, idItem, hours, minutes));
+                        }
+                    } else {
+                        listItems.add(new RecyclerSchedule(clockSchedule, nameSchedule, teacherSchedule, idItem, hours, minutes));
+                    }
                 }
             }while (cursor.moveToNext());
         }
@@ -212,7 +231,24 @@ public class ScheduleFragment extends AbstractTabFragment implements View.OnClic
                     nameSchedule = data.getStringExtra(ACCESS_MESSAGE_NAME);
                     teacherSchedule = data.getStringExtra(ACCESS_MESSAGE_TEACHER);
                     idItem = data.getIntExtra("idItem", 0);
-                    listItems.add(new RecyclerSchedule(clockSchedule, nameSchedule, teacherSchedule, idItem));
+                    hours = data.getIntExtra(ACCESS_MESSAGE_HOURS, 0);
+                    minutes = data.getIntExtra(ACCESS_MESSAGE_MINUTES, 0);
+                    if (!listItems.isEmpty()) {
+                        boolean flagLoop = false;
+                        for (RecyclerSchedule i : listItems) {
+                            if (hours < i.getHours() && minutes < i.getMinutes()) {
+                                flagLoop = true;
+                                int indexPosition = listItems.indexOf(i);
+                                listItems.add(indexPosition, new RecyclerSchedule(clockSchedule, nameSchedule, teacherSchedule, idItem, hours, minutes));
+                                break;
+                            }
+                        }
+                        if (!flagLoop) {
+                            listItems.add(new RecyclerSchedule(clockSchedule, nameSchedule, teacherSchedule, idItem, hours, minutes));
+                        }
+                    } else {
+                        listItems.add(new RecyclerSchedule(clockSchedule, nameSchedule, teacherSchedule, idItem, hours, minutes));
+                    }
                 }
             }
             else{

@@ -39,6 +39,8 @@ public class AddScheduleActivity extends AppCompatActivity implements View.OnCli
     private String day = "";
     private String clock = "";
     private int idItem = 0;
+    private int hours = 0;
+    private int minutes = 0;
 
     private TextView tvClock;
     private TextView tvItem;
@@ -114,6 +116,8 @@ public class AddScheduleActivity extends AppCompatActivity implements View.OnCli
 
             contentValues.put(ScheduleDBHelper.KEY_DAY, day);
             contentValues.put(ScheduleDBHelper.KEY_CLOCK, clock);
+            contentValues.put(ScheduleDBHelper.KEY_HOURS, hours);
+            contentValues.put(ScheduleDBHelper.KEY_MINUTES, minutes);
             contentValues.put(ScheduleDBHelper.KEY_NAME, name);
             contentValues.put(ScheduleDBHelper.KEY_TEACHER, teacher);
 
@@ -130,7 +134,7 @@ public class AddScheduleActivity extends AppCompatActivity implements View.OnCli
             cursor.close();
             scheduleDBHelper.close();
             //==============================================================================
-            sendMessage(day, clock, name, teacher, idItem);
+            sendMessage(day, clock, name, teacher, idItem, hours, minutes);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -164,6 +168,8 @@ public class AddScheduleActivity extends AppCompatActivity implements View.OnCli
 
                     contentValues.put(ScheduleDBHelper.KEY_DAY, day);
                     contentValues.put(ScheduleDBHelper.KEY_CLOCK, clock);
+                    contentValues.put(ScheduleDBHelper.KEY_HOURS, hours);
+                    contentValues.put(ScheduleDBHelper.KEY_MINUTES, minutes);
                     contentValues.put(ScheduleDBHelper.KEY_NAME, name);
                     contentValues.put(ScheduleDBHelper.KEY_TEACHER, teacher);
 
@@ -181,7 +187,7 @@ public class AddScheduleActivity extends AppCompatActivity implements View.OnCli
                     cursor.close();
                     scheduleDBHelper.close();
                     //==============================================================================
-                    sendMessage(day, clock, name, teacher, idItem);
+                    sendMessage(day, clock, name, teacher, idItem, hours, minutes);
                 }
                 break;
         }
@@ -217,7 +223,7 @@ public class AddScheduleActivity extends AppCompatActivity implements View.OnCli
     private void callTimePicker(){
         // получаем текущее время
         final Calendar calendar = Calendar.getInstance();
-        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        final int hour = calendar.get(Calendar.HOUR_OF_DAY);
         int minute = calendar.get(Calendar.MINUTE);
 
         // инициализируем диалог выбора времени текущими значениями
@@ -248,6 +254,8 @@ public class AddScheduleActivity extends AppCompatActivity implements View.OnCli
                 if (flag) {
                     tvClock.setText(editTextTimeParam);
                     clock = tvClock.getText().toString();
+                    hours = hourOfDay;
+                    minutes = minute;
                 } else {
                     Toast.makeText(AddScheduleActivity.this, "В это время уже есть занятие", Toast.LENGTH_SHORT).show();
                 }
@@ -265,10 +273,12 @@ public class AddScheduleActivity extends AppCompatActivity implements View.OnCli
     }
 
     // отправка результата EditText в ListItemActivity
-    private void sendMessage(String day, String clock, String name, String teacher, int idItem){
+    private void sendMessage(String day, String clock, String name, String teacher, int idItem, int hours, int minutes){
         Intent data = new Intent();
         data.putExtra(ScheduleFragment.ACCESS_MESSAGE_DAY, day);
         data.putExtra(ScheduleFragment.ACCESS_MESSAGE_CLOCK, clock);
+        data.putExtra(ScheduleFragment.ACCESS_MESSAGE_HOURS, hours);
+        data.putExtra(ScheduleFragment.ACCESS_MESSAGE_MINUTES, minutes);
         data.putExtra(ScheduleFragment.ACCESS_MESSAGE_NAME, name);
         data.putExtra(ScheduleFragment.ACCESS_MESSAGE_TEACHER, teacher);
         data.putExtra("idItem", idItem);
