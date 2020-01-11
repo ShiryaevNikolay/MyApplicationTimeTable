@@ -22,6 +22,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.example.timetable.adapters.ItemsAdapter;
 import com.example.timetable.database.ScheduleDBHelper;
@@ -224,6 +225,7 @@ public class AddScheduleActivity extends AppCompatActivity implements View.OnCli
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                 String editTextTimeParam;
+                boolean flag = true;
                 if (hourOfDay < 10) {
                     editTextTimeParam = "0" + hourOfDay + ":";
                 } else {
@@ -234,8 +236,21 @@ public class AddScheduleActivity extends AppCompatActivity implements View.OnCli
                 } else {
                     editTextTimeParam = editTextTimeParam + minute;
                 }
-                tvClock.setText(editTextTimeParam);
-                clock = tvClock.getText().toString();
+                @SuppressLint("Recycle") Cursor cursor = database.query(ScheduleDBHelper.TABLE_SCHEDULE, null, null, null, null, null, null);
+                if (cursor.moveToFirst()){
+                    do {
+                        if (cursor.getString(cursor.getColumnIndex(ScheduleDBHelper.KEY_CLOCK)).equals(editTextTimeParam)
+                            && cursor.getString(cursor.getColumnIndex(ScheduleDBHelper.KEY_DAY)).equals(day)){
+                            flag = false;
+                        }
+                    } while (cursor.moveToNext());
+                }
+                if (flag) {
+                    tvClock.setText(editTextTimeParam);
+                    clock = tvClock.getText().toString();
+                } else {
+                    Toast.makeText(AddScheduleActivity.this, "В это время уже есть занятие", Toast.LENGTH_SHORT).show();
+                }
             }
         }, hour, minute, true);
         timePickerDialog.show();

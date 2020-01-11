@@ -231,7 +231,7 @@ public class ScheduleFragment extends AbstractTabFragment implements View.OnClic
     }
 
     @Override
-    public void onItemDismiss(final int position) {
+    public void onItemDismiss(int position) {
         item = listItems.get(position);
         listItems.remove(position);
         itemsAdapter.notifyItemRemoved(position);
@@ -243,7 +243,7 @@ public class ScheduleFragment extends AbstractTabFragment implements View.OnClic
     }
 
     @Override
-    public void onClickRemoveDialog(int position) {
+    public void onClickRemoveDialog() {
         database.delete(ScheduleDBHelper.TABLE_SCHEDULE, ScheduleDBHelper.KEY_ID + " = " + item.getId(), null);
     }
 

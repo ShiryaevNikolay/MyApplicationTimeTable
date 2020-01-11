@@ -1,6 +1,6 @@
 package com.example.timetable.modules;
 
 public interface DialogListener {
-    void onClickRemoveDialog(int position);
+    void onClickRemoveDialog();
     void onClickCancelDialog(int position);
 }
