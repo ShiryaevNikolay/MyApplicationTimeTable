@@ -5,18 +5,15 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.fragment.app.DialogFragment;
-
 import com.example.timetable.R;
 import com.example.timetable.modules.DialogListener;
-
 import java.util.Objects;
 
 public class DeleteDialog extends DialogFragment implements View.OnClickListener {
 
-    int position;
-    DialogListener dialogListener;
+    private int position;
+    private DialogListener dialogListener;
 
     public DeleteDialog(DialogListener context, int position) {
         dialogListener = context;
@@ -35,7 +32,7 @@ public class DeleteDialog extends DialogFragment implements View.OnClickListener
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.btn_del_dialog_remove) {
-            dialogListener.onClickRemoveDialog(position);
+            dialogListener.onClickRemoveDialog();
         } else {
             dialogListener.onClickCancelDialog(position);
         }

@@ -130,7 +130,7 @@ public class ListItemsActivity extends AppCompatActivity implements OnItemListen
     }
 
     @Override
-    public void onItemDismiss(final int position) {
+    public void onItemDismiss(int position) {
         item = listItems.get(position);
         listItems.remove(position);
         itemsAdapter.notifyItemRemoved(position);
@@ -141,7 +141,7 @@ public class ListItemsActivity extends AppCompatActivity implements OnItemListen
     }
 
     @Override
-    public void onClickRemoveDialog(int position) {
+    public void onClickRemoveDialog() {
         database.delete(ItemDBHelper.TABLE_ITEMS, ItemDBHelper.KEY_ID + " = " + item.getId(), null);
     }
 

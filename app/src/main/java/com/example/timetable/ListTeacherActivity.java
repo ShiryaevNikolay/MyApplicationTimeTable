@@ -120,7 +120,7 @@ public class ListTeacherActivity extends AppCompatActivity implements OnItemList
     }
 
     @Override
-    public void onItemDismiss(final int position) {
+    public void onItemDismiss(int position) {
         item = listTeacher.get(position);
         listTeacher.remove(position);
         teachersAdapter.notifyItemRemoved(position);
@@ -131,7 +131,7 @@ public class ListTeacherActivity extends AppCompatActivity implements OnItemList
     }
 
     @Override
-    public void onClickRemoveDialog(int position) {
+    public void onClickRemoveDialog() {
         database.delete(TeacherDBHelper.TABLE_TEACHERS, TeacherDBHelper.KEY_ID + " = " + item.getId(), null);
     }
 
