@@ -139,22 +139,7 @@ public class ScheduleFragment extends AbstractTabFragment implements View.OnClic
                     idItem = cursor.getInt(cursor.getColumnIndex(ScheduleDBHelper.KEY_ID));
                     hours = cursor.getInt(cursor.getColumnIndex(ScheduleDBHelper.KEY_HOURS));
                     minutes = cursor.getInt(cursor.getColumnIndex(ScheduleDBHelper.KEY_MINUTES));
-                    if (!listItems.isEmpty()) {
-                        boolean flagLoop = false;
-                        for (RecyclerSchedule i : listItems) {
-                            if (hours < i.getHours() && minutes < i.getMinutes()) {
-                                flagLoop = true;
-                                int indexPosition = listItems.indexOf(i);
-                                listItems.add(indexPosition, new RecyclerSchedule(clockSchedule, nameSchedule, teacherSchedule, idItem, hours, minutes));
-                                break;
-                            }
-                        }
-                        if (!flagLoop) {
-                            listItems.add(new RecyclerSchedule(clockSchedule, nameSchedule, teacherSchedule, idItem, hours, minutes));
-                        }
-                    } else {
-                        listItems.add(new RecyclerSchedule(clockSchedule, nameSchedule, teacherSchedule, idItem, hours, minutes));
-                    }
+                    sortList(listItems, hours, minutes);
                 }
             }while (cursor.moveToNext());
         }
@@ -233,22 +218,7 @@ public class ScheduleFragment extends AbstractTabFragment implements View.OnClic
                     idItem = data.getIntExtra("idItem", 0);
                     hours = data.getIntExtra(ACCESS_MESSAGE_HOURS, 0);
                     minutes = data.getIntExtra(ACCESS_MESSAGE_MINUTES, 0);
-                    if (!listItems.isEmpty()) {
-                        boolean flagLoop = false;
-                        for (RecyclerSchedule i : listItems) {
-                            if (hours < i.getHours() && minutes < i.getMinutes()) {
-                                flagLoop = true;
-                                int indexPosition = listItems.indexOf(i);
-                                listItems.add(indexPosition, new RecyclerSchedule(clockSchedule, nameSchedule, teacherSchedule, idItem, hours, minutes));
-                                break;
-                            }
-                        }
-                        if (!flagLoop) {
-                            listItems.add(new RecyclerSchedule(clockSchedule, nameSchedule, teacherSchedule, idItem, hours, minutes));
-                        }
-                    } else {
-                        listItems.add(new RecyclerSchedule(clockSchedule, nameSchedule, teacherSchedule, idItem, hours, minutes));
-                    }
+                    sortList(listItems, hours, minutes);
                 }
             }
             else{
@@ -287,5 +257,44 @@ public class ScheduleFragment extends AbstractTabFragment implements View.OnClic
     public void onClickCancelDialog(int position) {
         listItems.add(position, item);
         itemsAdapter.notifyItemInserted(position);
+    }
+
+    private void sortList(ArrayList<RecyclerSchedule> listItems, int hours, int minutes) {
+        if (!listItems.isEmpty()) {
+            boolean flagLoopOne = false;
+            for (int i = 0; i < listItems.size(); i++) {
+                if (flagLoopOne) {
+                    break;
+                }
+                if (hours == listItems.get(i).getHours()) {
+                    flagLoopOne = true;
+                    boolean flagLoopTwo = false;
+                    int indexI = 0;
+                    for (int j = 0; j < listItems.size(); j++) {
+                        if (flagLoopTwo) {
+                            break;
+                        }
+                        if (hours == listItems.get(j).getHours()) {
+                            indexI = j;
+                            if (minutes < listItems.get(j).getMinutes()) {
+                                flagLoopTwo = true;
+                                listItems.add(indexI, new RecyclerSchedule(clockSchedule, nameSchedule, teacherSchedule, idItem, hours, minutes));
+                            }
+                        }
+                    }
+                    if (!flagLoopTwo) {
+                        listItems.add(++indexI, new RecyclerSchedule(clockSchedule, nameSchedule, teacherSchedule, idItem, hours, minutes));
+                    }
+                } else if (hours < listItems.get(i).getHours()) {
+                    flagLoopOne = true;
+                    listItems.add(i, new RecyclerSchedule(clockSchedule, nameSchedule, teacherSchedule, idItem, hours, minutes));
+                }
+            }
+            if (!flagLoopOne) {
+                listItems.add(new RecyclerSchedule(clockSchedule, nameSchedule, teacherSchedule, idItem, hours, minutes));
+            }
+        } else {
+            listItems.add(new RecyclerSchedule(clockSchedule, nameSchedule, teacherSchedule, idItem, hours, minutes));
+        }
     }
 }

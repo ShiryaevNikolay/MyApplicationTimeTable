@@ -112,7 +112,7 @@ public class AddScheduleActivity extends AppCompatActivity implements View.OnCli
         if (!tvClock.getText().equals("") && !tvItem.getText().equals("") && !tvTeacher.getText().equals("")) {
             clock = tvClock.getText().toString();
             String name = tvItem.getText().toString();
-            String teacher = tvTeacher.getText().toString();
+            String teacher = "Преподаватель: " + tvTeacher.getText().toString();
 
             contentValues.put(ScheduleDBHelper.KEY_DAY, day);
             contentValues.put(ScheduleDBHelper.KEY_CLOCK, clock);
@@ -164,7 +164,7 @@ public class AddScheduleActivity extends AppCompatActivity implements View.OnCli
                 if (!tvClock.getText().equals("") && !tvItem.getText().equals("") && !tvTeacher.getText().equals("")) {
                     clock = tvClock.getText().toString();
                     String name = tvItem.getText().toString();
-                    String teacher = tvTeacher.getText().toString();
+                    String teacher = "Преподаватель: " + tvTeacher.getText().toString();
 
                     contentValues.put(ScheduleDBHelper.KEY_DAY, day);
                     contentValues.put(ScheduleDBHelper.KEY_CLOCK, clock);
