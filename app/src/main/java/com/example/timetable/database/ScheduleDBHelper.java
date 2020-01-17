@@ -19,6 +19,7 @@ public class ScheduleDBHelper extends SQLiteOpenHelper {
     public static final String KEY_TEACHER = "teacher";
     public static final String KEY_HOURS = "hours";
     public static final String KEY_MINUTES = "minutes";
+    public static final String KEY_CLASS = "class";
 
     public ScheduleDBHelper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -32,6 +33,7 @@ public class ScheduleDBHelper extends SQLiteOpenHelper {
                                                                 + KEY_HOURS + " INTEGER, "
                                                                 + KEY_MINUTES + " INTEGER, "
                                                                 + KEY_NAME + " TEXT, "
+                                                                + KEY_CLASS + " TEXT, "
                                                                 + KEY_TEACHER + " TEXT)";
         db.execSQL(strItem);
     }
