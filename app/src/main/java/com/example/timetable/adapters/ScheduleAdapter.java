@@ -40,6 +40,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Schedu
         holder.clockRvItem.setText(itemList.getClock());
         holder.nameRvItem.setText(itemList.getName());
         holder.teacherRvItem.setText(itemList.getTeacher());
+        holder.classRvItem.setText(itemList.getNumberClass());
     }
 
     @Override
@@ -51,12 +52,14 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Schedu
         TextView clockRvItem;
         TextView nameRvItem;
         TextView teacherRvItem;
+        TextView classRvItem;
 
         ScheduleViewHolder(@NonNull View itemView) {
             super(itemView);
             clockRvItem = itemView.findViewById(R.id.clock_rv_schedule);
             nameRvItem = itemView.findViewById(R.id.name_rv_schedule);
             teacherRvItem = itemView.findViewById(R.id.teacher_rv_schedule);
+            classRvItem = itemView.findViewById(R.id.class_rv_schedule);
         }
     }
 }

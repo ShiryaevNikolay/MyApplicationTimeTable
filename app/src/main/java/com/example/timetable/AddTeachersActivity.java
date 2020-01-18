@@ -19,8 +19,9 @@ import android.widget.EditText;
 
 import com.example.timetable.database.ItemDBHelper;
 import com.example.timetable.database.TeacherDBHelper;
+import com.example.timetable.modules.ToolbarBtnBackListener;
 
-public class AddTeachersActivity extends AppCompatActivity {
+public class AddTeachersActivity extends AppCompatActivity implements ToolbarBtnBackListener {
 
     private String text = "";
     private int idItem = 0;
@@ -193,6 +194,11 @@ public class AddTeachersActivity extends AppCompatActivity {
         data.putExtra("text", message);
         data.putExtra("idItem", idItem);
         setResult(RESULT_OK, data);
+        finish();
+    }
+
+    @Override
+    public void onClickBtnBack() {
         finish();
     }
 }

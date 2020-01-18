@@ -3,7 +3,8 @@ package com.example.timetable;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentManager;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.TimePickerDialog;
@@ -11,29 +12,24 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
-
-import com.example.timetable.adapters.ItemsAdapter;
 import com.example.timetable.database.ScheduleDBHelper;
-import com.example.timetable.database.TeacherDBHelper;
+import com.example.timetable.dialogs.AddClassDialog;
 import com.example.timetable.fragments.ScheduleFragment;
+import com.example.timetable.modules.AddClassDialogListener;
+import com.example.timetable.modules.ToolbarBtnBackListener;
 import com.example.timetable.util.RequestCode;
-
 import java.util.Calendar;
 import java.util.Objects;
 
-public class AddScheduleActivity extends AppCompatActivity implements View.OnClickListener {
+public class AddScheduleActivity extends AppCompatActivity implements View.OnClickListener, AddClassDialogListener, ToolbarBtnBackListener {
     static final String ACCESS_MESSAGE="ACCESS_MESSAGE";
 
     private String day = "";
@@ -45,6 +41,7 @@ public class AddScheduleActivity extends AppCompatActivity implements View.OnCli
     private TextView tvClock;
     private TextView tvItem;
     private TextView tvTeacher;
+    private TextView tvClass;
 
     private SQLiteDatabase database;
     private ContentValues contentValues;
@@ -89,10 +86,13 @@ public class AddScheduleActivity extends AppCompatActivity implements View.OnCli
         tvItem.setText("");
         tvTeacher = findViewById(R.id.tv_teacher_schedule);
         tvTeacher.setText("");
+        tvClass = findViewById(R.id.tv_class_schedule);
+        tvClass.setText("");
 
         tvClock.setOnClickListener(this);
         tvItem.setOnClickListener(this);
         tvTeacher.setOnClickListener(this);
+        tvClass.setOnClickListener(this);
 
         // при нажатии на "Отмена" закрывается текущее окно activity
         cancelBtn.setOnClickListener(this);
@@ -109,10 +109,11 @@ public class AddScheduleActivity extends AppCompatActivity implements View.OnCli
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (!tvClock.getText().equals("") && !tvItem.getText().equals("") && !tvTeacher.getText().equals("")) {
+        if (!tvClock.getText().equals("") && !tvItem.getText().equals("") && !tvTeacher.getText().equals("") && !tvClass.getText().equals("")) {
             clock = tvClock.getText().toString();
-            String name = tvItem.getText().toString();
+            String name = tvItem.getText().toString().toUpperCase();
             String teacher = "Преподаватель: " + tvTeacher.getText().toString();
+            String numberClass = "Аудитория: " + tvClass.getText().toString();
 
             contentValues.put(ScheduleDBHelper.KEY_DAY, day);
             contentValues.put(ScheduleDBHelper.KEY_CLOCK, clock);
@@ -120,6 +121,7 @@ public class AddScheduleActivity extends AppCompatActivity implements View.OnCli
             contentValues.put(ScheduleDBHelper.KEY_MINUTES, minutes);
             contentValues.put(ScheduleDBHelper.KEY_NAME, name);
             contentValues.put(ScheduleDBHelper.KEY_TEACHER, teacher);
+            contentValues.put(ScheduleDBHelper.KEY_CLASS, numberClass);
 
             //вставляем данные в таблицу базы данных
             database.insert(ScheduleDBHelper.TABLE_SCHEDULE, null, contentValues);
@@ -134,7 +136,7 @@ public class AddScheduleActivity extends AppCompatActivity implements View.OnCli
             cursor.close();
             scheduleDBHelper.close();
             //==============================================================================
-            sendMessage(day, clock, name, teacher, idItem, hours, minutes);
+            sendMessage(day, clock, name, teacher, idItem, hours, minutes, numberClass);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -156,15 +158,21 @@ public class AddScheduleActivity extends AppCompatActivity implements View.OnCli
                 intentTeacher.putExtra("selectBtn", "teacher");
                 startActivityForResult(intentTeacher, RequestCode.REQUEST_CODE_ITEM);
                 break;
+            case R.id.tv_class_schedule:
+                DialogFragment dialogFragment = new AddClassDialog(this);
+                FragmentManager fragmentManager = this.getSupportFragmentManager();
+                dialogFragment.show(fragmentManager, "addClassDialog");
+                break;
             case R.id.add_schedule_cancel_btn:
                 setResult(RESULT_CANCELED);
                 finish();
                 break;
             case R.id.add_schedule_ok_btn:
-                if (!tvClock.getText().equals("") && !tvItem.getText().equals("") && !tvTeacher.getText().equals("")) {
+                if (!tvClock.getText().equals("") && !tvItem.getText().equals("") && !tvTeacher.getText().equals("") && !tvClass.getText().equals("")) {
                     clock = tvClock.getText().toString();
-                    String name = tvItem.getText().toString();
+                    String name = tvItem.getText().toString().toUpperCase();;
                     String teacher = "Преподаватель: " + tvTeacher.getText().toString();
+                    String numberClass = "Аудитория: " + tvClass.getText().toString();
 
                     contentValues.put(ScheduleDBHelper.KEY_DAY, day);
                     contentValues.put(ScheduleDBHelper.KEY_CLOCK, clock);
@@ -172,6 +180,7 @@ public class AddScheduleActivity extends AppCompatActivity implements View.OnCli
                     contentValues.put(ScheduleDBHelper.KEY_MINUTES, minutes);
                     contentValues.put(ScheduleDBHelper.KEY_NAME, name);
                     contentValues.put(ScheduleDBHelper.KEY_TEACHER, teacher);
+                    contentValues.put(ScheduleDBHelper.KEY_CLASS, numberClass);
 
                     //вставляем данные в таблицу базы данных
                     database.insert(ScheduleDBHelper.TABLE_SCHEDULE, null, contentValues);
@@ -187,7 +196,7 @@ public class AddScheduleActivity extends AppCompatActivity implements View.OnCli
                     cursor.close();
                     scheduleDBHelper.close();
                     //==============================================================================
-                    sendMessage(day, clock, name, teacher, idItem, hours, minutes);
+                    sendMessage(day, clock, name, teacher, idItem, hours, minutes, numberClass);
                 }
                 break;
         }
@@ -218,6 +227,16 @@ public class AddScheduleActivity extends AppCompatActivity implements View.OnCli
         else{
             super.onActivityResult(requestCode, resultCode, data);
         }
+    }
+
+    @Override
+    public void onClickDialogAdd(String numberClass) {
+        tvClass.setText(numberClass);
+    }
+
+    @Override
+    public void onClickDialogCancel() {
+        tvClass.setText("");
     }
 
     private void callTimePicker(){
@@ -273,7 +292,7 @@ public class AddScheduleActivity extends AppCompatActivity implements View.OnCli
     }
 
     // отправка результата EditText в ListItemActivity
-    private void sendMessage(String day, String clock, String name, String teacher, int idItem, int hours, int minutes){
+    private void sendMessage(String day, String clock, String name, String teacher, int idItem, int hours, int minutes, String numberClass){
         Intent data = new Intent();
         data.putExtra(ScheduleFragment.ACCESS_MESSAGE_DAY, day);
         data.putExtra(ScheduleFragment.ACCESS_MESSAGE_CLOCK, clock);
@@ -281,8 +300,14 @@ public class AddScheduleActivity extends AppCompatActivity implements View.OnCli
         data.putExtra(ScheduleFragment.ACCESS_MESSAGE_MINUTES, minutes);
         data.putExtra(ScheduleFragment.ACCESS_MESSAGE_NAME, name);
         data.putExtra(ScheduleFragment.ACCESS_MESSAGE_TEACHER, teacher);
+        data.putExtra(ScheduleFragment.ACCESS_MESSAGE_CLASS, numberClass);
         data.putExtra("idItem", idItem);
         setResult(RESULT_OK, data);
+        finish();
+    }
+
+    @Override
+    public void onClickBtnBack() {
         finish();
     }
 }

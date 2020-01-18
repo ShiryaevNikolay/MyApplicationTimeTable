@@ -10,9 +10,10 @@ import android.os.Bundle;
 
 import com.example.timetable.adapters.TabsFragmentAdapter;
 import com.example.timetable.database.ScheduleDBHelper;
+import com.example.timetable.modules.ToolbarBtnBackListener;
 import com.google.android.material.tabs.TabLayout;
 
-public class ListScheduleActivity extends AppCompatActivity {
+public class ListScheduleActivity extends AppCompatActivity implements ToolbarBtnBackListener {
 
     private ScheduleDBHelper scheduleDBHelper;
     private SQLiteDatabase database;
@@ -45,5 +46,17 @@ public class ListScheduleActivity extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
             super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onClickBtnBack() {
+        setResult(RESULT_OK);
+        finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        setResult(RESULT_OK);
+        finish();
     }
 }

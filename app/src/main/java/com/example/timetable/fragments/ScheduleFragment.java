@@ -41,6 +41,7 @@ public class ScheduleFragment extends AbstractTabFragment implements View.OnClic
     public static final String ACCESS_MESSAGE_NAME="ACCESS_MESSAGE_NAME";
     public static final String ACCESS_MESSAGE_TEACHER="ACCESS_MESSAGE_TEACHER";
     public static final String ACCESS_MESSAGE_DAY="ACCESS_MESSAGE_DAY";
+    public static final String ACCESS_MESSAGE_CLASS="ACCESS_MESSAGE_CLASS";
 
     private ArrayList<RecyclerSchedule> listItems;
     private SQLiteDatabase database;
@@ -50,6 +51,7 @@ public class ScheduleFragment extends AbstractTabFragment implements View.OnClic
     private String clockSchedule;
     private String nameSchedule;
     private String teacherSchedule;
+    private String classSchedule;
     private int idItem = 0;
     private int hours = 0;
     private int minutes = 0;
@@ -136,6 +138,7 @@ public class ScheduleFragment extends AbstractTabFragment implements View.OnClic
                     clockSchedule = cursor.getString(cursor.getColumnIndex(ScheduleDBHelper.KEY_CLOCK));
                     nameSchedule = cursor.getString(cursor.getColumnIndex(ScheduleDBHelper.KEY_NAME));
                     teacherSchedule = cursor.getString(cursor.getColumnIndex(ScheduleDBHelper.KEY_TEACHER));
+                    classSchedule = cursor.getString(cursor.getColumnIndex(ScheduleDBHelper.KEY_CLASS));
                     idItem = cursor.getInt(cursor.getColumnIndex(ScheduleDBHelper.KEY_ID));
                     hours = cursor.getInt(cursor.getColumnIndex(ScheduleDBHelper.KEY_HOURS));
                     minutes = cursor.getInt(cursor.getColumnIndex(ScheduleDBHelper.KEY_MINUTES));
@@ -215,6 +218,7 @@ public class ScheduleFragment extends AbstractTabFragment implements View.OnClic
                     clockSchedule = data.getStringExtra(ACCESS_MESSAGE_CLOCK);
                     nameSchedule = data.getStringExtra(ACCESS_MESSAGE_NAME);
                     teacherSchedule = data.getStringExtra(ACCESS_MESSAGE_TEACHER);
+                    classSchedule = data.getStringExtra(ACCESS_MESSAGE_CLASS);
                     idItem = data.getIntExtra("idItem", 0);
                     hours = data.getIntExtra(ACCESS_MESSAGE_HOURS, 0);
                     minutes = data.getIntExtra(ACCESS_MESSAGE_MINUTES, 0);
@@ -225,6 +229,7 @@ public class ScheduleFragment extends AbstractTabFragment implements View.OnClic
                 clockSchedule = "hh:mm";
                 nameSchedule = "Ошибка доступа";
                 teacherSchedule = "Ошибка доступа";
+                classSchedule = "Ошибка доступа";
             }
         }
         else{
@@ -278,23 +283,23 @@ public class ScheduleFragment extends AbstractTabFragment implements View.OnClic
                             indexI = j;
                             if (minutes < listItems.get(j).getMinutes()) {
                                 flagLoopTwo = true;
-                                listItems.add(indexI, new RecyclerSchedule(clockSchedule, nameSchedule, teacherSchedule, idItem, hours, minutes));
+                                listItems.add(indexI, new RecyclerSchedule(clockSchedule, nameSchedule, teacherSchedule, idItem, hours, minutes, classSchedule));
                             }
                         }
                     }
                     if (!flagLoopTwo) {
-                        listItems.add(++indexI, new RecyclerSchedule(clockSchedule, nameSchedule, teacherSchedule, idItem, hours, minutes));
+                        listItems.add(++indexI, new RecyclerSchedule(clockSchedule, nameSchedule, teacherSchedule, idItem, hours, minutes, classSchedule));
                     }
                 } else if (hours < listItems.get(i).getHours()) {
                     flagLoopOne = true;
-                    listItems.add(i, new RecyclerSchedule(clockSchedule, nameSchedule, teacherSchedule, idItem, hours, minutes));
+                    listItems.add(i, new RecyclerSchedule(clockSchedule, nameSchedule, teacherSchedule, idItem, hours, minutes, classSchedule));
                 }
             }
             if (!flagLoopOne) {
-                listItems.add(new RecyclerSchedule(clockSchedule, nameSchedule, teacherSchedule, idItem, hours, minutes));
+                listItems.add(new RecyclerSchedule(clockSchedule, nameSchedule, teacherSchedule, idItem, hours, minutes, classSchedule));
             }
         } else {
-            listItems.add(new RecyclerSchedule(clockSchedule, nameSchedule, teacherSchedule, idItem, hours, minutes));
+            listItems.add(new RecyclerSchedule(clockSchedule, nameSchedule, teacherSchedule, idItem, hours, minutes, classSchedule));
         }
     }
 }

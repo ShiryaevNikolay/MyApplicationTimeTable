@@ -8,14 +8,16 @@ public class RecyclerSchedule {
     private String clock;
     private String name;
     private String teacher;
+    private String numberClass;
 
-    public RecyclerSchedule(String clock, String name, String teacher, int idItem, int hours, int minutes) {
+    public RecyclerSchedule(String clock, String name, String teacher, int idItem, int hours, int minutes, String numberClass) {
         this.clock = clock;
         this.name = name;
         this.teacher = teacher;
         this.idItem = idItem;
         this.hours = hours;
         this.minutes = minutes;
+        this.numberClass = numberClass;
     }
 
     public String getClock() {
@@ -26,6 +28,9 @@ public class RecyclerSchedule {
     }
     public String getTeacher(){
         return teacher;
+    }
+    public String getNumberClass(){
+        return numberClass;
     }
     public int getId() { return idItem; }
     public int getHours() { return hours; }
@@ -39,6 +44,9 @@ public class RecyclerSchedule {
     }
     public void setTeacher(String teacher){
         this.teacher = teacher;
+    }
+    public void setNumberClass(String numberClass){
+        this.numberClass = numberClass;
     }
     public void setId(int idItem) { this.idItem = idItem; }
     public void setHours(int hours) { this.hours = hours; }

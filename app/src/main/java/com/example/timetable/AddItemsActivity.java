@@ -3,7 +3,6 @@ package com.example.timetable;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
@@ -16,12 +15,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-
 import com.example.timetable.database.ItemDBHelper;
+import com.example.timetable.modules.ToolbarBtnBackListener;
 
-import java.util.Objects;
-
-public class AddItemsActivity extends AppCompatActivity {
+public class AddItemsActivity extends AppCompatActivity implements ToolbarBtnBackListener {
 
     private String text = "";
     private int idItem = 0;
@@ -171,6 +168,11 @@ public class AddItemsActivity extends AppCompatActivity {
         data.putExtra("text", message);
         data.putExtra("idItem", idItem);
         setResult(RESULT_OK, data);
+        finish();
+    }
+
+    @Override
+    public void onClickBtnBack() {
         finish();
     }
 }
