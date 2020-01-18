@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10dp"
     tools:context=".MainActivity"
     android:background="@color/colorPrimary"
     android:gravity="center">
@@ -13,7 +12,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:layout_above="@+id/ll_btn_main_activity">
+        android:layout_above="@+id/ll_btn_main_activity"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/style_item"
+        android:elevation="3dp">
 
 
         <TextView
@@ -23,8 +27,9 @@
             android:text=""
             android:gravity="center"
             android:layout_marginBottom="10dp"
+            android:layout_marginTop="5dp"
             android:textStyle="bold"
-            android:textSize="25sp"/>
+            android:textSize="20sp"/>
 
         <TextView
             android:id="@+id/tv_day_off_main_activity"
@@ -44,7 +49,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_alignParentBottom="true">
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -58,7 +66,10 @@
                 android:id="@+id/main_layout_btn_items"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="20dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp"
                 android:layout_weight="1"
                 android:background="@drawable/border_corner_view"
                 android:padding="10dp">
@@ -76,7 +87,10 @@
                 android:id="@+id/main_layout_btn_teacher"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="20dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp"
                 android:layout_weight="1"
                 android:background="@drawable/border_corner_view"
                 android:padding="10dp">
@@ -92,7 +106,10 @@
                 android:id="@+id/main_layout_btn_make_schedule"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="20dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp"
                 android:layout_weight="1"
                 android:background="@drawable/border_corner_view"
                 android:padding="10dp">
@@ -118,7 +135,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="Добавить предметы"
-                android:textSize="14sp" />
+                android:textSize="12sp"/>
 
             <TextView
                 android:id="@+id/main_textView_add_teacher"
@@ -127,7 +144,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="Добавить преподавателей"
-                android:textSize="14sp" />
+                android:textSize="12sp"/>
 
             <TextView
                 android:id="@+id/main_textView_make_schedule"
@@ -136,7 +153,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="Составить расписание"
-                android:textSize="14sp"/>
+                android:textSize="12sp"/>
 
         </LinearLayout>
     </LinearLayout>

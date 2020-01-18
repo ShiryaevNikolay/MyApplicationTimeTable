@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
         int day = calendar.get(Calendar.DAY_OF_WEEK);
 
         TextView textView = findViewById(R.id.tv_ll_day_main_activity);
+        textView.setAllCaps(true);
         textView1DayOff = findViewById(R.id.tv_day_off_main_activity);
         switch (day) {
             case Calendar.MONDAY:
