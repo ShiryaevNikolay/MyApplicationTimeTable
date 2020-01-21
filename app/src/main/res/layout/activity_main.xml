@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".MainActivity"
     android:background="@color/colorPrimary"
     android:gravity="center">
@@ -12,12 +13,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:layout_above="@+id/ll_btn_main_activity"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_margin="10dp"
         android:background="@drawable/style_item"
-        android:elevation="3dp">
+        android:elevation="2dp"
+        android:layout_above="@+id/nav_view_main_activity">
 
 
         <TextView
@@ -44,118 +43,14 @@
             android:layout_height="match_parent"/>
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/ll_btn_main_activity"
-        android:layout_width="wrap_content"
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/nav_view_main_activity"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        app:menu="@menu/nav_menu_main_act"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="horizontal"
-            tools:ignore="NestedWeights"
-            android:baselineAligned="false">
-
-            <FrameLayout
-                android:id="@+id/main_layout_btn_items"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="5dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginLeft="25dp"
-                android:layout_marginRight="25dp"
-                android:layout_weight="1"
-                android:background="@drawable/border_corner_view"
-                android:padding="10dp">
-
-                <com.example.timetable.ResizableWidthButton
-                    android:id="@+id/main_btn_add_items"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/main_activity_btn"
-                    android:elevation="5dp"/>
-
-            </FrameLayout>
-
-            <FrameLayout
-                android:id="@+id/main_layout_btn_teacher"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="5dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginLeft="25dp"
-                android:layout_marginRight="25dp"
-                android:layout_weight="1"
-                android:background="@drawable/border_corner_view"
-                android:padding="10dp">
-
-                <com.example.timetable.ResizableWidthButton
-                    android:id="@+id/main_btn_add_teacher"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/add_teacher_btn" />
-            </FrameLayout>
-
-            <FrameLayout
-                android:id="@+id/main_layout_btn_make_schedule"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="5dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginLeft="25dp"
-                android:layout_marginRight="25dp"
-                android:layout_weight="1"
-                android:background="@drawable/border_corner_view"
-                android:padding="10dp">
-
-                <com.example.timetable.ResizableWidthButton
-                    android:id="@+id/main_btn_make_schedule"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/make_schedule_btn" />
-            </FrameLayout>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/main_textView_add_items"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="Добавить предметы"
-                android:textSize="12sp"/>
-
-            <TextView
-                android:id="@+id/main_textView_add_teacher"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="Добавить преподавателей"
-                android:textSize="12sp"/>
-
-            <TextView
-                android:id="@+id/main_textView_make_schedule"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="Составить расписание"
-                android:textSize="12sp"/>
-
-        </LinearLayout>
-    </LinearLayout>
+        app:itemTextColor="@drawable/selector"
+        app:itemIconTint="@drawable/selector"
+        app:itemHorizontalTranslationEnabled="false"/>
 
 </RelativeLayout>

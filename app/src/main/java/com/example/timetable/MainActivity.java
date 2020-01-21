@@ -1,5 +1,6 @@
 package com.example.timetable;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -9,22 +10,20 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.timetable.adapters.ScheduleAdapter;
 import com.example.timetable.database.ScheduleDBHelper;
 import com.example.timetable.util.RequestCode;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class MainActivity extends AppCompatActivity {
-    Button addItemsBtn;
-    Button addTeacherBtn;
-    Button makeScheduleBtn;
+public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
+    BottomNavigationView bottomNavigationView;
 
     private String daySchedule = "";
     TextView textView1DayOff;
@@ -46,6 +45,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        bottomNavigationView = findViewById(R.id.nav_view_main_activity);
+        bottomNavigationView.setOnNavigationItemSelectedListener(this);
 
         Calendar calendar = Calendar.getInstance();
         int day = calendar.get(Calendar.DAY_OF_WEEK);
@@ -120,43 +122,22 @@ public class MainActivity extends AppCompatActivity {
         itemsAdapter = new ScheduleAdapter(listItems);
         //назначаем RecyclerView созданный Adapter
         recyclerView.setAdapter(itemsAdapter);
-
-//        Переход в activity "Добавить предметы"
-        addItems();
-//        Переход в activity "Добавить преподавателей"
-        addTeacher();
-//        Переход в activity "составить расписание"
-        makeSchedule();
     }
 
-    public void addItems(){
-        addItemsBtn = findViewById(R.id.main_btn_add_items);
-        addItemsBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
+            case R.id.nav_items:
                 launchAddItemsActivity();
-            }
-        });
-    }
-
-    public void addTeacher(){
-        addTeacherBtn = findViewById(R.id.main_btn_add_teacher);
-        addTeacherBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+                break;
+            case R.id.nav_teacher:
                 launchAddTeacherActivity();
-            }
-        });
-    }
-
-    private void makeSchedule(){
-        makeScheduleBtn = findViewById(R.id.main_btn_make_schedule);
-        makeScheduleBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+                break;
+            case R.id.nav_schedule:
                 launchMakeScheduleActivity();
-            }
-        });
+                break;
+        }
+        return false;
     }
 
     public void launchAddItemsActivity(){

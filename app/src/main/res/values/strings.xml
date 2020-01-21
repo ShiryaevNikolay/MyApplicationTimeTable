@@ -19,4 +19,8 @@
     <string name="add_class_dialog_title">Введите номер аудитории</string>
     <string name="add_class_dialog_add">Добавить</string>
     <string name="add_class_dialog_cancel">Отмена</string>
+
+    <string name="nav_btn_item">Предметы</string>
+    <string name="nav_btn_teacher">Преподаватели</string>
+    <string name="nav_btn_schedule">Расписание</string>
 </resources>
