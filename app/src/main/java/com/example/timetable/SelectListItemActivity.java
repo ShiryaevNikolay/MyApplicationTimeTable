@@ -93,7 +93,9 @@ public class SelectListItemActivity extends AppCompatActivity implements OnItemL
                     nameItem = cursor.getString(cursor.getColumnIndex(ItemDBHelper. KEY_NAME));
                 } else if (Objects.equals(intent.getStringExtra("selectBtn"), "teacher")) {
                     idItem = cursor.getInt(cursor.getColumnIndex(TeacherDBHelper. KEY_ID));
-                    nameItem = cursor.getString(cursor.getColumnIndex(TeacherDBHelper. KEY_NAME));
+                    nameItem = cursor.getString(cursor.getColumnIndex(TeacherDBHelper. KEY_SURNAME)) + " "
+                                + cursor.getString(cursor.getColumnIndex(TeacherDBHelper. KEY_NAME)) + " "
+                                + cursor.getString(cursor.getColumnIndex(TeacherDBHelper. KEY_PATRONYMIC));
                 }
                 listItem.add(new RecyclerItem(nameItem, idItem));
             }while (cursor.moveToNext());

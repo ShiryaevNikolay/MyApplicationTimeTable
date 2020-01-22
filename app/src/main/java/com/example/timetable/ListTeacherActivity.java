@@ -29,6 +29,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class ListTeacherActivity extends AppCompatActivity implements OnItemListener, ItemTouchHelperAdapter, DialogListener, ToolbarBtnBackListener {
 
@@ -38,7 +39,7 @@ public class ListTeacherActivity extends AppCompatActivity implements OnItemList
     RecyclerView recyclerView;
     TeachersAdapter teachersAdapter;
 
-    public ArrayList<RecyclerItem> listTeacher;
+    ArrayList<RecyclerItem> listTeacher;
     RecyclerItem item;
 
     TeacherDBHelper teacherDBHelper;
@@ -65,10 +66,14 @@ public class ListTeacherActivity extends AppCompatActivity implements OnItemList
         if (cursor.moveToFirst()){
             do {
                 String nameTeacher = cursor.getString(cursor.getColumnIndex(TeacherDBHelper. KEY_NAME));
+                String surnameTeacher = cursor.getString(cursor.getColumnIndex(TeacherDBHelper. KEY_SURNAME));
+                String patronymicTeacher = cursor.getString(cursor.getColumnIndex(TeacherDBHelper. KEY_PATRONYMIC));
+                String fullName = surnameTeacher + " " + nameTeacher + " " + patronymicTeacher;
                 int idItem = cursor.getInt(cursor.getColumnIndex(TeacherDBHelper. KEY_ID));
-                listTeacher.add(new RecyclerItem(nameTeacher, idItem));
+                listTeacher.add(new RecyclerItem(fullName, idItem));
             }while (cursor.moveToNext());
         }
+        cursor.close();
 
         // Находим RecyclerView
         recyclerView = findViewById(R.id.recyclerView_teacher);
@@ -84,6 +89,7 @@ public class ListTeacherActivity extends AppCompatActivity implements OnItemList
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ListTeacherActivity.this, AddTeachersActivity.class);
+                intent.putExtra("requestCode", RequestCode.REQUEST_CODE_TEACHER);
                 startActivityForResult(intent, RequestCode.REQUEST_CODE_TEACHER);
             }
         });
@@ -98,13 +104,14 @@ public class ListTeacherActivity extends AppCompatActivity implements OnItemList
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == RequestCode.REQUEST_CODE_TEACHER){
-            if (resultCode == RESULT_OK){
+        if (resultCode == RESULT_OK){
+            if (requestCode == RequestCode.REQUEST_CODE_TEACHER_CHANGE) {
+                nameTeacher = data.getStringExtra("text");
+                listTeacher.get(Objects.requireNonNull(data.getExtras()).getInt("position")).setText(nameTeacher);
+            } else if (requestCode == RequestCode.REQUEST_CODE_TEACHER) {
                 nameTeacher = data.getStringExtra("text");
                 idItem = data.getIntExtra("idItem", idItem);
                 listTeacher.add(new RecyclerItem(nameTeacher, idItem));
-            } else {
-                nameTeacher = "Ошибка доступа";
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
@@ -117,7 +124,11 @@ public class ListTeacherActivity extends AppCompatActivity implements OnItemList
 
     @Override
     public void onItemClick(int position) {
-
+        Intent intent = new Intent(this, AddTeachersActivity.class);
+        intent.putExtra("requestCode", RequestCode.REQUEST_CODE_TEACHER_CHANGE);
+        intent.putExtra("idItem", listTeacher.get(position).getId());
+        intent.putExtra("position", position);
+        startActivityForResult(intent, RequestCode.REQUEST_CODE_TEACHER_CHANGE);
     }
 
     @Override
