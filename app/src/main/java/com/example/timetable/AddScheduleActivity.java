@@ -146,7 +146,7 @@ public class AddScheduleActivity extends AppCompatActivity implements View.OnCli
         switch(v.getId()){
             case R.id.tv_clock_schedule:
                 callTimePicker();
-                checkEmptyField(tvClock, tvItem, tvTeacher, okBtn);
+                checkEmptyField(tvClock, tvItem, tvTeacher, tvClass, okBtn);
                 break;
             case R.id.tv_item_schedule:
                 Intent intentItem = new Intent(this, SelectListItemActivity.class);
@@ -170,7 +170,7 @@ public class AddScheduleActivity extends AppCompatActivity implements View.OnCli
             case R.id.add_schedule_ok_btn:
                 if (!tvClock.getText().equals("") && !tvItem.getText().equals("") && !tvTeacher.getText().equals("") && !tvClass.getText().equals("")) {
                     clock = tvClock.getText().toString();
-                    String name = tvItem.getText().toString().toUpperCase();;
+                    String name = tvItem.getText().toString().toUpperCase();
                     String teacher = "Преподаватель: " + tvTeacher.getText().toString();
                     String numberClass = "Аудитория: " + tvClass.getText().toString();
 
@@ -208,19 +208,19 @@ public class AddScheduleActivity extends AppCompatActivity implements View.OnCli
             if(resultCode==RESULT_OK){
                 if (Objects.equals(data.getStringExtra("selectBtn"), "item")) {
                     tvItem.setText(data.getStringExtra(ACCESS_MESSAGE));
-                    checkEmptyField(tvClock, tvItem, tvTeacher, okBtn);
+                    checkEmptyField(tvClock, tvItem, tvTeacher, tvClass, okBtn);
                 } else if (Objects.equals(data.getStringExtra("selectBtn"), "teacher")) {
                     tvTeacher.setText(data.getStringExtra(ACCESS_MESSAGE));
-                    checkEmptyField(tvClock, tvItem, tvTeacher, okBtn);
+                    checkEmptyField(tvClock, tvItem, tvTeacher, tvClass, okBtn);
                 }
             }
             else if(resultCode==RESULT_CANCELED) {
                 if (Objects.equals(data.getStringExtra("selectBtn"), "item")) {
                     tvItem.setText("");
-                    checkEmptyField(tvClock, tvItem, tvTeacher, okBtn);
+                    checkEmptyField(tvClock, tvItem, tvTeacher, tvClass, okBtn);
                 } else if (Objects.equals(data.getStringExtra("selectBtn"), "teacher")) {
                     tvTeacher.setText("");
-                    checkEmptyField(tvClock, tvItem, tvTeacher, okBtn);
+                    checkEmptyField(tvClock, tvItem, tvTeacher, tvClass, okBtn);
                 }
             }
         }
@@ -232,11 +232,13 @@ public class AddScheduleActivity extends AppCompatActivity implements View.OnCli
     @Override
     public void onClickDialogAdd(String numberClass) {
         tvClass.setText(numberClass);
+        checkEmptyField(tvClock, tvItem, tvTeacher, tvClass, okBtn);
     }
 
     @Override
     public void onClickDialogCancel() {
         tvClass.setText("");
+        checkEmptyField(tvClock, tvItem, tvTeacher, tvClass, okBtn);
     }
 
     private void callTimePicker(){
@@ -275,6 +277,7 @@ public class AddScheduleActivity extends AppCompatActivity implements View.OnCli
                     clock = tvClock.getText().toString();
                     hours = hourOfDay;
                     minutes = minute;
+                    checkEmptyField(tvClock, tvItem, tvTeacher, tvClass, okBtn);
                 } else {
                     Toast.makeText(AddScheduleActivity.this, "В это время уже есть занятие", Toast.LENGTH_SHORT).show();
                 }
@@ -283,8 +286,8 @@ public class AddScheduleActivity extends AppCompatActivity implements View.OnCli
         timePickerDialog.show();
     }
 
-    protected void checkEmptyField(TextView tvClock, TextView tvItem, TextView tvTeacher, final Button btn){
-        if (!tvClock.getText().equals("") && !tvItem.getText().equals("") && !tvTeacher.getText().equals("")) {
+    protected void checkEmptyField(TextView tvClock, TextView tvItem, TextView tvTeacher, TextView tvClass, final Button btn){
+        if (!tvClock.getText().equals("") && !tvItem.getText().equals("") && !tvTeacher.getText().equals("") && !tvClass.getText().equals("")) {
             btn.setBackground(getDrawable(R.drawable.bg_green_corner_view));
         } else {
             btn.setBackground(getDrawable(R.drawable.btn_no_activated));

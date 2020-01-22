@@ -13,6 +13,8 @@ public class TeacherDBHelper extends SQLiteOpenHelper {
 
     public static final String KEY_ID = "_id";
     public static final String KEY_NAME = "name";
+    public static final String KEY_SURNAME = "surname";
+    public static final String KEY_PATRONYMIC = "patronymic";
 
     public TeacherDBHelper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -20,7 +22,10 @@ public class TeacherDBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String strItem = "CREATE TABLE " + TABLE_TEACHERS + "(" + KEY_ID + " INTEGER PRIMARY KEY," + KEY_NAME + " TEXT)";
+        String strItem = "CREATE TABLE " + TABLE_TEACHERS + "(" + KEY_ID + " INTEGER PRIMARY KEY, "
+                                                                + KEY_NAME + " TEXT, "
+                                                                + KEY_PATRONYMIC + " TEXT, "
+                                                                + KEY_SURNAME + " TEXT)";
         db.execSQL(strItem);
     }
 

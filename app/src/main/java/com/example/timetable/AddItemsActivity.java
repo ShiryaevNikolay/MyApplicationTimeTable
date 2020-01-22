@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -13,10 +14,14 @@ import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import com.example.timetable.database.ItemDBHelper;
 import com.example.timetable.modules.ToolbarBtnBackListener;
+import com.example.timetable.util.RequestCode;
+
+import java.util.Objects;
 
 public class AddItemsActivity extends AppCompatActivity implements ToolbarBtnBackListener {
 
@@ -54,6 +59,12 @@ public class AddItemsActivity extends AppCompatActivity implements ToolbarBtnBac
 
         // находим поле с вводом текста "предметы"
         final EditText editText = findViewById(R.id.editText_item);
+
+        if (Objects.requireNonNull(getIntent().getExtras()).getInt("requestCode") == RequestCode.REQUEST_CODE_ITEM_CHANGE) {
+            editText.setText(getIntent().getExtras().getString("text"));
+            text = getIntent().getExtras().getString("text");
+        }
+
         // проверяем, пустое ли поле ввода
         editText.addTextChangedListener(new TextWatcher() {
             // действия перед тем, как что то введено
@@ -99,29 +110,7 @@ public class AddItemsActivity extends AppCompatActivity implements ToolbarBtnBac
         okBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(text.length() != 0){
-                    contentValues.put(ItemDBHelper.KEY_NAME, text);
-
-                    //вставляем данные в таблицу базы данных
-                    database.insert(ItemDBHelper.TABLE_ITEMS, null, contentValues);
-
-                    // ВЫВОД ДАННЫХ ИЗ БАЗЫ ДАННЫХ В ТЕРМИНАЛ
-                    //==============================================================================
-                    Cursor cursor = database.query(ItemDBHelper.TABLE_ITEMS, null, null, null, null, null, null);
-
-                    if (cursor.moveToFirst()){
-                        int idIndex = cursor.getColumnIndex(ItemDBHelper.KEY_ID);
-                        do {
-                            idItem = cursor.getInt(idIndex);
-                        }while (cursor.moveToNext());
-                    }
-
-                    cursor.close();
-                    itemDbHelper.close();
-                    //==============================================================================
-
-                    sendMessage(text, idItem);
-                }
+                addOrChangeItem();
             }
         });
     }
@@ -135,29 +124,7 @@ public class AddItemsActivity extends AppCompatActivity implements ToolbarBtnBac
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.menu_action_save) {
-            if(text.length() != 0){
-                contentValues.put(ItemDBHelper.KEY_NAME, text);
-
-                //вставляем данные в таблицу базы данных
-                database.insert(ItemDBHelper.TABLE_ITEMS, null, contentValues);
-
-                // ВЫВОД ДАННЫХ ИЗ БАЗЫ ДАННЫХ В ТЕРМИНАЛ
-                //==============================================================================
-                Cursor cursor = database.query(ItemDBHelper.TABLE_ITEMS, null, null, null, null, null, null);
-
-                if (cursor.moveToFirst()){
-                    int idIndex = cursor.getColumnIndex(ItemDBHelper.KEY_ID);
-                    do {
-                        idItem = cursor.getInt(idIndex);
-                    }while (cursor.moveToNext());
-                }
-
-                cursor.close();
-                itemDbHelper.close();
-                //==============================================================================
-
-                sendMessage(text, idItem);
-            }
+            addOrChangeItem();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -167,6 +134,9 @@ public class AddItemsActivity extends AppCompatActivity implements ToolbarBtnBac
         Intent data = new Intent();
         data.putExtra("text", message);
         data.putExtra("idItem", idItem);
+        if (Objects.requireNonNull(getIntent().getExtras()).getInt("requestCode") == RequestCode.REQUEST_CODE_ITEM_CHANGE) {
+            data.putExtra("position", getIntent().getExtras().getInt("position"));
+        }
         setResult(RESULT_OK, data);
         finish();
     }
@@ -174,5 +144,30 @@ public class AddItemsActivity extends AppCompatActivity implements ToolbarBtnBac
     @Override
     public void onClickBtnBack() {
         finish();
+    }
+
+    private void addOrChangeItem() {
+        if(text.length() != 0){
+            contentValues.put(ItemDBHelper.KEY_NAME, text);
+
+            if (Objects.requireNonNull(getIntent().getExtras()).getInt("requestCode") == RequestCode.REQUEST_CODE_ITEM_CHANGE) {
+                database.update(ItemDBHelper.TABLE_ITEMS, contentValues, ItemDBHelper.KEY_ID + " = " + getIntent().getExtras().getInt("idItem"), null);
+                idItem = getIntent().getExtras().getInt("idItem");
+            } else if (Objects.requireNonNull(getIntent().getExtras()).getInt("requestCode") == RequestCode.REQUEST_CODE_ITEM) {
+                //вставляем данные в таблицу базы данных
+                database.insert(ItemDBHelper.TABLE_ITEMS, null, contentValues);
+                Cursor cursor = database.query(ItemDBHelper.TABLE_ITEMS, null, null, null, null, null, null);
+                if (cursor.moveToFirst()){
+                    int idIndex = cursor.getColumnIndex(ItemDBHelper.KEY_ID);
+                    do {
+                        idItem = cursor.getInt(idIndex);
+                    }while (cursor.moveToNext());
+                }
+                cursor.close();
+                itemDbHelper.close();
+            }
+
+            sendMessage(text, idItem);
+        }
     }
 }

@@ -31,6 +31,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class ListItemsActivity extends AppCompatActivity implements OnItemListener, ItemTouchHelperAdapter, DialogListener, ToolbarBtnBackListener {
 
@@ -42,7 +43,7 @@ public class ListItemsActivity extends AppCompatActivity implements OnItemListen
     ItemTouchHelper.Callback callback;
     ItemTouchHelper touchHelper;
 
-    public ArrayList<RecyclerItem> listItems;
+    ArrayList<RecyclerItem> listItems;
     RecyclerItem item;
 
     SQLiteDatabase database;
@@ -64,9 +65,6 @@ public class ListItemsActivity extends AppCompatActivity implements OnItemListen
 
         listItems = new ArrayList<>();
 
-//        // ОЧИСТКА БАЗЫ ДАННЫХ
-//        database.delete(ItemDBHelper.TABLE_ITEMS, null, null);
-
         // добавляем в список данные (названия предметов) из базы данных
         if (cursor.moveToFirst()){
             do {
@@ -75,6 +73,7 @@ public class ListItemsActivity extends AppCompatActivity implements OnItemListen
                 listItems.add(new RecyclerItem(nameItem, idItem));
             }while (cursor.moveToNext());
         }
+        cursor.close();
 
         // Находим RecyclerView
         recyclerView = findViewById(R.id.recyclerView_item);
@@ -90,6 +89,7 @@ public class ListItemsActivity extends AppCompatActivity implements OnItemListen
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ListItemsActivity.this, AddItemsActivity.class);
+                intent.putExtra("requestCode", RequestCode.REQUEST_CODE_ITEM);
                 startActivityForResult(intent, RequestCode.REQUEST_CODE_ITEM);
             }
         });
@@ -105,20 +105,18 @@ public class ListItemsActivity extends AppCompatActivity implements OnItemListen
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode == RequestCode.REQUEST_CODE_ITEM){
-            if(resultCode==RESULT_OK){
+        if(resultCode==RESULT_OK){
+            if (requestCode == RequestCode.REQUEST_CODE_ITEM_CHANGE) {
+                nameItem = data.getStringExtra("text");
+                listItems.get(Objects.requireNonNull(data.getExtras()).getInt("position")).setText(nameItem);
+            } else if (requestCode == RequestCode.REQUEST_CODE_ITEM) {
                 nameItem = data.getStringExtra("text");
                 idItem = data.getIntExtra("idItem", 0);
                 listItems.add(new RecyclerItem(nameItem, idItem));
             }
-            else{
-                nameItem = "Ошибка доступа";
-            }
-        }
-        else{
+        } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
-
 
         itemsAdapter = new ItemsAdapter(listItems, this);
         //назначаем RecyclerView созданный Adapter
@@ -127,7 +125,12 @@ public class ListItemsActivity extends AppCompatActivity implements OnItemListen
 
     @Override
     public void onItemClick(int position) {
-
+        Intent intent = new Intent(this, AddItemsActivity.class);
+        intent.putExtra("requestCode", RequestCode.REQUEST_CODE_ITEM_CHANGE);
+        intent.putExtra("text", listItems.get(position).getText());
+        intent.putExtra("idItem", listItems.get(position).getId());
+        intent.putExtra("position", position);
+        startActivityForResult(intent, RequestCode.REQUEST_CODE_ITEM_CHANGE);
     }
 
     @Override
