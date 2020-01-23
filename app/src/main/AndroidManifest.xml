@@ -16,28 +16,22 @@
             android:label="" />
         <activity
             android:name=".AddScheduleActivity"
-            android:label=""
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:label=""/>
         <activity
             android:name=".ListScheduleActivity"
-            android:label="Расписание"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:label="Расписание"/>
         <activity
             android:name=".AddTeachersActivity"
-            android:label=""
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:label=""/>
         <activity
             android:name=".AddItemsActivity"
-            android:label=""
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:label=""/>
         <activity
             android:name=".ListTeacherActivity"
-            android:label="Преподаватели"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:label="Преподаватели"/>
         <activity
             android:name=".ListItemsActivity"
-            android:label="Предметы"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:label="Предметы"/>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
