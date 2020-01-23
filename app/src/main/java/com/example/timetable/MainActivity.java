@@ -74,10 +74,14 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 break;
             case Calendar.FRIDAY:
                 daySchedule = "fri";
-                textView.setText("Суббота");
+                textView.setText("Пятница");
                 break;
             case Calendar.SATURDAY:
                 daySchedule = "sat";
+                textView.setText("Суббота");
+                break;
+            case Calendar.SUNDAY:
+                daySchedule = "sun";
                 textView.setText("Воскресенье");
                 break;
         }

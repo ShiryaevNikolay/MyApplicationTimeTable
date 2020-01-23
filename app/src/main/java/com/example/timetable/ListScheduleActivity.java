@@ -15,7 +15,6 @@ import com.google.android.material.tabs.TabLayout;
 
 public class ListScheduleActivity extends AppCompatActivity implements ToolbarBtnBackListener {
 
-    private ScheduleDBHelper scheduleDBHelper;
     private SQLiteDatabase database;
 
     @Override
@@ -23,7 +22,7 @@ public class ListScheduleActivity extends AppCompatActivity implements ToolbarBt
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_schedule);
 
-        scheduleDBHelper = new ScheduleDBHelper(this);
+        ScheduleDBHelper scheduleDBHelper = new ScheduleDBHelper(this);
         database = scheduleDBHelper.getWritableDatabase();
         initTabs();
 
