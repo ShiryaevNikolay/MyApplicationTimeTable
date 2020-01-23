@@ -23,14 +23,6 @@
             android:text=""
             android:textSize="16sp"
             android:textStyle="bold"/>
-
-        <com.google.android.material.chip.Chip
-            android:layout_below="@+id/text_item_rv_homework"
-            android:layout_alignParentEnd="true"
-            android:id="@+id/chip_item_homework"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/ckeckbox_style"/>
     </RelativeLayout>
 
 </androidx.cardview.widget.CardView>

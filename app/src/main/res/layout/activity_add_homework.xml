@@ -4,11 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AddItemsActivity"
+    tools:context=".AddHomeworkActivity"
     android:background="@color/colorPrimary">
 
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/app_bar_layout_add_item"
+        android:id="@+id/app_bar_layout_add_homework"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay"
@@ -17,20 +17,21 @@
         <androidx.appcompat.widget.Toolbar
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/toolbar_add_item"
+            android:id="@+id/toolbar_add_homework"
             android:background="@color/colorPrimary"
             app:popupTheme="@style/AppTheme.PopupOverlay"
-            app:elevation="0dp"/>
+            app:elevation="0dp"
+            android:theme="@style/AppTheme"/>
     </com.google.android.material.appbar.AppBarLayout>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/app_bar_layout_add_item"
-        android:layout_above="@+id/add_item_btn">
+        android:layout_below="@+id/app_bar_layout_add_homework"
+        android:layout_above="@+id/add_homework_btn">
 
         <LinearLayout
-            android:id="@+id/add_item_layout_vertical"
+            android:id="@+id/add_homework_layout_vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -43,26 +44,26 @@
                 android:layout_height="wrap_content">
 
                 <EditText
-                    android:id="@+id/editText_item"
+                    android:id="@+id/editText_homework"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:inputType="textMultiLine"
-                    android:hint="Предмет"
+                    android:hint="Задания"
                     android:theme="@style/ThemeEditText"/>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
 
     <LinearLayout
-        android:id="@+id/add_item_btn"
+        android:id="@+id/add_homework_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_alignParentBottom="true">
 
         <Button
-            android:id="@+id/add_item_cancel_btn"
+            android:id="@+id/add_homework_cancel_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
@@ -72,7 +73,7 @@
             android:textColor="#ffffff"/>
 
         <Button
-            android:id="@+id/add_item_ok_btn"
+            android:id="@+id/add_homework_ok_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="15dp"

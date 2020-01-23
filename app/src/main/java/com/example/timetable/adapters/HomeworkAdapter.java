@@ -11,15 +11,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.timetable.R;
 import com.example.timetable.RecyclerHomework;
+import com.example.timetable.modules.OnItemListener;
 
 import java.util.ArrayList;
 
 public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.HomeworkViewHolder> {
-
+    private OnItemListener onItemListener;
     ArrayList<RecyclerHomework> listItems;
 
-    public HomeworkAdapter(ArrayList<RecyclerHomework> listItems) {
+    public HomeworkAdapter(ArrayList<RecyclerHomework> listItems, OnItemListener onItemListener) {
         this.listItems = listItems;
+        this.onItemListener = onItemListener;
     }
 
     @NonNull
@@ -47,13 +49,18 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.Homewo
         return listItems.size();
     }
 
-    class HomeworkViewHolder extends RecyclerView.ViewHolder {
+    class HomeworkViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView textView;
 
         public HomeworkViewHolder(@NonNull View itemView) {
             super(itemView);
             textView = itemView.findViewById(R.id.text_item_rv_homework);
 
+        }
+
+        @Override
+        public void onClick(View v) {
+            onItemListener.onItemClick(getAdapterPosition());
         }
     }
 }

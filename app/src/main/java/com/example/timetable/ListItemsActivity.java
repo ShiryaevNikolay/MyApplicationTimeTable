@@ -68,7 +68,7 @@ public class ListItemsActivity extends AppCompatActivity implements OnItemListen
         // добавляем в список данные (названия предметов) из базы данных
         if (cursor.moveToFirst()){
             do {
-                String nameItem = cursor.getString(cursor.getColumnIndex(ItemDBHelper. KEY_NAME));
+                nameItem = cursor.getString(cursor.getColumnIndex(ItemDBHelper. KEY_NAME));
                 idItem = cursor.getInt(cursor.getColumnIndex(ItemDBHelper. KEY_ID));
                 listItems.add(new RecyclerItem(nameItem, idItem));
             }while (cursor.moveToNext());

@@ -12,6 +12,9 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
+            android:name=".AddHomeworkActivity"
+            android:label="" />
+        <activity
             android:name=".ListHomeworkActivity"
             android:label="Домашнее задание" />
         <activity
