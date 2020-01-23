@@ -20,4 +20,10 @@
         android:icon="@drawable/make_schedule_btn"
         android:title="@string/nav_btn_schedule"
         app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/nav_homework"
+        android:icon="@drawable/notebook_outline"
+        android:title="@string/nav_homework"
+        app:showAsAction="ifRoom"/>
 </menu>

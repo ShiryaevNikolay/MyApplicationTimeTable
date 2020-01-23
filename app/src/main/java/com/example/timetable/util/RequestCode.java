@@ -7,4 +7,5 @@ public class RequestCode {
     public static final int REQUEST_CODE_TEACHER = 2;
     public static final int REQUEST_CODE_TEACHER_CHANGE = 5;
     public static final int REQUEST_CODE_SCHEDULE = 3;
+    public static final int REQUEST_CODE_HOMEWORK = 3;
 }

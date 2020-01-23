@@ -39,7 +39,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemsViewHol
     }
 
     public void onBindViewHolder(@NonNull ItemsViewHolder holder, int position) {
-        final RecyclerItem itemList = listItems.get(position);
+        RecyclerItem itemList = listItems.get(position);
         holder.nameRvItem.setText(itemList.getText());
     }
 
