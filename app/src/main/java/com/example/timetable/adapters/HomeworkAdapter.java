@@ -110,7 +110,7 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.Homewo
                 checkBox.setVisibility(View.VISIBLE);
                 onLongClickItemListener.onLongClickItemListener(getAdapterPosition(), true);
             }
-            return false;
+            return true;
         }
     }
 }
