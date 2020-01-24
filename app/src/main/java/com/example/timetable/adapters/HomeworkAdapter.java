@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -12,16 +13,19 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.timetable.R;
 import com.example.timetable.RecyclerHomework;
 import com.example.timetable.modules.OnItemListener;
+import com.example.timetable.modules.OnLongClickItemListener;
 
 import java.util.ArrayList;
 
 public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.HomeworkViewHolder> {
     private OnItemListener onItemListener;
-    ArrayList<RecyclerHomework> listItems;
+    private ArrayList<RecyclerHomework> listItems;
+    private OnLongClickItemListener onLongClickItemListener;
 
-    public HomeworkAdapter(ArrayList<RecyclerHomework> listItems, OnItemListener onItemListener) {
+    public HomeworkAdapter(ArrayList<RecyclerHomework> listItems, OnItemListener onItemListener, OnLongClickItemListener onLongClickItemListener) {
         this.listItems = listItems;
         this.onItemListener = onItemListener;
+        this.onLongClickItemListener = onLongClickItemListener;
     }
 
     @NonNull
@@ -49,18 +53,38 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.Homewo
         return listItems.size();
     }
 
-    class HomeworkViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class HomeworkViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
         TextView textView;
+        CheckBox checkBox;
 
-        public HomeworkViewHolder(@NonNull View itemView) {
+        HomeworkViewHolder(@NonNull View itemView) {
             super(itemView);
             textView = itemView.findViewById(R.id.text_item_rv_homework);
+            checkBox = itemView.findViewById(R.id.checkBox_item_homework);
+            if (checkBox.isChecked()) {
+                checkBox.setVisibility(View.VISIBLE);
+            } else {
+                checkBox.setVisibility(View.INVISIBLE);
+            }
 
+            itemView.setOnLongClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
             onItemListener.onItemClick(getAdapterPosition());
+        }
+
+        @Override
+        public boolean onLongClick(View v) {
+            checkBox.setChecked(true);
+            if (checkBox.isChecked()) {
+                checkBox.setVisibility(View.VISIBLE);
+            } else {
+                checkBox.setVisibility(View.INVISIBLE);
+            }
+            onLongClickItemListener.onLongClickItemListener(getAdapterPosition());
+            return false;
         }
     }
 }

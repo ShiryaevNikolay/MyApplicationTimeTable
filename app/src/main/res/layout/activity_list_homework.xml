@@ -25,13 +25,27 @@
 
     <include layout="@layout/content_list_homework" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_list_homework"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@drawable/ic_add_black_24dp"
-        android:backgroundTint="@color/colorAccent"
-        app:borderWidth="1dp"/>
+        android:layout_gravity="bottom|end">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_remove_item_homework"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/fab_margin"
+            app:srcCompat="@drawable/ic_delete"
+            android:backgroundTint="@color/colorCancel"
+            app:borderWidth="0dp"/>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_add_item_homework"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/fab_margin"
+            app:srcCompat="@drawable/ic_add_black_24dp"
+            android:backgroundTint="@color/colorAccent"
+            app:borderWidth="0dp"/>
+    </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -16,6 +16,7 @@ import android.view.View;
 import com.example.timetable.adapters.HomeworkAdapter;
 import com.example.timetable.database.HomeworkDBHelper;
 import com.example.timetable.modules.OnItemListener;
+import com.example.timetable.modules.OnLongClickItemListener;
 import com.example.timetable.modules.ToolbarBtnBackListener;
 import com.example.timetable.util.RequestCode;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -23,7 +24,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class ListHomeworkActivity extends AppCompatActivity implements ToolbarBtnBackListener, OnItemListener {
+public class ListHomeworkActivity extends AppCompatActivity implements ToolbarBtnBackListener, OnItemListener, OnLongClickItemListener, View.OnClickListener {
     Toolbar toolbar;
     RecyclerView recyclerView;
     ArrayList<RecyclerHomework> listItems;
@@ -31,6 +32,10 @@ public class ListHomeworkActivity extends AppCompatActivity implements ToolbarBt
     SQLiteDatabase database;
     int idItem = 0;
     String nameItem;
+    FloatingActionButton fabRemoveItem;
+
+    RecyclerHomework itemCkecked;
+    ArrayList<RecyclerHomework> listItemsRemoved = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +59,7 @@ public class ListHomeworkActivity extends AppCompatActivity implements ToolbarBt
             do {
                 nameItem = cursor.getString(cursor.getColumnIndex(HomeworkDBHelper. KEY_TASKS));
                 idItem = cursor.getInt(cursor.getColumnIndex(HomeworkDBHelper. KEY_ID));
-                listItems.add(new RecyclerHomework(nameItem, idItem));
+                listItems.add(new RecyclerHomework(nameItem, idItem, false));
             }while (cursor.moveToNext());
         }
         cursor.close();
@@ -68,17 +73,13 @@ public class ListHomeworkActivity extends AppCompatActivity implements ToolbarBt
         // значит, что список фиксированный
         recyclerView.setHasFixedSize(true);
 
-        FloatingActionButton fab = findViewById(R.id.fab_list_homework);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(ListHomeworkActivity.this, AddHomeworkActivity.class);
-                intent.putExtra("requestCode", RequestCode.REQUEST_CODE_HOMEWORK);
-                startActivityForResult(intent, RequestCode.REQUEST_CODE_HOMEWORK);
-            }
-        });
+        FloatingActionButton fabAddItem = findViewById(R.id.fab_add_item_homework);
+        fabAddItem.setOnClickListener(this);
+        fabRemoveItem = findViewById(R.id.fab_remove_item_homework);
+        fabRemoveItem.setOnClickListener(this);
+        checkVisibleBtn();
 
-        homeworkAdapter = new HomeworkAdapter(listItems, this);
+        homeworkAdapter = new HomeworkAdapter(listItems, this, this);
         //назначаем RecyclerView созданный Adapter
         recyclerView.setAdapter(homeworkAdapter);
     }
@@ -94,13 +95,8 @@ public class ListHomeworkActivity extends AppCompatActivity implements ToolbarBt
             contentValues.put(HomeworkDBHelper.KEY_TASKS, data.getStringExtra("text"));
             if (requestCode == RequestCode.REQUEST_CODE_HOMEWORK_CHANGE) {
                 database.update(HomeworkDBHelper.TABLE_HOMEWORK, contentValues, HomeworkDBHelper.KEY_ID + " = " + Objects.requireNonNull(getIntent().getExtras()).getInt("idItem"), null);
-//                nameItem = data.getStringExtra("text");
-//                listItems.get(Objects.requireNonNull(data.getExtras()).getInt("position")).setText(nameItem);
             } else if (requestCode == RequestCode.REQUEST_CODE_HOMEWORK) {
                 database.insert(HomeworkDBHelper.TABLE_HOMEWORK, null, contentValues);
-//                nameItem = data.getStringExtra("text");
-//                idItem = data.getIntExtra("idItem", 0);
-//                listItems.add(new RecyclerHomework(nameItem, idItem));
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
@@ -114,12 +110,12 @@ public class ListHomeworkActivity extends AppCompatActivity implements ToolbarBt
             do {
                 nameItem = cursor.getString(cursor.getColumnIndex(HomeworkDBHelper. KEY_TASKS));
                 idItem = cursor.getInt(cursor.getColumnIndex(HomeworkDBHelper. KEY_ID));
-                listItems.add(new RecyclerHomework(nameItem, idItem));
+                listItems.add(new RecyclerHomework(nameItem, idItem, false));
             }while (cursor.moveToNext());
         }
         cursor.close();
 
-        homeworkAdapter = new HomeworkAdapter(listItems, this);
+        homeworkAdapter = new HomeworkAdapter(listItems, this, this);
         //назначаем RecyclerView созданный Adapter
         recyclerView.setAdapter(homeworkAdapter);
     }
@@ -132,5 +128,53 @@ public class ListHomeworkActivity extends AppCompatActivity implements ToolbarBt
         intent.putExtra("idItem", listItems.get(position).getId());
         intent.putExtra("position", position);
         startActivityForResult(intent, RequestCode.REQUEST_CODE_HOMEWORK_CHANGE);
+    }
+
+
+    @Override
+    public void onLongClickItemListener(int position) {
+        listItems.get(position).setCheckBox(true);
+        checkVisibleBtn();
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.fab_add_item_homework:
+                Intent intent = new Intent(this, AddHomeworkActivity.class);
+                intent.putExtra("requestCode", RequestCode.REQUEST_CODE_HOMEWORK);
+                startActivityForResult(intent, RequestCode.REQUEST_CODE_HOMEWORK);
+                break;
+            case R.id.fab_remove_item_homework:
+                ArrayList<Integer> positionItemRemoved = new ArrayList<>();
+                for (int i = 0; i < listItems.size(); i++) {
+                    if (listItems.get(i).getCkeckBox()) {
+                        listItemsRemoved.add(listItems.get(i));
+                        positionItemRemoved.add(i);
+                    }
+                }
+                for (int i = positionItemRemoved.size() - 1; i >= 0; i--) {
+                    listItems.remove(positionItemRemoved.get(i).intValue());
+                    homeworkAdapter.notifyItemRemoved(positionItemRemoved.get(i));
+                }
+                positionItemRemoved.clear();
+                break;
+        }
+    }
+
+    @SuppressLint("RestrictedApi")
+    private void checkVisibleBtn() {
+        boolean flagCheckIfRemove = false;
+        for (int i = 0; i < listItems.size(); i++) {
+            if (listItems.get(i).getCkeckBox()) {
+                flagCheckIfRemove = true;
+                break;
+            }
+        }
+        if (flagCheckIfRemove) {
+            fabRemoveItem.setVisibility(View.VISIBLE);
+        } else {
+            fabRemoveItem.setVisibility(View.GONE);
+        }
     }
 }

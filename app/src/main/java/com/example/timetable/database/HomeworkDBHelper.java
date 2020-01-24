@@ -18,7 +18,7 @@ public class HomeworkDBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String strItem = "CREATE TABLE " + TABLE_HOMEWORK + "(" + KEY_ID + " INTEGER PRIMARY KEY," + KEY_TASKS + " TEXT)";
+        String strItem = "CREATE TABLE " + TABLE_HOMEWORK + "(" + KEY_ID + " INTEGER PRIMARY KEY, " + KEY_TASKS + " TEXT)";
         db.execSQL(strItem);
     }
 
