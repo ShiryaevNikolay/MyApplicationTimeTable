@@ -135,7 +135,6 @@ public class ListHomeworkActivity extends AppCompatActivity implements ToolbarBt
         } else {
             listItems.get(position).setCheckBox(false);
         }
-        homeworkAdapter.notifyDataSetChanged();
         checkVisibleBtn();
     }
 
@@ -185,18 +184,6 @@ public class ListHomeworkActivity extends AppCompatActivity implements ToolbarBt
 
     @Override
     public void onClickBtnBack() {
-        boolean flagCheckIfRemove = false;
-        for (int i = 0; i < listItems.size(); i++) {
-            if (listItems.get(i).getCkeckBox()) {
-                flagCheckIfRemove = true;
-                break;
-            }
-        }
-        if (flagCheckIfRemove) {
-
-        } else {
-
-        }
         finish();
     }
 
