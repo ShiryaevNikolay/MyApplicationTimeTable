@@ -98,6 +98,7 @@ public class AddHomeworkActivity extends AppCompatActivity implements ToolbarBtn
 
     @Override
     public void onClickBtnBack() {
+        setResult(RESULT_CANCELED);
         finish();
     }
 

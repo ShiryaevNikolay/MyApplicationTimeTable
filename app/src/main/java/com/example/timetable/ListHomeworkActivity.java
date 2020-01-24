@@ -97,26 +97,25 @@ public class ListHomeworkActivity extends AppCompatActivity implements ToolbarBt
             } else if (requestCode == RequestCode.REQUEST_CODE_HOMEWORK) {
                 database.insert(HomeworkDBHelper.TABLE_HOMEWORK, null, contentValues);
             }
+            listItems.clear();
+            @SuppressLint("Recycle") Cursor cursor = database.query(HomeworkDBHelper.TABLE_HOMEWORK, null, null, null, null, null, null);
+
+            // добавляем в список данные (названия предметов) из базы данных
+            if (cursor.moveToFirst()){
+                do {
+                    nameItem = cursor.getString(cursor.getColumnIndex(HomeworkDBHelper. KEY_TASKS));
+                    idItem = cursor.getInt(cursor.getColumnIndex(HomeworkDBHelper. KEY_ID));
+                    listItems.add(new RecyclerHomework(nameItem, idItem, false));
+                }while (cursor.moveToNext());
+            }
+            cursor.close();
+
+            homeworkAdapter = new HomeworkAdapter(listItems, this, this);
+            //назначаем RecyclerView созданный Adapter
+            recyclerView.setAdapter(homeworkAdapter);
         } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
-
-        listItems.clear();
-        @SuppressLint("Recycle") Cursor cursor = database.query(HomeworkDBHelper.TABLE_HOMEWORK, null, null, null, null, null, null);
-
-        // добавляем в список данные (названия предметов) из базы данных
-        if (cursor.moveToFirst()){
-            do {
-                nameItem = cursor.getString(cursor.getColumnIndex(HomeworkDBHelper. KEY_TASKS));
-                idItem = cursor.getInt(cursor.getColumnIndex(HomeworkDBHelper. KEY_ID));
-                listItems.add(new RecyclerHomework(nameItem, idItem, false));
-            }while (cursor.moveToNext());
-        }
-        cursor.close();
-
-        homeworkAdapter = new HomeworkAdapter(listItems, this, this);
-        //назначаем RecyclerView созданный Adapter
-        recyclerView.setAdapter(homeworkAdapter);
     }
 
     @Override
