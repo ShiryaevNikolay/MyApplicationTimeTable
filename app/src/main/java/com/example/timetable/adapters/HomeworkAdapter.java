@@ -88,9 +88,11 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.Homewo
         public void onClick(View v) {
             if (checkBox.getVisibility() == View.VISIBLE) {
                 if (checkBox.isChecked()) {
-                    onLongClickItemListener.onLongClickItemListener(getAdapterPosition(), true);
-                } else {
+                    checkBox.setChecked(false);
                     onLongClickItemListener.onLongClickItemListener(getAdapterPosition(), false);
+                } else {
+                    checkBox.setChecked(true);
+                    onLongClickItemListener.onLongClickItemListener(getAdapterPosition(), true);
                 }
             } else {
                 onItemListener.onItemClick(getAdapterPosition());

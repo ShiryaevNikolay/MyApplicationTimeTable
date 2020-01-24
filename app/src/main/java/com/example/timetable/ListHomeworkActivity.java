@@ -160,7 +160,6 @@ public class ListHomeworkActivity extends AppCompatActivity implements ToolbarBt
                     listItems.remove(positionItemRemoved.get(i).intValue());
                     homeworkAdapter.notifyItemRemoved(positionItemRemoved.get(i));
                 }
-                checkVisibleBtn();
 
                 DialogFragment deleteDialog = new DeleteDialog(this, listItemsRemoved.size());
                 FragmentManager fragmentManager = (this.getSupportFragmentManager());
@@ -209,6 +208,7 @@ public class ListHomeworkActivity extends AppCompatActivity implements ToolbarBt
         }
         listItemsRemoved.clear();
         homeworkAdapter.notifyDataSetChanged();
+        checkVisibleBtn();
     }
 
     @Override
@@ -219,5 +219,6 @@ public class ListHomeworkActivity extends AppCompatActivity implements ToolbarBt
         }
         listItemsRemoved.clear();
         positionItemRemoved.clear();
+        checkVisibleBtn();
     }
 }
