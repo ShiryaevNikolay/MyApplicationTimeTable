@@ -7,12 +7,11 @@
     <TextView
         android:textSize="20sp"
         android:layout_gravity="center"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/del_dialog_message"
         android:textColor="#000"
-        android:layout_margin="20dp"
-        android:gravity="center"/>
+        android:layout_margin="20dp"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -24,12 +23,7 @@
             android:text="@string/del_dialog_remove"
             android:layout_weight="1"
             android:background="@drawable/border_corner_view"
-            android:layout_marginEnd="5dp"
-            android:layout_margin="10dp"
-            android:paddingStart="20dp"
-            android:paddingEnd="20dp"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp"/>
+            android:layout_margin="10dp"/>
         <Button
             android:id="@+id/btn_del_dialog_cancel"
             android:layout_width="match_parent"
@@ -37,11 +31,6 @@
             android:text="@string/del_dialog_cancel"
             android:layout_weight="1"
             android:background="@drawable/border_corner_view"
-            android:layout_marginStart="5dp"
-            android:layout_margin="10dp"
-            android:paddingStart="20dp"
-            android:paddingEnd="20dp"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp"/>
+            android:layout_margin="10dp"/>
     </LinearLayout>
 </LinearLayout>

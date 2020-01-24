@@ -24,7 +24,6 @@ import java.util.Objects;
 
 public class AddHomeworkActivity extends AppCompatActivity implements ToolbarBtnBackListener {
     private String text = "";
-    private int idItem = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +40,11 @@ public class AddHomeworkActivity extends AppCompatActivity implements ToolbarBtn
         final Button okBtn = findViewById(R.id.add_homework_ok_btn);
 
         final EditText editText = findViewById(R.id.editText_homework);
+
+        if (Objects.requireNonNull(getIntent().getExtras()).getInt("requestCode") == RequestCode.REQUEST_CODE_HOMEWORK_CHANGE) {
+            editText.setText(getIntent().getExtras().getString("text"));
+            text = getIntent().getExtras().getString("text");
+        }
 
         // проверяем, пустое ли поле ввода
         editText.addTextChangedListener(new TextWatcher() {
@@ -112,23 +116,15 @@ public class AddHomeworkActivity extends AppCompatActivity implements ToolbarBtn
     }
 
     // отправка результата EditText в ListItemActivity
-    private void sendMessage(String message, int idItem){
-        Intent data = new Intent();
-        data.putExtra("text", message);
-        data.putExtra("idItem", idItem);
-        if (Objects.requireNonNull(getIntent().getExtras()).getInt("requestCode") == RequestCode.REQUEST_CODE_HOMEWORK_CHANGE) {
-            data.putExtra("position", getIntent().getExtras().getInt("position"));
-        }
-        setResult(RESULT_OK, data);
-        finish();
-    }
-
     private void addOrChangeItem() {
         if(text.length() != 0){
-            if (Objects.requireNonNull(getIntent().getExtras()).getInt("requestCode") == RequestCode.REQUEST_CODE_ITEM_CHANGE) {
-                idItem = getIntent().getExtras().getInt("idItem");
+            Intent data = new Intent();
+            data.putExtra("text", text);
+            if (Objects.requireNonNull(getIntent().getExtras()).getInt("requestCode") == RequestCode.REQUEST_CODE_HOMEWORK_CHANGE) {
+                data.putExtra("position", getIntent().getExtras().getInt("position"));
             }
-            sendMessage(text, idItem);
+            setResult(RESULT_OK, data);
+            finish();
         }
     }
 }

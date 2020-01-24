@@ -2,6 +2,8 @@ package com.example.timetable;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
@@ -15,6 +17,8 @@ import android.view.View;
 
 import com.example.timetable.adapters.HomeworkAdapter;
 import com.example.timetable.database.HomeworkDBHelper;
+import com.example.timetable.dialogs.DeleteDialog;
+import com.example.timetable.modules.DialogListener;
 import com.example.timetable.modules.OnItemListener;
 import com.example.timetable.modules.OnLongClickItemListener;
 import com.example.timetable.modules.ToolbarBtnBackListener;
@@ -24,7 +28,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class ListHomeworkActivity extends AppCompatActivity implements ToolbarBtnBackListener, OnItemListener, OnLongClickItemListener, View.OnClickListener {
+public class ListHomeworkActivity extends AppCompatActivity implements ToolbarBtnBackListener, OnItemListener, OnLongClickItemListener, View.OnClickListener, DialogListener {
     Toolbar toolbar;
     RecyclerView recyclerView;
     ArrayList<RecyclerHomework> listItems;
@@ -34,8 +38,8 @@ public class ListHomeworkActivity extends AppCompatActivity implements ToolbarBt
     String nameItem;
     FloatingActionButton fabRemoveItem;
 
-    RecyclerHomework itemCkecked;
     ArrayList<RecyclerHomework> listItemsRemoved = new ArrayList<>();
+    ArrayList<Integer> positionItemRemoved;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,17 +88,12 @@ public class ListHomeworkActivity extends AppCompatActivity implements ToolbarBt
         recyclerView.setAdapter(homeworkAdapter);
     }
 
-    @Override
-    public void onClickBtnBack() {
-        finish();
-    }
-
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         ContentValues contentValues = new ContentValues();
         if(resultCode==RESULT_OK){
             contentValues.put(HomeworkDBHelper.KEY_TASKS, data.getStringExtra("text"));
             if (requestCode == RequestCode.REQUEST_CODE_HOMEWORK_CHANGE) {
-                database.update(HomeworkDBHelper.TABLE_HOMEWORK, contentValues, HomeworkDBHelper.KEY_ID + " = " + Objects.requireNonNull(getIntent().getExtras()).getInt("idItem"), null);
+                database.update(HomeworkDBHelper.TABLE_HOMEWORK, contentValues, HomeworkDBHelper.KEY_ID + " = " + listItems.get(Objects.requireNonNull(data.getExtras()).getInt("position")).getId(), null);
             } else if (requestCode == RequestCode.REQUEST_CODE_HOMEWORK) {
                 database.insert(HomeworkDBHelper.TABLE_HOMEWORK, null, contentValues);
             }
@@ -125,15 +124,19 @@ public class ListHomeworkActivity extends AppCompatActivity implements ToolbarBt
         Intent intent = new Intent(this, AddHomeworkActivity.class);
         intent.putExtra("requestCode", RequestCode.REQUEST_CODE_HOMEWORK_CHANGE);
         intent.putExtra("text", listItems.get(position).getText());
-        intent.putExtra("idItem", listItems.get(position).getId());
         intent.putExtra("position", position);
         startActivityForResult(intent, RequestCode.REQUEST_CODE_HOMEWORK_CHANGE);
     }
 
 
     @Override
-    public void onLongClickItemListener(int position) {
-        listItems.get(position).setCheckBox(true);
+    public void onLongClickItemListener(int position, boolean flag) {
+        if (flag) {
+            listItems.get(position).setCheckBox(true);
+        } else {
+            listItems.get(position).setCheckBox(false);
+        }
+        homeworkAdapter.notifyDataSetChanged();
         checkVisibleBtn();
     }
 
@@ -146,7 +149,7 @@ public class ListHomeworkActivity extends AppCompatActivity implements ToolbarBt
                 startActivityForResult(intent, RequestCode.REQUEST_CODE_HOMEWORK);
                 break;
             case R.id.fab_remove_item_homework:
-                ArrayList<Integer> positionItemRemoved = new ArrayList<>();
+                positionItemRemoved = new ArrayList<>();
                 for (int i = 0; i < listItems.size(); i++) {
                     if (listItems.get(i).getCkeckBox()) {
                         listItemsRemoved.add(listItems.get(i));
@@ -157,7 +160,11 @@ public class ListHomeworkActivity extends AppCompatActivity implements ToolbarBt
                     listItems.remove(positionItemRemoved.get(i).intValue());
                     homeworkAdapter.notifyItemRemoved(positionItemRemoved.get(i));
                 }
-                positionItemRemoved.clear();
+                checkVisibleBtn();
+
+                DialogFragment deleteDialog = new DeleteDialog(this, listItemsRemoved.size());
+                FragmentManager fragmentManager = (this.getSupportFragmentManager());
+                deleteDialog.show(fragmentManager, "deleteDialog");
                 break;
         }
     }
@@ -176,5 +183,41 @@ public class ListHomeworkActivity extends AppCompatActivity implements ToolbarBt
         } else {
             fabRemoveItem.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void onClickBtnBack() {
+        boolean flagCheckIfRemove = false;
+        for (int i = 0; i < listItems.size(); i++) {
+            if (listItems.get(i).getCkeckBox()) {
+                flagCheckIfRemove = true;
+                break;
+            }
+        }
+        if (flagCheckIfRemove) {
+
+        } else {
+
+        }
+        finish();
+    }
+
+    @Override
+    public void onClickRemoveDialog() {
+        for (int i = 0; i < listItemsRemoved.size(); i ++) {
+            database.delete(HomeworkDBHelper.TABLE_HOMEWORK, HomeworkDBHelper.KEY_ID + " = " + listItemsRemoved.get(i).getId(), null);
+        }
+        listItemsRemoved.clear();
+        homeworkAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onClickCancelDialog(int position) {
+        for (int i = 0; i < positionItemRemoved.size(); i++) {
+            listItems.add(positionItemRemoved.get(i), listItemsRemoved.get(i));
+            homeworkAdapter.notifyItemInserted(positionItemRemoved.get(i));
+        }
+        listItemsRemoved.clear();
+        positionItemRemoved.clear();
     }
 }

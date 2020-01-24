@@ -1,5 +1,5 @@
 package com.example.timetable.modules;
 
 public interface OnLongClickItemListener {
-    void onLongClickItemListener(int position);
+    void onLongClickItemListener(int position, boolean remove);
 }

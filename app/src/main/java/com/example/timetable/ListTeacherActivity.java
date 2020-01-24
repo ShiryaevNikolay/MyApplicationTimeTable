@@ -108,18 +108,16 @@ public class ListTeacherActivity extends AppCompatActivity implements OnItemList
             if (requestCode == RequestCode.REQUEST_CODE_TEACHER_CHANGE) {
                 nameTeacher = data.getStringExtra("text");
                 listTeacher.get(Objects.requireNonNull(data.getExtras()).getInt("position")).setText(nameTeacher);
+                teachersAdapter.notifyItemChanged(data.getExtras().getInt("position"), listTeacher.get(data.getExtras().getInt("position")));
             } else if (requestCode == RequestCode.REQUEST_CODE_TEACHER) {
                 nameTeacher = data.getStringExtra("text");
                 idItem = data.getIntExtra("idItem", idItem);
                 listTeacher.add(new RecyclerItem(nameTeacher, idItem));
+                teachersAdapter.notifyItemInserted(listTeacher.size());
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
-
-        teachersAdapter = new TeachersAdapter(listTeacher, this);
-        //назначаем RecyclerView созданный Adapter
-        recyclerView.setAdapter(teachersAdapter);
     }
 
     @Override

@@ -46,6 +46,18 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.Homewo
     public void onBindViewHolder(@NonNull HomeworkViewHolder holder, int position) {
         RecyclerHomework itemList = listItems.get(position);
         holder.textView.setText(itemList.getText());
+        boolean flag = false;
+        for (int i = 0; i < listItems.size(); i++) {
+            if (listItems.get(i).getCkeckBox()) {
+                flag = true;
+                break;
+            }
+        }
+        if (flag) {
+            holder.checkBox.setVisibility(View.VISIBLE);
+        } else {
+            holder.checkBox.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override
@@ -67,23 +79,35 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.Homewo
                 checkBox.setVisibility(View.INVISIBLE);
             }
 
+            itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
+            checkBox.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
-            onItemListener.onItemClick(getAdapterPosition());
+            if (checkBox.getVisibility() == View.VISIBLE) {
+                if (checkBox.isChecked()) {
+                    onLongClickItemListener.onLongClickItemListener(getAdapterPosition(), true);
+                } else {
+                    onLongClickItemListener.onLongClickItemListener(getAdapterPosition(), false);
+                }
+            } else {
+                onItemListener.onItemClick(getAdapterPosition());
+            }
         }
 
         @Override
         public boolean onLongClick(View v) {
-            checkBox.setChecked(true);
             if (checkBox.isChecked()) {
-                checkBox.setVisibility(View.VISIBLE);
-            } else {
+                checkBox.setChecked(false);
                 checkBox.setVisibility(View.INVISIBLE);
+                onLongClickItemListener.onLongClickItemListener(getAdapterPosition(), false);
+            } else {
+                checkBox.setChecked(true);
+                checkBox.setVisibility(View.VISIBLE);
+                onLongClickItemListener.onLongClickItemListener(getAdapterPosition(), true);
             }
-            onLongClickItemListener.onLongClickItemListener(getAdapterPosition());
             return false;
         }
     }
