@@ -23,6 +23,14 @@
             android:text=""
             android:textSize="16sp"
             android:textStyle="bold"/>
+
+        <CheckBox
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:id="@+id/checkBox_item_homework"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/CheckBoxStyle" />
     </RelativeLayout>
 
 </androidx.cardview.widget.CardView>

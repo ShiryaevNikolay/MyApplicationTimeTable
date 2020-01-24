@@ -2,8 +2,8 @@ package com.example.timetable;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
@@ -15,7 +15,6 @@ import android.view.View;
 
 import com.example.timetable.adapters.HomeworkAdapter;
 import com.example.timetable.database.HomeworkDBHelper;
-import com.example.timetable.database.ItemDBHelper;
 import com.example.timetable.modules.OnItemListener;
 import com.example.timetable.modules.ToolbarBtnBackListener;
 import com.example.timetable.util.RequestCode;
@@ -63,9 +62,9 @@ public class ListHomeworkActivity extends AppCompatActivity implements ToolbarBt
         // Находим RecyclerView
         recyclerView = findViewById(R.id.recyclerView_homework);
         // то, как будет выглядеть RecyclerView (то есть список)
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
+        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         // передаём layoutManager в RecyclerView
-        recyclerView.setLayoutManager(gridLayoutManager);
+        recyclerView.setLayoutManager(staggeredGridLayoutManager);
         // значит, что список фиксированный
         recyclerView.setHasFixedSize(true);
 

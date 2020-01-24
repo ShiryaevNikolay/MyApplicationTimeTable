@@ -17,7 +17,7 @@
         app:showAsAction="ifRoom"/>
     <item
         android:id="@+id/nav_schedule"
-        android:icon="@drawable/make_schedule_btn"
+        android:icon="@drawable/calendar_month"
         android:title="@string/nav_btn_schedule"
         app:showAsAction="ifRoom"/>
 
