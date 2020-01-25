@@ -1,5 +1,6 @@
 package com.example.timetable;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.DialogFragment;
@@ -13,6 +14,8 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.example.timetable.adapters.HomeworkAdapter;
@@ -40,6 +43,8 @@ public class ListHomeworkActivity extends AppCompatActivity implements ToolbarBt
 
     ArrayList<RecyclerHomework> listItemsRemoved = new ArrayList<>();
     ArrayList<Integer> positionItemRemoved;
+
+    Menu menu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,6 +142,7 @@ public class ListHomeworkActivity extends AppCompatActivity implements ToolbarBt
         }
         homeworkAdapter.notifyDataSetChanged();
         checkVisibleBtn();
+        checkVisibleBtnMenuToolbar();
     }
 
     @Override
@@ -196,6 +202,7 @@ public class ListHomeworkActivity extends AppCompatActivity implements ToolbarBt
         listItemsRemoved.clear();
         homeworkAdapter.notifyDataSetChanged();
         checkVisibleBtn();
+        checkVisibleBtnMenuToolbar();
     }
 
     @Override
@@ -207,5 +214,42 @@ public class ListHomeworkActivity extends AppCompatActivity implements ToolbarBt
         listItemsRemoved.clear();
         positionItemRemoved.clear();
         checkVisibleBtn();
+        checkVisibleBtnMenuToolbar();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_toolbar_list_homework, menu);
+        this.menu = menu;
+        checkVisibleBtnMenuToolbar();
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.menu_clear_all_check) {
+            for (int i = 0; i < listItems.size(); i++) {
+                listItems.get(i).setCheckBox(false);
+            }
+            homeworkAdapter.notifyDataSetChanged();
+            checkVisibleBtn();
+            checkVisibleBtnMenuToolbar();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void checkVisibleBtnMenuToolbar() {
+        boolean flagCheckIfRemove = false;
+        for (int i = 0; i < listItems.size(); i++) {
+            if (listItems.get(i).getCheckBox()) {
+                flagCheckIfRemove = true;
+                break;
+            }
+        }
+        if (flagCheckIfRemove) {
+            menu.findItem(R.id.menu_clear_all_check).setVisible(true);
+        } else {
+            menu.findItem(R.id.menu_clear_all_check).setVisible(false);
+        }
     }
 }
