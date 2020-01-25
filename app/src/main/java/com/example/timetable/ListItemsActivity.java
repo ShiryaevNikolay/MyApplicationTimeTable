@@ -68,7 +68,7 @@ public class ListItemsActivity extends AppCompatActivity implements OnItemListen
         // добавляем в список данные (названия предметов) из базы данных
         if (cursor.moveToFirst()){
             do {
-                String nameItem = cursor.getString(cursor.getColumnIndex(ItemDBHelper. KEY_NAME));
+                nameItem = cursor.getString(cursor.getColumnIndex(ItemDBHelper. KEY_NAME));
                 idItem = cursor.getInt(cursor.getColumnIndex(ItemDBHelper. KEY_ID));
                 listItems.add(new RecyclerItem(nameItem, idItem));
             }while (cursor.moveToNext());
@@ -109,18 +109,16 @@ public class ListItemsActivity extends AppCompatActivity implements OnItemListen
             if (requestCode == RequestCode.REQUEST_CODE_ITEM_CHANGE) {
                 nameItem = data.getStringExtra("text");
                 listItems.get(Objects.requireNonNull(data.getExtras()).getInt("position")).setText(nameItem);
+                itemsAdapter.notifyItemChanged(data.getExtras().getInt("position"), listItems.get(data.getExtras().getInt("position")));
             } else if (requestCode == RequestCode.REQUEST_CODE_ITEM) {
                 nameItem = data.getStringExtra("text");
                 idItem = data.getIntExtra("idItem", 0);
                 listItems.add(new RecyclerItem(nameItem, idItem));
+                itemsAdapter.notifyItemInserted(listItems.size());
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
-
-        itemsAdapter = new ItemsAdapter(listItems, this);
-        //назначаем RecyclerView созданный Adapter
-        recyclerView.setAdapter(itemsAdapter);
     }
 
     @Override

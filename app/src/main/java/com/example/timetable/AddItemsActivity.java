@@ -27,6 +27,7 @@ public class AddItemsActivity extends AppCompatActivity implements ToolbarBtnBac
 
     private String text = "";
     private int idItem = 0;
+    private Button okBtn;
 
     //==============================================================================================
     ItemDBHelper itemDbHelper;
@@ -55,7 +56,7 @@ public class AddItemsActivity extends AppCompatActivity implements ToolbarBtnBac
         new ButtonToReturnToMainActivity(toolbar, this);
 
         final Button cancelBtn = findViewById(R.id.add_item_cancel_btn);
-        final Button okBtn = findViewById(R.id.add_item_ok_btn);
+        okBtn = findViewById(R.id.add_item_ok_btn);
 
         // находим поле с вводом текста "предметы"
         final EditText editText = findViewById(R.id.editText_item);

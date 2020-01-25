@@ -70,7 +70,7 @@
                     android:id="@+id/tv_item_schedule_icon"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:background="@drawable/ic_item" />
+                    android:background="@drawable/bookshelf" />
 
                 <TextView
                     android:id="@+id/tv_item_schedule"
@@ -117,7 +117,7 @@
                     android:id="@+id/tv_class_schedule_icon"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:background="@drawable/ic_class" />
+                    android:background="@drawable/door_open" />
 
                 <TextView
                     android:id="@+id/tv_class_schedule"

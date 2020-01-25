@@ -23,7 +23,6 @@
             android:text="@string/del_dialog_remove"
             android:layout_weight="1"
             android:background="@drawable/border_corner_view"
-            android:layout_marginEnd="5dp"
             android:layout_margin="10dp"/>
         <Button
             android:id="@+id/btn_del_dialog_cancel"
@@ -32,7 +31,6 @@
             android:text="@string/del_dialog_cancel"
             android:layout_weight="1"
             android:background="@drawable/border_corner_view"
-            android:layout_marginStart="5dp"
             android:layout_margin="10dp"/>
     </LinearLayout>
 </LinearLayout>

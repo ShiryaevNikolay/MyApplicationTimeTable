@@ -140,6 +140,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             case R.id.nav_schedule:
                 launchMakeScheduleActivity();
                 break;
+            case R.id.nav_homework:
+                launchHomeworkActivity();
+                break;
         }
         return false;
     }
@@ -157,6 +160,11 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     private void launchMakeScheduleActivity(){
         Intent intent = new Intent(this, ListScheduleActivity.class);
         startActivityForResult(intent, RequestCode.REQUEST_CODE_MAIN);
+    }
+
+    private void launchHomeworkActivity(){
+        Intent intent = new Intent(this, ListHomeworkActivity.class);
+        startActivity(intent);
     }
 
     @Override
