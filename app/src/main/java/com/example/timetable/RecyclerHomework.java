@@ -15,7 +15,7 @@ public class RecyclerHomework {
         return text;
     }
     public int getId() { return idItem; }
-    public boolean getCkeckBox() { return checkBox; }
+    public boolean getCheckBox() { return checkBox; }
 
     public void setText(String text) {
         this.text = text;

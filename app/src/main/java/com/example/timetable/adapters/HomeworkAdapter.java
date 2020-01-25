@@ -43,12 +43,12 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.Homewo
     }
 
     @Override
-    public void onBindViewHolder(@NonNull HomeworkViewHolder holder, int position) {
-        RecyclerHomework itemList = listItems.get(position);
+    public void onBindViewHolder(@NonNull final HomeworkViewHolder holder, int position) {
+        final RecyclerHomework itemList = listItems.get(position);
         holder.textView.setText(itemList.getText());
         boolean flag = false;
         for (int i = 0; i < listItems.size(); i++) {
-            if (listItems.get(i).getCkeckBox()) {
+            if (listItems.get(i).getCheckBox()) {
                 flag = true;
                 break;
             }
@@ -58,6 +58,54 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.Homewo
         } else {
             holder.checkBox.setVisibility(View.INVISIBLE);
         }
+        if (itemList.getCheckBox()) {
+            holder.checkBox.setChecked(true);
+        } else {
+            holder.checkBox.setChecked(false);
+        }
+        holder.view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (holder.checkBox.getVisibility() == View.VISIBLE) {
+                    if (holder.checkBox.isChecked()) {
+                        holder.checkBox.setChecked(false);
+                        onLongClickItemListener.onLongClickItemListener(holder.getAdapterPosition(), false);
+                    } else {
+                        holder.checkBox.setChecked(true);
+                        onLongClickItemListener.onLongClickItemListener(holder.getAdapterPosition(), true);
+                    }
+                } else {
+                    onItemListener.onItemClick(holder.getAdapterPosition());
+                }
+            }
+        });
+        holder.view.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (holder.checkBox.isChecked()) {
+                    holder.checkBox.setChecked(false);
+                    holder.checkBox.setVisibility(View.INVISIBLE);
+                    onLongClickItemListener.onLongClickItemListener(holder.getAdapterPosition(), false);
+                } else {
+                    holder.checkBox.setChecked(true);
+                    holder.checkBox.setVisibility(View.VISIBLE);
+                    onLongClickItemListener.onLongClickItemListener(holder.getAdapterPosition(), true);
+                }
+                return true;
+            }
+        });
+        holder.checkBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (holder.checkBox.isChecked()) {
+                    holder.checkBox.setChecked(true);
+                    onLongClickItemListener.onLongClickItemListener(holder.getAdapterPosition(), true);
+                } else {
+                    holder.checkBox.setChecked(false);
+                    onLongClickItemListener.onLongClickItemListener(holder.getAdapterPosition(), false);
+                }
+            }
+        });
     }
 
     @Override
@@ -65,52 +113,16 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.Homewo
         return listItems.size();
     }
 
-    class HomeworkViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
+    class HomeworkViewHolder extends RecyclerView.ViewHolder {
+        View view;
         TextView textView;
         CheckBox checkBox;
 
         HomeworkViewHolder(@NonNull View itemView) {
             super(itemView);
+            view = itemView;
             textView = itemView.findViewById(R.id.text_item_rv_homework);
             checkBox = itemView.findViewById(R.id.checkBox_item_homework);
-            if (checkBox.isChecked()) {
-                checkBox.setVisibility(View.VISIBLE);
-            } else {
-                checkBox.setVisibility(View.INVISIBLE);
-            }
-
-            itemView.setOnClickListener(this);
-            itemView.setOnLongClickListener(this);
-            checkBox.setOnClickListener(this);
-        }
-
-        @Override
-        public void onClick(View v) {
-            if (checkBox.getVisibility() == View.VISIBLE) {
-                if (checkBox.isChecked()) {
-                    checkBox.setChecked(false);
-                    onLongClickItemListener.onLongClickItemListener(getAdapterPosition(), false);
-                } else {
-                    checkBox.setChecked(true);
-                    onLongClickItemListener.onLongClickItemListener(getAdapterPosition(), true);
-                }
-            } else {
-                onItemListener.onItemClick(getAdapterPosition());
-            }
-        }
-
-        @Override
-        public boolean onLongClick(View v) {
-            if (checkBox.isChecked()) {
-                checkBox.setChecked(false);
-                checkBox.setVisibility(View.INVISIBLE);
-                onLongClickItemListener.onLongClickItemListener(getAdapterPosition(), false);
-            } else {
-                checkBox.setChecked(true);
-                checkBox.setVisibility(View.VISIBLE);
-                onLongClickItemListener.onLongClickItemListener(getAdapterPosition(), true);
-            }
-            return true;
         }
     }
 }

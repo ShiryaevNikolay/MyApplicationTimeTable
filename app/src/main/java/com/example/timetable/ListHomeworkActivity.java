@@ -89,8 +89,8 @@ public class ListHomeworkActivity extends AppCompatActivity implements ToolbarBt
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        ContentValues contentValues = new ContentValues();
         if(resultCode==RESULT_OK){
+            ContentValues contentValues = new ContentValues();
             contentValues.put(HomeworkDBHelper.KEY_TASKS, data.getStringExtra("text"));
             if (requestCode == RequestCode.REQUEST_CODE_HOMEWORK_CHANGE) {
                 database.update(HomeworkDBHelper.TABLE_HOMEWORK, contentValues, HomeworkDBHelper.KEY_ID + " = " + listItems.get(Objects.requireNonNull(data.getExtras()).getInt("position")).getId(), null);
@@ -135,6 +135,7 @@ public class ListHomeworkActivity extends AppCompatActivity implements ToolbarBt
         } else {
             listItems.get(position).setCheckBox(false);
         }
+        homeworkAdapter.notifyDataSetChanged();
         checkVisibleBtn();
     }
 
@@ -149,7 +150,7 @@ public class ListHomeworkActivity extends AppCompatActivity implements ToolbarBt
             case R.id.fab_remove_item_homework:
                 positionItemRemoved = new ArrayList<>();
                 for (int i = 0; i < listItems.size(); i++) {
-                    if (listItems.get(i).getCkeckBox()) {
+                    if (listItems.get(i).getCheckBox()) {
                         listItemsRemoved.add(listItems.get(i));
                         positionItemRemoved.add(i);
                     }
@@ -170,7 +171,7 @@ public class ListHomeworkActivity extends AppCompatActivity implements ToolbarBt
     private void checkVisibleBtn() {
         boolean flagCheckIfRemove = false;
         for (int i = 0; i < listItems.size(); i++) {
-            if (listItems.get(i).getCkeckBox()) {
+            if (listItems.get(i).getCheckBox()) {
                 flagCheckIfRemove = true;
                 break;
             }
