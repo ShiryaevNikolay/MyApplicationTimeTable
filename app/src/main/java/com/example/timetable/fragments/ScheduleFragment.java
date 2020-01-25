@@ -28,7 +28,6 @@ import com.example.timetable.modules.ItemTouchHelperAdapter;
 import com.example.timetable.modules.SimpleItemTouchHelperCallback;
 import com.example.timetable.util.RequestCode;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 

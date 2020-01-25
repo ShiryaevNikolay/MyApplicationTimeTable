@@ -4,7 +4,7 @@ import android.view.View;
 import androidx.appcompat.widget.Toolbar;
 import com.example.timetable.modules.ToolbarBtnBackListener;
 
-public class ButtonToReturnToMainActivity {
+class ButtonToReturnToMainActivity {
 
     ButtonToReturnToMainActivity(Toolbar toolbar, final ToolbarBtnBackListener toolbarListener){
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {

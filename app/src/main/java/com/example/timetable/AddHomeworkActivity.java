@@ -7,9 +7,7 @@ import androidx.appcompat.widget.Toolbar;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.content.ContentValues;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -21,7 +19,6 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.example.timetable.database.HomeworkDBHelper;
 import com.example.timetable.modules.ToolbarBtnBackListener;
 import com.example.timetable.util.RequestCode;
 
