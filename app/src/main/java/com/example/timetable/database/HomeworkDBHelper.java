@@ -11,6 +11,8 @@ public class HomeworkDBHelper extends SQLiteOpenHelper {
 
     public static final String KEY_ID = "_id";
     public static final String KEY_TASKS = "tasks";
+    public static final String KEY_ADD_DATE = "addDate";
+    public static final String KEY_TO_DATE = "toDate";
 
     public HomeworkDBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -18,7 +20,9 @@ public class HomeworkDBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String strItem = "CREATE TABLE " + TABLE_HOMEWORK + "(" + KEY_ID + " INTEGER PRIMARY KEY, " + KEY_TASKS + " TEXT)";
+        String strItem = "CREATE TABLE " + TABLE_HOMEWORK + "(" + KEY_ID + " INTEGER PRIMARY KEY, " + KEY_TASKS + " TEXT, "
+                                                                + KEY_ADD_DATE + " TEXT, "
+                                                                + KEY_TO_DATE + " TEXT)";
         db.execSQL(strItem);
     }
 

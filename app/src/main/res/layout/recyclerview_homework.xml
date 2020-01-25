@@ -27,25 +27,44 @@
             android:textStyle="bold"
             android:layout_gravity="top"/>
 
-        <FrameLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:layout_marginTop="15dp">
 
-            <TextView
-                android:id="@+id/tv_date_item_homework"
-                android:layout_width="wrap_content"
+
+            <LinearLayout
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_gravity="start"/>
+                android:orientation="vertical"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/tv_add_date_item_homework"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:layout_weight="1"
+                    android:text=""
+                    android:textSize="12sp"/>
+
+                <TextView
+                    android:id="@+id/tv_to_date_item_homework"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:layout_weight="1"
+                    android:text=""
+                    android:textSize="12sp"/>
+            </LinearLayout>
 
             <CheckBox
                 android:id="@+id/checkBox_item_homework"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                style="@style/CheckBoxStyle"
-                android:layout_gravity="end"/>
-        </FrameLayout>
+                style="@style/CheckBoxStyle"/>
+        </LinearLayout>
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>

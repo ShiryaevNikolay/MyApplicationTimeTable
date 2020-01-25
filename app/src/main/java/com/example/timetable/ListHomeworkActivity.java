@@ -39,6 +39,8 @@ public class ListHomeworkActivity extends AppCompatActivity implements ToolbarBt
     SQLiteDatabase database;
     int idItem = 0;
     String nameItem;
+    String textAddDate;
+    String textToDate;
     FloatingActionButton fabRemoveItem;
 
     ArrayList<RecyclerHomework> listItemsRemoved = new ArrayList<>();
@@ -67,8 +69,10 @@ public class ListHomeworkActivity extends AppCompatActivity implements ToolbarBt
         if (cursor.moveToFirst()){
             do {
                 nameItem = cursor.getString(cursor.getColumnIndex(HomeworkDBHelper. KEY_TASKS));
+                textAddDate = cursor.getString(cursor.getColumnIndex(HomeworkDBHelper. KEY_ADD_DATE));
+                textToDate = cursor.getString(cursor.getColumnIndex(HomeworkDBHelper. KEY_TO_DATE));
                 idItem = cursor.getInt(cursor.getColumnIndex(HomeworkDBHelper. KEY_ID));
-                listItems.add(new RecyclerHomework(nameItem, idItem, false));
+                listItems.add(new RecyclerHomework(nameItem, idItem, false, textAddDate, textToDate));
             }while (cursor.moveToNext());
         }
         cursor.close();
@@ -97,6 +101,8 @@ public class ListHomeworkActivity extends AppCompatActivity implements ToolbarBt
         if(resultCode==RESULT_OK){
             ContentValues contentValues = new ContentValues();
             contentValues.put(HomeworkDBHelper.KEY_TASKS, data.getStringExtra("text"));
+            contentValues.put(HomeworkDBHelper.KEY_ADD_DATE, data.getStringExtra("addDate"));
+            contentValues.put(HomeworkDBHelper.KEY_TO_DATE, data.getStringExtra("toDate"));
             if (requestCode == RequestCode.REQUEST_CODE_HOMEWORK_CHANGE) {
                 database.update(HomeworkDBHelper.TABLE_HOMEWORK, contentValues, HomeworkDBHelper.KEY_ID + " = " + listItems.get(Objects.requireNonNull(data.getExtras()).getInt("position")).getId(), null);
             } else if (requestCode == RequestCode.REQUEST_CODE_HOMEWORK) {
@@ -109,8 +115,10 @@ public class ListHomeworkActivity extends AppCompatActivity implements ToolbarBt
             if (cursor.moveToFirst()){
                 do {
                     nameItem = cursor.getString(cursor.getColumnIndex(HomeworkDBHelper. KEY_TASKS));
+                    textAddDate = cursor.getString(cursor.getColumnIndex(HomeworkDBHelper. KEY_ADD_DATE));
+                    textToDate = cursor.getString(cursor.getColumnIndex(HomeworkDBHelper. KEY_TO_DATE));
                     idItem = cursor.getInt(cursor.getColumnIndex(HomeworkDBHelper. KEY_ID));
-                    listItems.add(new RecyclerHomework(nameItem, idItem, false));
+                    listItems.add(new RecyclerHomework(nameItem, idItem, false, textAddDate, textToDate));
                 }while (cursor.moveToNext());
             }
             cursor.close();
@@ -128,6 +136,8 @@ public class ListHomeworkActivity extends AppCompatActivity implements ToolbarBt
         Intent intent = new Intent(this, AddHomeworkActivity.class);
         intent.putExtra("requestCode", RequestCode.REQUEST_CODE_HOMEWORK_CHANGE);
         intent.putExtra("text", listItems.get(position).getText());
+        intent.putExtra("addDate", listItems.get(position).getAddDate());
+        intent.putExtra("toDate", listItems.get(position).getToDate());
         intent.putExtra("position", position);
         startActivityForResult(intent, RequestCode.REQUEST_CODE_HOMEWORK_CHANGE);
     }

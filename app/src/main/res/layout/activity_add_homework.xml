@@ -51,6 +51,29 @@
                     android:inputType="textMultiLine"
                     android:hint="Задания"
                     android:theme="@style/ThemeEditText"/>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:id="@+id/tv_date_homework_icon"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:background="@drawable/calendar_month" />
+
+                    <TextView
+                        android:id="@+id/tv_date_homework"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_weight="1"
+                        android:hint="Выбрать дату"
+                        android:textSize="20sp"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"/>
+                </TableRow>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

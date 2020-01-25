@@ -1,5 +1,6 @@
 package com.example.timetable.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,10 +43,13 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.Homewo
         return new HomeworkViewHolder(view);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull final HomeworkViewHolder holder, int position) {
         final RecyclerHomework itemList = listItems.get(position);
         holder.textView.setText(itemList.getText());
+        holder.tvAddDate.setText(itemList.getAddDate());
+        holder.tvToDate.setText("Выполнить к: " + itemList.getToDate());
         boolean flag = false;
         for (int i = 0; i < listItems.size(); i++) {
             if (listItems.get(i).getCheckBox()) {
@@ -116,12 +120,16 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.Homewo
     class HomeworkViewHolder extends RecyclerView.ViewHolder {
         View view;
         TextView textView;
+        TextView tvAddDate;
+        TextView tvToDate;
         CheckBox checkBox;
 
         HomeworkViewHolder(@NonNull View itemView) {
             super(itemView);
             view = itemView;
             textView = itemView.findViewById(R.id.text_item_rv_homework);
+            tvAddDate = itemView.findViewById(R.id.tv_add_date_item_homework);
+            tvToDate = itemView.findViewById(R.id.tv_to_date_item_homework);
             checkBox = itemView.findViewById(R.id.checkBox_item_homework);
         }
     }
